@@ -1,5 +1,6 @@
 import Slider from "./Slider.jsx";
 import PopularMovieList from "./PopularMovieList.jsx";
+import '../styles/Home.css'
 import { useEffect, useState } from "react";
 const tmdbKey = import.meta.env.VITE_TMDB_API_KEY
 
@@ -33,7 +34,7 @@ const Home = () => {
         '/src/assets/pic2.jpg',
         '/src/assets/pic3.jpg'
       ];
-      
+
     return (
         <>
             <h2>Home Page</h2>
@@ -42,7 +43,9 @@ const Home = () => {
             </div>
             <div>
                 <h2>Top rated</h2>
-                <PopularMovieList movieList={movieList} setMovieList={setMovieList}/>
+                <div className="movie-grid">
+                    <PopularMovieList movieList={movieList} setMovieList={setMovieList}/>
+                </div>
             </div>
         </>
     )
