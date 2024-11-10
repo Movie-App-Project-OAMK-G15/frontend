@@ -65,6 +65,7 @@ CREATE TABLE comments (
     FOREIGN KEY (post_id) REFERENCES group_posts(post_id) ON DELETE CASCADE
 );
 
+-- 7. Create 'favorite_movies' table
 CREATE TABLE favorite_movies (
     movie_id INT NOT NULL,          
     user_id INT NOT NULL,           

@@ -1,7 +1,20 @@
+import Home from "./components/Home"
+import Screenings from "./components/Screenings"
+import BrowseMovies from "./components/BrowseMovies"
+import Navbar from "./components/Navbar"
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 function App() {
   return (
-      <p>Our template page</p>
-  )
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/screenings" element={<Screenings />} />
+        <Route path="/search" element={<BrowseMovies />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App
