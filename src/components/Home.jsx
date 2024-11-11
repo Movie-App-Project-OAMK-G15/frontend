@@ -9,7 +9,7 @@ const Home = () => {
     useEffect(() => {
         // test of the API, works only for this partcular endpoint
         const urls = [1, 2, 3].map(
-            page => `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${page}`
+            page => `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`
           );  
 
         const options = {
@@ -40,7 +40,7 @@ const Home = () => {
             <h2>Home Page</h2>
             <div className="App">
                 <Slider images={images} />
-            </div>
+            </div>  
             <div>
                 <h2>Top rated</h2>
                 <div className="movie-grid">
