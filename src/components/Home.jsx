@@ -1,5 +1,5 @@
 import Slider from "./Slider.jsx";
-import PopularMovieList from "./PopularMovieList.jsx";
+import MovieCarousel from "./MovieCarousel.jsx";
 import '../styles/Home.css'
 import { useEffect, useState } from "react";
 const tmdbKey = import.meta.env.VITE_TMDB_API_KEY
@@ -44,7 +44,7 @@ const Home = () => {
             <div>
                 <h2>Top rated</h2>
                 <div className="movie-grid">
-                    <PopularMovieList movieList={movieList} setMovieList={setMovieList}/>
+                    <MovieCarousel movieList={movieList} setMovieList={setMovieList}/>
                 </div>
             </div>
         </>

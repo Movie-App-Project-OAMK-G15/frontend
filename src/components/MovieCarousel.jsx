@@ -1,4 +1,4 @@
-const PopularMovieList = ({movieList, setMovieList}) => {
+const MovieCarousel = ({movieList, setMovieList}) => {
     return (
         <>
             {movieList.map(item => 
@@ -10,4 +10,4 @@ const PopularMovieList = ({movieList, setMovieList}) => {
     )
 }
 
-export default PopularMovieList
+export default MovieCarousel
