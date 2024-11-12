@@ -1,10 +1,11 @@
 -- just a draft version of our db
-DROP TABLE IF EXISTS comments;
-DROP TABLE IF EXISTS group_posts;
-DROP TABLE IF EXISTS group_subscriptions;
-DROP TABLE IF EXISTS groups;
-DROP TABLE IF EXISTS review;
-DROP TABLE IF EXISTS account;
+DROP TABLE IF EXISTS comments CASCADE;
+DROP TABLE IF EXISTS group_posts CASCADE;
+DROP TABLE IF EXISTS group_subscriptions CASCADE;
+DROP TABLE IF EXISTS groups CASCADE;
+DROP TABLE IF EXISTS review CASCADE;
+DROP TABLE IF EXISTS favorite_movies CASCADE;
+DROP TABLE IF EXISTS account CASCADE;
 
 -- 1. Create 'account' table
 CREATE TABLE account (
@@ -12,6 +13,7 @@ CREATE TABLE account (
     firstname VARCHAR(50) NOT NULL,
     secondname VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
+	phone VARCHAR(20), --can be null 
     password VARCHAR(255) NOT NULL
 );
 
@@ -22,6 +24,7 @@ CREATE TABLE review (
     review_content TEXT NOT NULL,
     likes INT DEFAULT 0,
     dislikes INT DEFAULT 0,
+	movie_id INT NOT NULL,
     FOREIGN KEY (user_email) REFERENCES account(email) ON DELETE CASCADE
 );
 
@@ -30,6 +33,7 @@ CREATE TABLE groups (
     group_id SERIAL PRIMARY KEY,
     admin_email VARCHAR(100) NOT NULL,
     group_name VARCHAR(100) NOT NULL UNIQUE,
+	description VARCHAR(255) NOT NULL,
     FOREIGN KEY (admin_email) REFERENCES account(email) ON DELETE SET NULL
 );
 
@@ -72,3 +76,4 @@ CREATE TABLE favorite_movies (
     PRIMARY KEY (movie_id, user_id), 
     FOREIGN KEY (user_id) REFERENCES account(user_id) ON DELETE CASCADE
 );
+
