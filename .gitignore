@@ -28,3 +28,6 @@ dist-ssr
 
 # server
 /server/node_modules
+
+#rest client
+client.rest

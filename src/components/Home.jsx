@@ -1,5 +1,6 @@
 import Slider from "./Slider.jsx";
 import MovieCarousel from "./MovieCarousel.jsx";
+import GenresPage from "./GenrePage.jsx";
 import '../styles/Home.css'
 import { useEffect, useState } from "react";
 const tmdbKey = import.meta.env.VITE_TMDB_API_KEY
@@ -47,6 +48,9 @@ const Home = () => {
                     <MovieCarousel movieList={movieList} setMovieList={setMovieList}/>
                 </div>
             </div>
+            <GenresPage/>
+            
+            
         </>
     )
 };
