@@ -39,34 +39,35 @@ const GenrePage = () => {
 
   return (
     <div className="container">
-      <h2 className="my-4">Popular Genres:</h2>
-      {genres.map((genre) => (
-        <div key={genre.id} className="mb-4">
-          <h3>{genre.name}</h3>
-          <div className="row">
-            {movies
-              .filter((movie) => movie.genre_ids.includes(genre.id))
-              .map((movie) => (
-                //unique keys by combining movie.id with genre.id
-
-                <div key={movie.id} className="col-md-3 mb-3">
-                  <div className="card">
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                      className="card-img-top"
-                      alt={movie.title}
-                    />
-                    <div className="card-body">
-                      <h5 className="card-title">{movie.title}</h5>
-                      <p className="card-text">Rating: {movie.vote_average}</p>
-                    </div>
+  <h2 className="my-4">Popular Genres:</h2>
+  {genres
+    .filter((genre) => movies.some((movie) => movie.genre_ids.includes(genre.id))) //filter genres with no related movies
+    .map((genre) => (
+      <div key={genre.id} className="mb-4">
+        <h3>{genre.name}</h3>
+        <div className="row">
+          {movies
+            .filter((movie) => movie.genre_ids.includes(genre.id))
+            .map((movie) => (
+              //uunique keys by combining movie.id with genre.id
+              <div key={`${movie.id}-${genre.id}`} className="col-md-3 mb-3">
+                <div className="card">
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    className="card-img-top"
+                    alt={movie.title}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{movie.title}</h5>
+                    <p className="card-text">Rating: {movie.vote_average}</p>
                   </div>
                 </div>
-              ))}
-          </div>
+              </div>
+            ))}
         </div>
-      ))}
-    </div>
+      </div>
+    ))}
+</div>
   );
 };
 
