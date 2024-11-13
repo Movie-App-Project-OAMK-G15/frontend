@@ -1,73 +1,101 @@
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const GenrePage = () => {
-  const [movies, setMovies] = useState([]);
+  //to store genre
   const [genres, setGenres] = useState([]);
+  //store movies
+  const [movies, setMovies] = useState([]);
+  //key from .env
   const tmdbKey = import.meta.env.VITE_TMDB_API_KEY;
+  //to navigate
+  const navigate = useNavigate();
 
   useEffect(() => {
-    //fetching genres from TMDB API
-    fetch("https://api.themoviedb.org/3/genre/movie/list?language=en", {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${tmdbKey}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setGenres(data.genres))
-      .catch((error) => console.error(error));
-
-    //fetching movies from TMDB API
-    fetch(
-      "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&sort_by=popularity.desc",
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${tmdbKey}`,
-        },
+    //function to fetch genres from TMDB API
+    const fetchGenres = async () => {
+      try {
+        //API call to get genres
+        const response = await axios.get(
+          "https://api.themoviedb.org/3/genre/movie/list?language=en",
+          {
+            headers: {
+              accept: "application/json",
+              Authorization: `Bearer ${tmdbKey}`,
+            },
+          }
+        );
+        //set genres state with the fetched data
+        setGenres(response.data.genres);
+      } catch (error) {
+        //console any errorr
+        console.error(error);
       }
-    )
-      .then((response) => response.json())
-      //set the fetched movies to state
-      .then((data) => setMovies(data.results))
-      //logging any error
-      .catch((error) => console.error(error));
-  }, [tmdbKey]); //use effect runs when tmdb key changes
+    };
+
+    const fetchMovies = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&sort_by=popularity.desc",
+          {
+            headers: {
+              accept: "application/json",
+              Authorization: `Bearer ${tmdbKey}`,
+            },
+          }
+        );
+        setMovies(response.data.results);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    //call the functions to fetch genres and movies when the component mounts
+
+    fetchGenres();
+    fetchMovies();
+  }, [tmdbKey]); //restart when the tmdbKey changes
 
   return (
-    <div className="container">
-  <h2 className="my-4">Popular Genres:</h2>
-  {genres
-    .filter((genre) => movies.some((movie) => movie.genre_ids.includes(genre.id))) //filter genres with no related movies
-    .map((genre) => (
-      <div key={genre.id} className="mb-4">
-        <h3>{genre.name}</h3>
-        <div className="row">
-          {movies
-            .filter((movie) => movie.genre_ids.includes(genre.id))
-            .map((movie) => (
-              //uunique keys by combining movie.id with genre.id
-              <div key={`${movie.id}-${genre.id}`} className="col-md-3 mb-3">
-                <div className="card">
+    <div className="container my-4">
+      <h2 className="mb-4">Browse by Genre</h2>
+      <div className="row">
+        {genres
+          .filter((genre) =>
+            movies.some((movie) => movie.genre_ids.includes(genre.id))
+          ) // Filter out genres with no related movies
+          .map((genre) => {
+            const genreMovies = movies.filter((movie) =>
+              movie.genre_ids.includes(genre.id)
+            );
+            const randomMovie =
+              genreMovies[Math.floor(Math.random() * genreMovies.length)];
+            const posterUrl = randomMovie
+              ? `https://image.tmdb.org/t/p/w500${randomMovie.poster_path}`
+              : `https://via.placeholder.com/150?text=${genre.name}`;
+
+            return (
+              <div key={genre.id} className="col-md-3 mb-4">
+                <div
+                  className="card h-100 text-center p-3"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigate(`/genre/${genre.id}`)} //redirect to the genre page on click
+                >
                   <img
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    src={posterUrl} //use the random movie's poster image
                     className="card-img-top"
-                    alt={movie.title}
+                    alt={genre.name} //set the alt text to the genre name
                   />
                   <div className="card-body">
-                    <h5 className="card-title">{movie.title}</h5>
-                    <p className="card-text">Rating: {movie.vote_average}</p>
+                    <h5 className="card-title">{genre.name}</h5>
                   </div>
                 </div>
               </div>
-            ))}
-        </div>
+            );
+          })}
       </div>
-    ))}
-</div>
+    </div>
   );
 };
 
