@@ -2,13 +2,6 @@
 import React from 'react';
 
 const SearchForm = ({ handleSearch, searchType, setSearchType, query, setQuery, placeholder, inputType }) => {
-  const placeholder =
-  searchType === 'title'
-    ? 'Enter movie title'
-    : searchType === 'genre'
-    ? 'Enter genre (e.g., action, comedy)'
-    : 'Enter release year (e.g., 2021)';
-const inputType = searchType === 'year' ? 'number' : 'text';
 
   return (
     <form onSubmit={handleSearch} className="d-flex flex-column align-items-center mb-5">
