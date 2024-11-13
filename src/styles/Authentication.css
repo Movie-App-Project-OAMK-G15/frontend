@@ -1,0 +1,116 @@
+/* Base styling */
+.auth {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+}
+
+.auth h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.auth form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Label styling */
+.auth label {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Set the input fields and button to have the same width */
+.auth input, .auth button {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    box-sizing: border-box; /* ensures padding doesn’t add extra width */
+}
+
+/* Specific input styling */
+.auth input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Button styling */
+.auth button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.auth button:hover {
+    background-color: #0056b3;
+}
+
+/* Link styling */
+.auth a {
+    text-align: center;
+    color: #007BFF;
+    font-size: 0.9rem;
+}
+
+/* Media queries for adaptive design */
+
+/* Small screens (smartphones) */
+@media (max-width: 576px) {
+    .auth {
+        padding: 1.5rem;
+        max-width: 90%;
+    }
+
+    .auth h3 {
+        font-size: 1.5rem;
+    }
+
+    .auth input, .auth button {
+        font-size: 0.9rem;
+    }
+
+    .auth a {
+        font-size: 0.8rem;
+    }
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 576px) and (max-width: 768px) {
+    .auth {
+        max-width: 75%;
+        padding: 2rem;
+    }
+
+    .auth h3 {
+        font-size: 1.8rem;
+    }
+
+    .auth input, .auth button {
+        font-size: 1rem;
+    }
+
+    .auth a {
+        font-size: 0.9rem;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 768px) {
+    .auth {
+        max-width: 500px;
+        padding: 3rem;
+    }
+
+    .auth h3 {
+        font-size: 2rem;
+    }
+}

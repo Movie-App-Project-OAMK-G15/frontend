@@ -1,3 +1,4 @@
+import Navbar from "./Navbar";
 import { useState, useEffect } from "react";
 
 const Screenings = () => {
@@ -39,6 +40,7 @@ const Screenings = () => {
 
     return (
         <>
+            <Navbar/>
             <div>
                 {dates.map((item, index) => (
                     <li key={index} onClick={fetchMoviesForDate}>{item}</li>

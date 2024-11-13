@@ -4,9 +4,11 @@ import { compare, hash } from "bcrypt";
 import jwt from 'jsonwebtoken'
 const { sign } = jwt
 
-const createUserOnject = (id, email, token=undefined) => {
+const createUserObject = (id, email, firstname, familyname, token=undefined) => {
     return {
         id: id,
+        firstname: firstname,
+        familyname: familyname,
         email: email,
         ...(token !== undefined) && {token: token}
     }
@@ -21,7 +23,7 @@ async function postRegistration(req, res, next) {
         const hashedPassword = await hash(req.body.password, 10)
         const result = await postUser(req.body.firstname, req.body.familyname, req.body.email, hashedPassword)
         const user = result.rows[0]
-        return res.status(200).json(createUserOnject(user.id, user.email))
+        return res.status(200).json(createUserObject(user.id, user.firstname, user.familyname, user.email))
     } catch (error) {
         return next(error)
     }
@@ -35,7 +37,7 @@ async function postLogin(req, res, next) {
         if(!await compare(req.body.password, user.password)) return next(new ApiError('Invalid credentials', 401))
         
         const token = sign({email: req.body.email}, process.env.JWT_SECRET_KEY, { expiresIn: '1h' })
-        return res.status(200).json(createUserOnject(user.id, user.email, token))
+        return res.status(200).json(createUserObject(user.id, user.firstname, user.familyname, user.email, token))
     } catch (error) {
         return next(error)
     }
