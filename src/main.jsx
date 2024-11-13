@@ -8,6 +8,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx'
 import UserProvider from './context/UserProvider.jsx'
 import BrowseMovies from './components/BrowseMovies.jsx'
 import Screenings from './components/Screenings.jsx'
+import GenreMoviesPage from './components/GenreMoviePage.jsx'
 import App from './App.jsx'
 
 const router = createBrowserRouter([
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: 'screenings',
     element: <Screenings/>
+  },
+  {
+    path: `genre/:genreId`,
+    element: <GenreMoviesPage/>
   },
   {
     path: 'search',
