@@ -15,4 +15,4 @@ const pool = new Pool ({
     ssl: process.env.SSL
 })
 
-export default pool 
+export default pool ;
