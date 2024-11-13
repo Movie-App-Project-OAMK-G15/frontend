@@ -1,5 +1,5 @@
 import Slider from "./Slider.jsx";
-import MovieCarousel from "./MovieCarousel.jsx";
+import PopularMovieList from "./PopularMovieList.jsx";
 import GenresPage from "./GenrePage.jsx";
 import '../styles/Home.css'
 import { useEffect, useState } from "react";
@@ -45,7 +45,7 @@ const Home = () => {
             <div>
                 <h2>Top rated</h2>
                 <div className="movie-grid">
-                    <MovieCarousel movieList={movieList} setMovieList={setMovieList}/>
+                    <PopularMovieList movieList={movieList} setMovieList={setMovieList}/>
                 </div>
             </div>
             <GenresPage/>
