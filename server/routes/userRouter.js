@@ -9,6 +9,6 @@ userRouter.post('/register', postRegistration)
 
 userRouter.post('/login', postLogin)
 
-userRouter.delete('/delete', deleteAccount)
+userRouter.post('/delete', deleteAccount)
 
 export default userRouter

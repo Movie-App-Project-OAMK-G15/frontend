@@ -9,7 +9,8 @@ import UserProvider from './context/UserProvider.jsx'
 import BrowseMovies from './components/BrowseMovies.jsx'
 import Screenings from './components/Screenings.jsx'
 import GenreMoviesPage from './components/GenreMoviePage.jsx'
-import App from './App.jsx'
+import UserAccount from './screens/UserAccount.jsx'
+import Home from './components/Home.jsx'
 
 const router = createBrowserRouter([
   {
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
   },
   {
     path: '',
-    element: <App/>
+    element: <Home/>
   },
   {
     path: 'signup',
@@ -43,8 +44,8 @@ const router = createBrowserRouter([
     element: <ProtectedRoute/>,
     children: [
       {
-        path: 'signed',
-        element: <BrowseMovies />
+        path: 'account',
+        element: <UserAccount />
       }
     ]
   }

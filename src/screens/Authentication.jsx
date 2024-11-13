@@ -28,7 +28,7 @@ export default function Authentication({authenticationMode}) {
                 }, 3000)
             }else{
                 await signIn() 
-                navigate('/')
+                navigate('/account')
             }
         } catch (error) {
             const message = error.response && error.response.data ? error.response.data.error : error

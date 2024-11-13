@@ -1,6 +1,7 @@
 import Slider from "./Slider.jsx";
 import PopularMovieList from "./PopularMovieList.jsx";
 import GenresPage from "./GenrePage.jsx";
+import Navbar from "./Navbar.jsx";
 import '../styles/Home.css'
 import { useEffect, useState } from "react";
 const tmdbKey = import.meta.env.VITE_TMDB_API_KEY
@@ -38,6 +39,7 @@ const Home = () => {
 
     return (
         <>
+            <Navbar />
             <h2>Home Page</h2>
             <div className="App">
                 <Slider images={images} />

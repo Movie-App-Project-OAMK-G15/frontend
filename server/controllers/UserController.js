@@ -4,7 +4,7 @@ import { compare, hash } from "bcrypt";
 import jwt from 'jsonwebtoken'
 const { sign } = jwt
 
-const createUserObject = (id, email, firstname, familyname, token=undefined) => {
+const createUserObject = (id, firstname, familyname, email, token=undefined) => {
     return {
         id: id,
         firstname: firstname,
@@ -48,7 +48,7 @@ async function deleteAccount(req, res, next) {
         if(!req.body.email || req.body.email.length === 0) return next(new ApiError('Invalid email for user', 400))
         const result = await deleteUser(req.body.email)
         if (result.rowCount > 0) {
-            return res.status(200).json({message: `user with email: ${req.body.email} has been deleted`})
+            return res.status(200).json({state: `user with email: ${req.body.email} has been deleted`})
         } else {
             return next(new ApiError('No account to delete found', 400))
         }
