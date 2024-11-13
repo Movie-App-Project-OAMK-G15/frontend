@@ -55,7 +55,7 @@ export default function Authentication({authenticationMode}) {
                     : ""}
                     {authenticationMode === AuthenticationMode.Register ? 
                         <div>
-                        <label>Surename</label>
+                        <label>Surname</label>
                         <input id='sname_field' type='text' value={user.familyname} onChange={event => setUser({...user, familyname: event.target.value})}/>
                         </div>
                     : ""}
