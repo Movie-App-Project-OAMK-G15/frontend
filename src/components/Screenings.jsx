@@ -7,6 +7,7 @@ const Screenings = () => {
     const [selectedArea, setSelectedArea] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
     const [movies, setMovies] = useState([])
+    const [loading, setLoading] = useState(false)
 
     async function showAreaList(xml) {
         try {
@@ -29,7 +30,7 @@ const Screenings = () => {
             const xmlDoc = parser.parseFromString(xml, 'application/xml');
             const dates = Array.from(xmlDoc.getElementsByTagName('dateTime'));
             const tempDates = dates.map(date => ({
-                dateTime: date.textContent
+                dateTime: date.textContent.split('T')[0]
             }));
             setDates(tempDates);
         } catch (error) {
@@ -38,22 +39,46 @@ const Screenings = () => {
     }
 
     async function fetchMovies() {
-        if (!selectedArea || !selectedDate) return null;
+        if (!selectedArea || !selectedDate) return;
 
+        setLoading(true); 
         try {
-            const response = await fetch(`https://www.finnkino.fi/xml/Schedule/?area=${selectedArea}&date=${selectedDate}`);
-            const xml = await response.text()
-            const parser = new DOMParser()
-            const xmlDoc = parser.parseFromString(xml, 'application/xml') 
-            const movieElements = xmlDoc.getElementsByTagName('Show')
-            const tempMovies = Array.from(movieElements).map(movie => ({
-                title: movie.getElementsByTagName('Title')[0].textContent,
-                image: movie.getElementsByTagName('EventSmallImagePortrait')[0].textContent,
-                id: movie.getElementsByTagName('ID')[0].textContent
-            }))
-            setMovies(tempMovies)
+          
+            const scheduleResponse = await fetch(`https://www.finnkino.fi/xml/Schedule/?area=${selectedArea}&date=${selectedDate}`);
+            const scheduleXml = await scheduleResponse.text();
+            const scheduleParser = new DOMParser();
+            const scheduleDoc = scheduleParser.parseFromString(scheduleXml, 'application/xml');
+            const scheduleMovies = Array.from(scheduleDoc.getElementsByTagName('Show'));
+
+         
+            const eventIDs = new Set(scheduleMovies.map(movie => movie.getElementsByTagName('EventID')[0].textContent));
+
+            const eventsResponse = await fetch(`https://www.finnkino.fi/xml/Events/`);
+            const eventsXml = await eventsResponse.text();
+            const eventsParser = new DOMParser();
+            const eventsDoc = eventsParser.parseFromString(eventsXml, 'application/xml');
+            const movieElements = eventsDoc.getElementsByTagName('Event');
+
+            const tempMovies = [];
+            Array.from(movieElements).forEach(movie => {
+                const id = movie.getElementsByTagName('ID')[0].textContent;
+                if (eventIDs.has(id)) { 
+                    tempMovies.push({
+                        title: movie.getElementsByTagName('Title')[0].textContent,
+                        image: movie.getElementsByTagName('EventMediumImagePortrait')[0].textContent,
+                        duration: movie.getElementsByTagName('LengthInMinutes')[0].textContent,
+                        rating: movie.getElementsByTagName('Rating')[0].textContent, 
+                        releaseDate: movie.getElementsByTagName('dtLocalRelease')[0].textContent.split('T')[0], 
+                        id: id
+                    });
+                }
+            });
+
+            setMovies(tempMovies);
         } catch (error) {
-            alert('Error fetching movies:', error)
+            alert('Error fetching movies:', error);
+        } finally {
+            setLoading(false); 
         }
     }
     
@@ -110,12 +135,17 @@ const Screenings = () => {
             </div>
             <div>
                 <h2>Movies:</h2>
-                {movies.length > 0 ? (
+                {loading ? (
+                    <p>Loading movies...</p>
+                ) : movies.length > 0 ? (
                     <ul>
                         {movies.map(movie => (
                             <li key={movie.id}>
                                 <img src={movie.image} alt={movie.title} style={{ width: '100px', height: '150px' }} />
                                 <p>{movie.title}</p>
+                                <p>Duration: {movie.duration} minutes</p>
+                                <p>Rating: {movie.rating}</p>
+                                <p>Release Date: {movie.releaseDate}</p>
                             </li>
                         ))}
                     </ul>
