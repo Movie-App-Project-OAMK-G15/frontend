@@ -1,5 +1,6 @@
 import Navbar from "./Navbar";
 import { useState, useEffect } from "react";
+import '../styles/Screenings.css'
 
 const Screenings = () => {
     const [dates, setDates] = useState([]);
@@ -65,7 +66,7 @@ const Screenings = () => {
                 if (eventIDs.has(id)) { 
                     tempMovies.push({
                         title: movie.getElementsByTagName('Title')[0].textContent,
-                        image: movie.getElementsByTagName('EventMediumImagePortrait')[0].textContent,
+                        image: movie.getElementsByTagName('EventSmallImagePortrait')[0].textContent,
                         duration: movie.getElementsByTagName('LengthInMinutes')[0].textContent,
                         rating: movie.getElementsByTagName('Rating')[0].textContent, 
                         releaseDate: movie.getElementsByTagName('dtLocalRelease')[0].textContent.split('T')[0], 
@@ -105,55 +106,59 @@ const Screenings = () => {
     }, [selectedArea, selectedDate])
 
     return (
-        <>
+        <div>
             <Navbar />
-            <div>
-                <label htmlFor="area-dropdown">Select an Area:</label>
-                <select 
-                    id="area-dropdown" 
-                    value={selectedArea} 
-                    onChange={(e) => setSelectedArea(e.target.value)}
-                >
-                    <option value="">--Choose area or cinema--</option>
-                    {areas.map(area => (
-                        <option key={area.id} value={area.id}>{area.name}</option>
-                    ))}
-                </select>
-            </div>
-            <div>
-                <label htmlFor="date-dropdown">Select a Date:</label>
-                <select 
-                    id="date-dropdown" 
-                    value={selectedDate} 
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                >
-                    <option value="">--Select a Date--</option>
-                    {dates.map((date, index) => (
-                        <option key={index} value={date.dateTime}>{date.dateTime}</option>
-                    ))}
-                </select>
-            </div>
-            <div>
-                <h2>Movies:</h2>
-                {loading ? (
-                    <p>Loading movies...</p>
-                ) : movies.length > 0 ? (
-                    <ul>
-                        {movies.map(movie => (
-                            <li key={movie.id}>
-                                <img src={movie.image} alt={movie.title} style={{ width: '100px', height: '150px' }} />
-                                <p>{movie.title}</p>
-                                <p>Duration: {movie.duration} minutes</p>
-                                <p>Rating: {movie.rating}</p>
-                                <p>Release Date: {movie.releaseDate}</p>
-                            </li>
+            <div className="dropdown">
+                <div>
+                    <label htmlFor="area-dropdown">Select an Area:</label>
+                    <select 
+                        id="area-dropdown" 
+                        value={selectedArea} 
+                        onChange={(e) => setSelectedArea(e.target.value)}
+                    >
+                        <option value="">--Choose area or cinema--</option>
+                        {areas.map(area => (
+                            <option key={area.id} value={area.id}>{area.name}</option>
                         ))}
-                    </ul>
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor="date-dropdown">Select a Date:</label>
+                    <select 
+                        id="date-dropdown" 
+                        value={selectedDate} 
+                        onChange={(e) => setSelectedDate(e.target.value)}
+                    >
+                        <option value="">--Select a Date--</option>
+                        {dates.map((date, index) => (
+                            <option key={index} value={date.dateTime}>{date.dateTime}</option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+            <div>
+                <h2>Available movies:</h2>
+                {loading ? (
+                    <p className="loading">Loading movies...</p>
+                ) : movies.length > 0 ? (
+                    <div className="movies-lists">
+                        {movies.map(movie => (
+                            <div className="movie-items" key={movie.id}>
+                                <img src={movie.image} alt={movie.title} />
+                                <div className="movie-details">
+                                    <p>{movie.title}</p>
+                                    <p>Duration: {movie.duration} minutes</p>
+                                    <p>Rating: {movie.rating}</p>
+                                    <p>Release Date: {movie.releaseDate}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 ) : (
                     <p>No movies available for the selected date and area.</p>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 
