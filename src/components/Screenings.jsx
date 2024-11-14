@@ -6,6 +6,7 @@ const Screenings = () => {
     const [areas, setAreas] = useState([]);
     const [selectedArea, setSelectedArea] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
+    const [movies, setMovies] = useState([])
 
     async function showAreaList(xml) {
         try {
@@ -20,7 +21,7 @@ const Screenings = () => {
         } catch (error) {
             alert('Error fetching or parsing XML data:', error);
         }
-    };
+    }
 
     async function showTimeList(xml) {
         try {
@@ -34,8 +35,28 @@ const Screenings = () => {
         } catch (error) {
             alert('Error fetching or parsing XML data:', error);
         }
-    };
+    }
 
+    async function fetchMovies() {
+        if (!selectedArea || !selectedDate) return null;
+
+        try {
+            const response = await fetch(`https://www.finnkino.fi/xml/Schedule/?area=${selectedArea}&date=${selectedDate}`);
+            const xml = await response.text()
+            const parser = new DOMParser()
+            const xmlDoc = parser.parseFromString(xml, 'application/xml') 
+            const movieElements = xmlDoc.getElementsByTagName('Show')
+            const tempMovies = Array.from(movieElements).map(movie => ({
+                title: movie.getElementsByTagName('Title')[0].textContent,
+                image: movie.getElementsByTagName('EventSmallImagePortrait')[0].textContent,
+                id: movie.getElementsByTagName('ID')[0].textContent
+            }))
+            setMovies(tempMovies)
+        } catch (error) {
+            alert('Error fetching movies:', error)
+        }
+    }
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -49,10 +70,14 @@ const Screenings = () => {
             } catch (error) {
                 console.log(error);
             }
-        };
+        }
         
         fetchData();
-    }, []); 
+    }, [])
+
+    useEffect(() => {
+        fetchMovies()
+    }, [selectedArea, selectedDate])
 
     return (
         <>
@@ -64,7 +89,7 @@ const Screenings = () => {
                     value={selectedArea} 
                     onChange={(e) => setSelectedArea(e.target.value)}
                 >
-                    <option value="">--Select an Area--</option>
+                    <option value="">--Choose area or cinema--</option>
                     {areas.map(area => (
                         <option key={area.id} value={area.id}>{area.name}</option>
                     ))}
@@ -82,6 +107,21 @@ const Screenings = () => {
                         <option key={index} value={date.dateTime}>{date.dateTime}</option>
                     ))}
                 </select>
+            </div>
+            <div>
+                <h2>Movies:</h2>
+                {movies.length > 0 ? (
+                    <ul>
+                        {movies.map(movie => (
+                            <li key={movie.id}>
+                                <img src={movie.image} alt={movie.title} style={{ width: '100px', height: '150px' }} />
+                                <p>{movie.title}</p>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No movies available for the selected date and area.</p>
+                )}
             </div>
         </>
     );
