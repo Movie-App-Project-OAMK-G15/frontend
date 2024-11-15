@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar.jsx';
 import SearchForm from './SearchForm.jsx';
@@ -63,11 +63,11 @@ const BrowseMovies = () => {
 
     try {
       const results = await fetchMovies();
-      setMovies(results);
+      setMovies(results);// Set the fetched movie results
     } catch (err) {
       setError('Error fetching movies. Please try again.'); // Set error message
     } finally {
-      setLoading(false);
+      setLoading(false);// Stop loading
     }
   };
 
@@ -79,6 +79,37 @@ const BrowseMovies = () => {
       ? 'Enter genre (e.g., action, comedy)'
       : 'Enter release year (e.g., 2021)';
   const inputType = searchType === 'year' ? 'number' : 'text';
+
+  // Back-to-Top button functionality
+  useEffect(() => {
+    const backToTopBtn = document.getElementById("backToTopBtn");
+    
+    // Show the back-to-top button when the user scrolls down
+    const scrollFunction = () => {
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        backToTopBtn.style.display = "block";
+      } else {
+        backToTopBtn.style.display = "none";
+      }
+    };
+
+    window.onscroll = function() {
+      scrollFunction();
+    };
+
+    // Scroll to top when the button is clicked
+    backToTopBtn.addEventListener("click", function() {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+    });
+
+    return () => {
+      window.onscroll = null;
+      backToTopBtn.removeEventListener("click", () => {});
+    };
+  }, []);
+
+
 
   return (
     <div>
@@ -96,6 +127,15 @@ const BrowseMovies = () => {
         />
         <MoviesDisplay movies={movies} loading={loading} error={error} />
       </div>
+
+      {/* Back-to-Top Button */}
+      <button 
+        id="backToTopBtn" 
+        title="Go to top" 
+        style={{ display: 'none', position: 'fixed', bottom: '20px', right: '20px', fontSize: '24px', padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '50%' }}>
+        ↑ Top
+      </button>
+
     </div>
   );
 };
