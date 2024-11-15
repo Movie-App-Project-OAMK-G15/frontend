@@ -144,13 +144,19 @@ const Screenings = () => {
                     <div className="movies-lists">
                         {movies.map(movie => (
                             <div className="movie-items" key={movie.id}>
-                                <img src={movie.image} alt={movie.title} />
+                                <img className="img" src={movie.image} alt={movie.title} />
                                 <div className="movie-details">
-                                    <p>{movie.title}</p>
+                                    <h2>{movie.title}</h2>
                                     <p>Duration: {movie.duration} minutes</p>
                                     <p>Rating: {movie.rating}</p>
-                                    <p>Release Date: {movie.releaseDate}</p>
+                                    <p>Release Date: {movie.releaseDate}</p> 
+                                    <div className="button-showtime">
+                                        <button className='bttn-showtime' onClick={() => window.location.href = `/showtime/${movie.id}`}>
+                                            Showtime
+                                        </button>
+                                    </div>
                                 </div>
+                                
                             </div>
                         ))}
                     </div>
