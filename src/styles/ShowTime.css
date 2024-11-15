@@ -1,0 +1,15 @@
+.dropdown {
+    margin: 10px 20px ;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: left;
+    gap: 20px;
+}
+
+.area-dropdown,
+.date-dropdown {
+    padding: 5px 50px 5px 50px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
