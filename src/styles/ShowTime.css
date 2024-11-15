@@ -1,15 +1,70 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+
+
 .dropdown {
-    margin: 10px 20px ;
-    padding: 10px 20px;
     display: flex;
-    justify-content: left;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
     gap: 20px;
 }
 
-.area-dropdown,
-.date-dropdown {
-    padding: 5px 50px 5px 50px;
-    font-size: 16px;
+.dropdown label {
+    font-weight: bold;
+}
+
+.dropdown select {
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 16px;
+}
+
+.dropdown button {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.dropdown button:hover {
+    background-color: #0056b3;
+}
+
+.time-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.time {
+    background: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.time p {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+}
+
+.loading-message {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
 }
