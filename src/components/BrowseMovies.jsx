@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar.jsx';
 import SearchForm from './SearchForm.jsx';
 import MoviesDisplay from './MoviesDisplay.jsx';
 
+// Define BrowseMovies component and State Initialization
 const BrowseMovies = () => {
   const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
@@ -24,7 +24,7 @@ const BrowseMovies = () => {
     thriller: 53,
   }; 
 
-  // Centralized fetch function with Access Token
+  // Centralized function to fetch movie data with Access Token
     const fetchMovies = async () => {
     let url;
     switch (searchType) {
@@ -41,7 +41,7 @@ const BrowseMovies = () => {
         url = `https://api.themoviedb.org/3/search/movie?query=${query}`;
     }
 
-    // Fetch the movie data using access token for authentication
+    // Fetch the movie data from TMDB by using access token 
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -54,7 +54,7 @@ const BrowseMovies = () => {
   };
 
 
-
+// Handle the search operation
   const handleSearch = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -65,12 +65,13 @@ const BrowseMovies = () => {
       const results = await fetchMovies();
       setMovies(results);
     } catch (err) {
-      setError('Error fetching movies. Please try again.');
+      setError('Error fetching movies. Please try again.'); // Set error message
     } finally {
       setLoading(false);
     }
   };
 
+  // Placeholder text based on the search type
   const placeholder =
     searchType === 'title'
       ? 'Enter movie title'
