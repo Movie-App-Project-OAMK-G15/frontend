@@ -14,7 +14,7 @@ const MoviePage = () => {
 
 //  Use the useEffect hook to fetch the movie data when the component mounts
   const fetchMovieDetails = async () => {
-    const url = `https://api.themoviedb.org/3/movie/${movieId}?append_to_response=videos`;
+    const url = `https://api.themoviedb.org/3/movie/${movieId}?append_to_response=videos,credits,reviews,recommendations`;
 //  Send a GET request to the TMDB API
     try {
       const response = await fetch(url, {
@@ -80,7 +80,7 @@ const MoviePage = () => {
               </div>
 
               {/* Trailer Section */}
-              {movie?.videos?.results?.length > 0 && (
+              {movie?.videos?.results?.length > 0 && ( 
                 <div className="card mb-4">
                   <div className="card-body">
                     <h4 className="card-title">Trailer</h4>
@@ -89,7 +89,6 @@ const MoviePage = () => {
                       height="315"
                       src={`https://www.youtube.com/embed/${movie.videos.results[0].key}`}
                       title="Movie Trailer"
-                      frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     ></iframe>
@@ -98,6 +97,62 @@ const MoviePage = () => {
               )}
             </div>
           </div>
+        </div>
+                  {/* Cast Section with Circular Images */}
+        <div className="mb-4">
+          <h4>Cast</h4>
+          <div className="d-flex flex-wrap">
+            {movie?.credits?.cast?.slice(0, 10).map((actor) => (
+              <div key={actor.id} className="me-3 mb-3 text-center">
+                <img
+                  src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                  alt={actor.name}
+                  className="rounded-circle"
+                  style={{ width: '80px', height: '80px', objectFit: 'cover' }}
+                />
+                <p className="mb-0">{actor.name}</p>
+                <small className="text-muted">as {actor.character}</small>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Reviews Section with Bootstrap Cards */}
+        <div className="mb-4">  
+          <h4>Reviews</h4>
+          <div className="row">   
+            {movie?.reviews?.results?.length > 0 ? ( 
+              movie.reviews.results.slice(0, 5).map((review) => ( 
+                <div key={review.id} className="col-md-6 mb-3">
+                  <div className="card">
+                    <div className="card-body">
+                      <h5 className="card-title">{review.author}</h5>
+                      <p className="card-text">{review.content.slice(0, 200)}...</p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No reviews available.</p>
+            )}
+          </div>
+        </div>
+
+        {/* Recommended Movies Section */}
+        <div className="row mt-5">
+          <h4>Recommended Movies</h4>
+          {movie?.recommendations?.results?.slice(0, 5).map((rec) => (
+            <div key={rec.id} className="col-md-2 col-sm-4 col-6 mb-4 text-center">
+              <img
+                src={`https://image.tmdb.org/t/p/w200${rec.poster_path}`}
+                alt={rec.title}
+                className="rounded mb-2"
+                style={{ width: '100%' }}
+              />
+              <p className="small">{rec.title}</p>
+            </div>
+          ))}
+
         </div>
       </div>
     </div>
