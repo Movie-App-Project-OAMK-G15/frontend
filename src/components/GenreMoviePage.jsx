@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Navbar from "./Navbar";
 
 const GenreMoviesPage = () => {
   //extract the genreId parameter from the URL
@@ -46,6 +47,8 @@ const GenreMoviesPage = () => {
   }, [genreId, tmdbKey]);
 
   return (
+    <div>
+    <Navbar/>
     <div className="container my-4">
       <h2 className="mb-4">{genreName} Movies</h2>
       <div className="row">
@@ -69,6 +72,7 @@ const GenreMoviesPage = () => {
       <Link to="/" className="btn btn-secondary mt-3">
         Back to Genres
       </Link>
+    </div>
     </div>
   );
 };
