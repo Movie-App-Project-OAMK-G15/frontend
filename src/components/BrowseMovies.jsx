@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar.jsx';
 import SearchForm from './SearchForm.jsx';
@@ -12,19 +13,33 @@ const BrowseMovies = () => {
   const [searchType, setSearchType] = useState('title');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [genreMap,setGenreMap] = useState({}); // state for storing genre map
   const tmdbkey = import.meta.env.VITE_TMDB_API_KEY; // Access Token
 
-  // Genre map for TMDB genre IDs
-  const genreMap = {
-    action: 28,
-    comedy: 35,
-    drama: 18,
-    fantasy: 14,
-    horror: 27,
-    romance: 10749,
-    thriller: 53,
-  }; 
+  // Fetch genres and store them in state
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const response = await axios.get('https://api.themoviedb.org/3/genre/movie/list?language=en', {
+          headers: {
+            Authorization: `Bearer ${tmdbkey}` // Use API key in headers
+          }
+        });
+        const genres = response.data.genres; // Extract genres array from response
+        const genreMap = genres.reduce((map, genre) => {
+          map[genre.name.toLowerCase()] = genre.id; // Map genre name to ID
+          return map;
+        }, {});
+        setGenreMap(genreMap); // Update state with genre map
+      } catch (error) {
+        setError('Failed to fetch genres. Please try again later.');
+      }
+    };
 
+    fetchGenres(); // Call the fetchGenres function
+  }, [tmdbkey]);
+
+  
   // Centralized function to fetch movie data with Access Token
     const fetchMovies = async () => {
     let url;
@@ -43,15 +58,13 @@ const BrowseMovies = () => {
     }
 
     // Fetch the movie data from TMDB by using access token 
-    const response = await fetch(url, {
-      method: 'GET',
+    const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${tmdbkey}`, // Pass the access token in the Authorization header
       },
     });
 
-    const data = await response.json();
-    return data.results || [];
+    return response.data.results || [];
   };
 
 
