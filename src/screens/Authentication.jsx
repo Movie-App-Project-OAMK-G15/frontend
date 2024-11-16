@@ -5,35 +5,44 @@ import Navbar from '../components/Navbar.jsx'
 import { useUser } from '../context/useUser'
 import '../styles/Authentication.css'
 
+//enum implementation for js object for setting a authentication mode
+//for further conditional rendering
 export const AuthenticationMode = Object.freeze({
     Login: 'Login',
     Register: 'Register'
 })
 
 export default function Authentication({authenticationMode}) {
+    //custom notification/error message state
     const [notificationMessage, setNotificationMessage] = useState(null)
+    //custom notification/error type
     const [type, setType] = useState("")
+    //import from context
     const {user, setUser, signUp, signIn} = useUser()
+    //navigation
     const navigate = useNavigate()
 
+
+    //conditional submit for handler for both login and sign up
     const handleSubmit = async(event) => {
         event.preventDefault()
         try {
-            if(authenticationMode === AuthenticationMode.Register){
-                await signUp()
-                navigate('/signin')
-                setNotificationMessage('New account has been created successfully!')
+            if(authenticationMode === AuthenticationMode.Register){//register(sign up) option
+                await signUp() //calling context function 
+                navigate('/signin') //if no errors -> navigating to sign in page
+                setNotificationMessage('New account has been created successfully!') //custom message
+                //timeout for custom message
                 setTimeout(() => {
                     setNotificationMessage(null)
                 }, 3000)
-            }else{
-                await signIn() 
-                navigate('/account')
+            }else{//login option
+                await signIn() //calling context function 
+                navigate('/account') //if no errors -> navigating to user account page
             }
         } catch (error) {
             const message = error.response && error.response.data ? error.response.data.error : error
-            setNotificationMessage(message)
-            setType('error')
+            setNotificationMessage(message)//custom error notification
+            setType('error')//notification type
             setTimeout(() => {
                 setNotificationMessage(null)
                 setType('')
