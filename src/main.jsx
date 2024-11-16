@@ -12,10 +12,16 @@ import GenreMoviesPage from './components/GenreMoviePage.jsx'
 import UserAccount from './screens/UserAccount.jsx'
 import Home from './components/Home.jsx'
 import Showtime from './components/ShowTime.jsx'
+import MoviePage from './components/MoviePage.jsx'
+
 //creating router for navigation and authentication
 const router = createBrowserRouter([
   {
     errorElement: <ErrorPage/>
+  },
+  {
+    path: 'movie/:movieId',  
+    element: <MoviePage />
   },
   {
     path: 'showtime/:id',
