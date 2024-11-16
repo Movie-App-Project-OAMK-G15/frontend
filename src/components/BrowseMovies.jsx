@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar.jsx';
 import SearchForm from './SearchForm.jsx';
 import MoviesDisplay from './MoviesDisplay.jsx';
+import '../styles/BrowseMovies.css';
 
 // Define BrowseMovies component and State Initialization
 const BrowseMovies = () => {
