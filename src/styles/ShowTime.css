@@ -6,13 +6,13 @@ body {
 }
 
 
-.dropdown {
+.dropdown1 {
     margin: 10px 20px ;
     padding: 10px 20px;
     display: flex;
     justify-content: left;
     gap: 20px;
-}
+} 
 
 .dropdown label {
     font-weight: bold;

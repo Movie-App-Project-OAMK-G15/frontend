@@ -7,7 +7,7 @@ const Showtime = () => {
     const { id } = useParams();
     const location = useLocation();
     const { area, date } = location.state || {};
-    
+
     const [showtimes, setShowtimes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -17,31 +17,23 @@ const Showtime = () => {
     const [selectedDate, setSelectedDate] = useState(date || '');
     const [movieDetails, setMovieDetails] = useState(null);
 
+    const fetchData = async () => {
+        try {
+            const areaResponse = await fetch('https://www.finnkino.fi/xml/TheatreAreas/');
+            const areaXml = await areaResponse.text();
+            showAreaList(areaXml);
+
+            const dateResponse = await fetch('https://www.finnkino.fi/xml/ScheduleDates/');
+            const dateXml = await dateResponse.text();
+            showDateList(dateXml);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const areaResponse = await fetch('https://www.finnkino.fi/xml/TheatreAreas/');
-                const areaXml = await areaResponse.text();
-                showAreaList(areaXml);
-
-                const dateResponse = await fetch('https://www.finnkino.fi/xml/ScheduleDates/');
-                const dateXml = await dateResponse.text();
-                showDateList(dateXml);
-
-            	const movieResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}`); // Replace with your TMDB API key
-            	const movieData = await movieResponse.json();
-            	setMovieDetails(movieData);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
         fetchData();
-    }, [id]);
-
-    useEffect(() => {
-        fetchShowtimes();
-    }, [selectedArea, selectedDate]);
+    }, []);
 
     const showAreaList = (xml) => {
         const parser = new DOMParser();
@@ -78,18 +70,24 @@ const Showtime = () => {
             const tempShowtimes = showtimeElements.map(showtime => ({
                 date: showtime.getElementsByTagName('dttmShowStart')[0].textContent,
                 area: showtime.getElementsByTagName('Theatre')[0].textContent,
+                eventID: showtime.getElementsByTagName('EventID')[0].textContent
             }));
 
             const uniqueShowtimes = Array.from(new Set(tempShowtimes.map(show => show.date)))
                 .map(date => tempShowtimes.find(show => show.date === date));
 
             setShowtimes(uniqueShowtimes);
+            fetchMovieDetails(uniqueShowtimes.map(show => show.eventID)[0]);
         } catch (error) {
-            setError('Failed to fetch showtimes. Please try again later.',error);
+            setError('Failed to fetch showtimes.',error);
         } finally {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        fetchShowtimes();
+    }, [selectedArea, selectedDate]);
 
     const groupedShowtimes = showtimes.reduce((acc, showtime) => {
         const area = showtime.area;
@@ -100,6 +98,32 @@ const Showtime = () => {
         return acc;
     }, {});
 
+    const fetchMovieDetails = async (eventID) => {
+        try {
+            const eventsResponse = await fetch(`https://www.finnkino.fi/xml/Events/?id=${id}`);
+            const eventsXml = await eventsResponse.text();
+            const parser = new DOMParser();
+            const eventsDoc = parser.parseFromString(eventsXml, 'application/xml');
+            const eventElement = Array.from(eventsDoc.getElementsByTagName('Event')).find(event => 
+                event.getElementsByTagName('ID')[0].textContent === eventID);
+            
+            if (eventElement) {
+                const movie = {
+                    id: eventElement.getElementsByTagName('ID')[0].textContent,
+                    title: eventElement.getElementsByTagName('Title')[0].textContent,
+                    overview: eventElement.getElementsByTagName('ShortSynopsis')[0]?.textContent || 'No description available',
+                    poster: eventElement.getElementsByTagName('EventMediumImagePortrait')[0]?.textContent || 'No image available',
+                };
+                setMovieDetails(movie);
+            } else {
+                setMovieDetails(null);
+            }
+        } catch (error) {
+            console.error(error);
+            setError('Failed to fetch movie details.',error);
+        }
+    };
+
     return (
         <div>
             <Navbar />
@@ -109,22 +133,18 @@ const Showtime = () => {
                 ) : error ? (
                     <p>{error}</p>
                 ) : movieDetails ? (
-                    <>
-                        <img 
-                            src={`https://image.tmdb.org/t/p/w500${movieDetails.poster}`}
-                            alt={movieDetails.title } 
-                            className="movie-poster" 
-                        />
-                        <h1>{movieDetails.title}</h1>
+                    <div className="movie-items" key={movieDetails.id}>
+                        <img className="img" src={movieDetails.poster} alt={movieDetails.title} />
+                        <h2>{movieDetails.title}</h2>
                         <p>{movieDetails.overview}</p>
-                    </>
+                    </div>
                 ) : (
                     <p>No movie details available.</p>
                 )}
             </div>
-            <div className="dropdown">
+            <div className="dropdown1">
                 <div>
-                    <label htmlFor="area-dropdown"></label>
+                    <label htmlFor="area-dropdown">Select Area:</label>
                     <select 
                         id="area-dropdown" 
                         value={selectedArea} 
@@ -133,14 +153,14 @@ const Showtime = () => {
                             setShowtimes([]); 
                         }}
                     >
-                        < option value="">Select Area</option>
+                        <option value="">Select Area</option>
                         {areas.map(area => (
                             <option key={area.id} value={area.id}>{area.name}</option>
                         ))}
                     </select>
                 </div>
                 <div>
-                    <label htmlFor="date-dropdown"></label>
+                    <label htmlFor="date-dropdown">Select Date:</label>
                     <select 
                         id="date-dropdown" 
                         value={selectedDate} 
@@ -177,7 +197,6 @@ const Showtime = () => {
             </div>
         </div>
     );
-};
+}
 
 export default Showtime;
-
