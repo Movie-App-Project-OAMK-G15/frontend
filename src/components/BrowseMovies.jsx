@@ -146,7 +146,7 @@ const BrowseMovies = () => {
       <button 
         id="backToTopBtn" 
         title="Go to top" 
-        style={{ display: 'none', position: 'fixed', bottom: '20px', right: '20px', fontSize: '24px', padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '50%' }}>
+        >
         ↑ Top
       </button>
     </div>
