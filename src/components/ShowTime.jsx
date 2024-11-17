@@ -15,6 +15,7 @@ const Showtime = () => {
     const [areas, setAreas] = useState([]);
     const [selectedArea, setSelectedArea] = useState(area || '');
     const [selectedDate, setSelectedDate] = useState(date || '');
+    const [movieDetails, setMovieDetails] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,13 +27,21 @@ const Showtime = () => {
                 const dateResponse = await fetch('https://www.finnkino.fi/xml/ScheduleDates/');
                 const dateXml = await dateResponse.text();
                 showDateList(dateXml);
+
+            	const movieResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}`); // Replace with your TMDB API key
+            	const movieData = await movieResponse.json();
+            	setMovieDetails(movieData);
             } catch (error) {
                 console.error(error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [id]);
+
+    useEffect(() => {
+        fetchShowtimes();
+    }, [selectedArea, selectedDate]);
 
     const showAreaList = (xml) => {
         const parser = new DOMParser();
@@ -71,7 +80,10 @@ const Showtime = () => {
                 area: showtime.getElementsByTagName('Theatre')[0].textContent,
             }));
 
-            setShowtimes(tempShowtimes);
+            const uniqueShowtimes = Array.from(new Set(tempShowtimes.map(show => show.date)))
+                .map(date => tempShowtimes.find(show => show.date === date));
+
+            setShowtimes(uniqueShowtimes);
         } catch (error) {
             setError('Failed to fetch showtimes. Please try again later.',error);
         } finally {
@@ -91,9 +103,28 @@ const Showtime = () => {
     return (
         <div>
             <Navbar />
+            <div className="container">
+                {loading ? (
+                    <p>Loading movie details...</p>
+                ) : error ? (
+                    <p>{error}</p>
+                ) : movieDetails ? (
+                    <>
+                        <img 
+                            src={`https://image.tmdb.org/t/p/w500${movieDetails.poster}`}
+                            alt={movieDetails.title } 
+                            className="movie-poster" 
+                        />
+                        <h1>{movieDetails.title}</h1>
+                        <p>{movieDetails.overview}</p>
+                    </>
+                ) : (
+                    <p>No movie details available.</p>
+                )}
+            </div>
             <div className="dropdown">
                 <div>
-                    <label htmlFor="area-dropdown">Select an Area:</label>
+                    <label htmlFor="area-dropdown"></label>
                     <select 
                         id="area-dropdown" 
                         value={selectedArea} 
@@ -102,14 +133,14 @@ const Showtime = () => {
                             setShowtimes([]); 
                         }}
                     >
-                        <option value="">--Choose area or cinema--</option>
+                        < option value="">Select Area</option>
                         {areas.map(area => (
                             <option key={area.id} value={area.id}>{area.name}</option>
                         ))}
                     </select>
                 </div>
                 <div>
-                    <label htmlFor="date-dropdown">Select a Date:</label>
+                    <label htmlFor="date-dropdown"></label>
                     <select 
                         id="date-dropdown" 
                         value={selectedDate} 
@@ -118,41 +149,32 @@ const Showtime = () => {
                             setShowtimes([]); 
                         }}
                     >
-                        <option value="">--Select a Date--</option>
-                        {dates.map((date, index) => (
-                            <option key={index} value={date.dateTime}>{date.dateTime}</option>
+                        <option value="">Select Date</option>
+                        {dates.map(date => (
+                            <option key={date.dateTime} value={date.dateTime}>{date.dateTime}</option>
                         ))}
                     </select>
                 </div>
-                <button onClick={fetchShowtimes}>Show Showtimes</button>
             </div>
 
-            {loading ? (
-                <p>Loading showtime details...</p>
-            ) : error ? (
-                <p>{error}</p>
-            ) : Object.keys(groupedShowtimes).length > 0 ? (
-                <div>
-                    <h2>Showtimes:</h2>
-                    {Object.entries(groupedShowtimes).map(([area, showtimes]) => (
-                        <div key={area}>
-                            <h3>{area}</h3>
-                            <ul className= "time-list">
-                                {showtimes.map((showtime, index) => {
-                                    const time = new Date(showtime.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                                    return (
-                                        <li className='time' key={index}>
-                                            <p>Time: {time}</p>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                <p>No showtimes available for this movie.</p>
-            )}
+            {loading && <p>Loading showtimes...</p>}
+            {error && <p>{error}</p>}
+
+            <div className="showtimes">
+                {Object.keys(groupedShowtimes).map(area => (
+                    <div key={area}>
+                        <h2>{area}</h2>
+                        <ul className="time-list">
+                            {groupedShowtimes[area].map(showtime => {
+                                const time = new Date(showtime.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                return (
+                                    <li className='time' key={showtime.date}>Showtime: {time}</li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
