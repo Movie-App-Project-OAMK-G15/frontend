@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import '../styles/ShowTime.css';
 
 const Showtime = () => {
-    const { id } = useParams(); 
+    const { id } = useParams();
+    const location = useLocation();
+    const { area, date } = location.state || {};
+    
     const [showtimes, setShowtimes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [dates, setDates] = useState([]);
     const [areas, setAreas] = useState([]);
-    const [selectedArea, setSelectedArea] = useState('');
-    const [selectedDate, setSelectedDate] = useState('');
+    const [selectedArea, setSelectedArea] = useState(area || '');
+    const [selectedDate, setSelectedDate] = useState(date || '');
 
     useEffect(() => {
         const fetchData = async () => {

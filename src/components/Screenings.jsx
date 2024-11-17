@@ -1,5 +1,6 @@
 import Navbar from "./Navbar";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import '../styles/Screenings.css'
 
 const Screenings = () => {
@@ -9,6 +10,13 @@ const Screenings = () => {
     const [selectedDate, setSelectedDate] = useState('');
     const [movies, setMovies] = useState([])
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
+
+    const handleShowtimeNavigation = (id) => {
+        if (selectedArea && selectedDate) {
+            navigate(`/showtime/${id}`, { state: { area: selectedArea, date: selectedDate } })
+        }
+    }
 
     async function showAreaList(xml) {
         try {
@@ -151,7 +159,7 @@ const Screenings = () => {
                                     <p>Rating: {movie.rating}</p>
                                     <p>Release Date: {movie.releaseDate}</p> 
                                     <div className="button-showtime">
-                                        <button className='bttn-showtime' onClick={() => window.location.href = `/showtime/${movie.id}`}>
+                                        <button className='bttn-showtime' onClick={() => handleShowtimeNavigation(movie.id)}>
                                             Showtime
                                         </button>
                                     </div>
