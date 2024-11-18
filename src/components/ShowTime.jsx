@@ -61,7 +61,7 @@ const Showtime = () => {
 
         setLoading(true);
         try {
-            const response = await fetch(`https://www.finnkino.fi/xml/Schedule/?id=${id}&area=${selectedArea}&date=${selectedDate}`);
+            const response = await fetch(`https://www.finnkino.fi/xml/Schedule/?area=${selectedArea}&dt=${selectedDate}`);
             const xml = await response.text();
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xml, 'application/xml');
@@ -77,10 +77,14 @@ const Showtime = () => {
                 .map(date => tempShowtimes.find(show => show.date === date));
 
             setShowtimes(uniqueShowtimes);
-            fetchMovieDetails(uniqueShowtimes.map(show => show.eventID)[0]);
+
+            if (uniqueShowtimes.length > 0) {
+                fetchMovieDetails(id);  // Fetch movie details based on the URL param
+            } else {
+                setLoading(false);
+            }
         } catch (error) {
             setError('Failed to fetch showtimes.',error);
-        } finally {
             setLoading(false);
         }
     };
@@ -100,13 +104,13 @@ const Showtime = () => {
 
     const fetchMovieDetails = async (eventID) => {
         try {
-            const eventsResponse = await fetch(`https://www.finnkino.fi/xml/Events/?id=${id}`);
+            const eventsResponse = await fetch('https://www.finnkino.fi/xml/Events/');
             const eventsXml = await eventsResponse.text();
             const parser = new DOMParser();
             const eventsDoc = parser.parseFromString(eventsXml, 'application/xml');
-            const eventElement = Array.from(eventsDoc.getElementsByTagName('Event')).find(event => 
+            const eventElement = Array.from(eventsDoc.getElementsByTagName('Event')).find(event =>
                 event.getElementsByTagName('ID')[0].textContent === eventID);
-            
+
             if (eventElement) {
                 const movie = {
                     id: eventElement.getElementsByTagName('ID')[0].textContent,
@@ -120,23 +124,25 @@ const Showtime = () => {
             }
         } catch (error) {
             console.error(error);
-            setError('Failed to fetch movie details.',error);
+            setError('Failed to fetch movie details.');
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div>
             <Navbar />
-            <div className="container">
+            <div className="container1">
                 {loading ? (
                     <p>Loading movie details...</p>
                 ) : error ? (
                     <p>{error}</p>
                 ) : movieDetails ? (
                     <div className="movie-items" key={movieDetails.id}>
-                        <img className="img" src={movieDetails.poster} alt={movieDetails.title} />
-                        <h2>{movieDetails.title}</h2>
-                        <p>{movieDetails.overview}</p>
+                        <img className="img1" src={movieDetails.poster} alt={movieDetails.title} />
+                        <h2 className='movietitle'>{movieDetails.title}</h2>
+                        <p className='description'>{movieDetails.overview}</p>
                     </div>
                 ) : (
                     <p>No movie details available.</p>
@@ -150,7 +156,8 @@ const Showtime = () => {
                         value={selectedArea} 
                         onChange={(e) => {
                             setSelectedArea(e.target.value);
-                            setShowtimes([]); 
+                            setShowtimes([]);
+                            setMovieDetails(null);
                         }}
                     >
                         <option value="">Select Area</option>
@@ -166,7 +173,8 @@ const Showtime = () => {
                         value={selectedDate} 
                         onChange={(e) => {
                             setSelectedDate(e.target.value);
-                            setShowtimes([]); 
+                            setShowtimes([]);
+                            setMovieDetails(null);
                         }}
                     >
                         <option value="">Select Date</option>
@@ -183,12 +191,12 @@ const Showtime = () => {
             <div className="showtimes">
                 {Object.keys(groupedShowtimes).map(area => (
                     <div key={area}>
-                        <h2>{area}</h2>
+                        <h2 className='place'>{area}</h2>
                         <ul className="time-list">
                             {groupedShowtimes[area].map(showtime => {
                                 const time = new Date(showtime.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                                 return (
-                                    <li className='time' key={showtime.date}>Showtime: {time}</li>
+                                    <li className='time' key={showtime.date}>Movie start at: {time}</li>
                                 );
                             })}
                         </ul>

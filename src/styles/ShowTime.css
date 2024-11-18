@@ -1,21 +1,19 @@
-
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
     margin: 0;
 }
 
-
 .dropdown1 {
-    margin: 10px 20px ;
-    padding: 10px 20px;
+    margin: 20px;
     display: flex;
-    justify-content: left;
+    justify-content: flex-start;
     gap: 20px;
-} 
+}
 
 .dropdown label {
     font-weight: bold;
+    margin-right: 10px;
 }
 
 .dropdown select {
@@ -23,10 +21,11 @@ body {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    background-color: #fff;
 }
 
 .dropdown button {
-    padding: 10px 15px;
+    padding: 10px 20px;
     background-color: #007BFF;
     color: white;
     border: none;
@@ -42,6 +41,7 @@ body {
 .time-list {
     list-style-type: none;
     padding: 0;
+    margin: 20px;
 }
 
 .time {
@@ -61,10 +61,45 @@ body {
 .error-message {
     color: red;
     text-align: center;
+    font-size: 18px;
 }
 
 .loading-message {
     text-align: center;
     font-size: 18px;
     color: #555;
+}
+
+.place {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.container1 {
+    margin: 20px;
+}
+
+.img1 {
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.movie-items {
+    display: flex;
+    align-items: flex-start;
+    margin: 20px 0;
+}
+
+.movietitle {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+}
+
+.description {
+    font-size: 20px;
+    line-height: 1.5;
+    margin: 10px;
 }
