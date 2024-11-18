@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom'; // Import Link
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importing Bootstrap CSS
 import Navbar from './Navbar'; // Importing the Navbar component
-
 
 // Define a functional component named MoviePage and Intialize the state
 const MoviePage = () => {
@@ -12,10 +11,10 @@ const MoviePage = () => {
   const [error, setError] = useState(''); // Initialize a state variable to store any error messages
   const tmdbkey = import.meta.env.VITE_TMDB_API_KEY; // Get the TMDB API key from the environment variables
 
-//  Use the useEffect hook to fetch the movie data when the component mounts
+  // Use the useEffect hook to fetch the movie data when the component mounts
   const fetchMovieDetails = async () => {
     const url = `https://api.themoviedb.org/3/movie/${movieId}?append_to_response=videos,credits,reviews,recommendations`;
-//  Send a GET request to the TMDB API
+    // Send a GET request to the TMDB API
     try {
       const response = await fetch(url, {
         method: 'GET',
@@ -32,7 +31,7 @@ const MoviePage = () => {
       setLoading(false);
     }
   };
-// Call the fetchMovieDetails function when the component mounts
+  // Call the fetchMovieDetails function when the component mounts
   useEffect(() => {
     fetchMovieDetails();
   }, [movieId]);
@@ -48,6 +47,10 @@ const MoviePage = () => {
           {/* Left Column: Movie Title, Poster */}
           <div className="col-md-4 mb-4">
             <h1 className="mb-4">{movie?.title}</h1>
+            {/* Favorite Button */}
+            <button className="btn btn-outline-warning mb-3">
+              &#9733; Add to Favorites
+            </button>
 
             {movie?.poster_path && (
               <img
@@ -80,7 +83,7 @@ const MoviePage = () => {
               </div>
 
               {/* Trailer Section */}
-              {movie?.videos?.results?.length > 0 && ( 
+              {movie?.videos?.results?.length > 0 && (
                 <div className="card mb-4">
                   <div className="card-body">
                     <h4 className="card-title">Trailer</h4>
@@ -98,7 +101,8 @@ const MoviePage = () => {
             </div>
           </div>
         </div>
-                  {/* Cast Section with Circular Images */}
+
+        {/* Cast Section with Circular Images */}
         <div className="mb-4">
           <h4>Cast</h4>
           <div className="d-flex flex-wrap">
@@ -118,11 +122,11 @@ const MoviePage = () => {
         </div>
 
         {/* Reviews Section with Bootstrap Cards */}
-        <div className="mb-4">  
+        <div className="mb-4">
           <h4>Reviews</h4>
-          <div className="row">   
-            {movie?.reviews?.results?.length > 0 ? ( 
-              movie.reviews.results.slice(0, 5).map((review) => ( 
+          <div className="row">
+            {movie?.reviews?.results?.length > 0 ? (
+              movie.reviews.results.slice(0, 5).map((review) => (
                 <div key={review.id} className="col-md-6 mb-3">
                   <div className="card">
                     <div className="card-body">
@@ -143,21 +147,21 @@ const MoviePage = () => {
           <h4>Recommended Movies</h4>
           {movie?.recommendations?.results?.slice(0, 5).map((rec) => (
             <div key={rec.id} className="col-md-2 col-sm-4 col-6 mb-4 text-center">
-              <img
-                src={`https://image.tmdb.org/t/p/w200${rec.poster_path}`}
-                alt={rec.title}
-                className="rounded mb-2"
-                style={{ width: '100%' }}
-              />
-              <p className="small">{rec.title}</p>
+              <Link to={`/movie/${rec.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <img
+                  src={`https://image.tmdb.org/t/p/w200${rec.poster_path}`}
+                  alt={rec.title}
+                  className="rounded mb-2"
+                  style={{ width: '100%' }}
+                />
+                <p className="small">{rec.title}</p>
+              </Link>
             </div>
           ))}
-
         </div>
       </div>
     </div>
   );
 };
-
 
 export default MoviePage;
