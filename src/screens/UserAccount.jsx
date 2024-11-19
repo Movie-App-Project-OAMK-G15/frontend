@@ -1,5 +1,6 @@
 import { useUser } from "../context/useUser"
 import Navbar from "../components/Navbar"
+import FavMovies from "../components/FavMovies";
 import { useNavigate } from "react-router-dom";
 
 export default function UserAccount(){
@@ -23,6 +24,7 @@ export default function UserAccount(){
             <button onClick={handleDelete}>Delete account</button>
             <button onClick={logOut}>Log Out</button>
             <button onClick={()=> navigate('/account/creategroup')}>Create group</button>
+            <FavMovies/>
         </>
     )
 }
