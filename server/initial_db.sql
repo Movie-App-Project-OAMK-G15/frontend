@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS account CASCADE;
 CREATE TABLE account (
     user_id SERIAL PRIMARY KEY,
     firstname VARCHAR(50) NOT NULL,
-    secondname VARCHAR(50) NOT NULL,
+    familyname VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
 	phone VARCHAR(20), --can be null 
     password VARCHAR(255) NOT NULL
@@ -33,7 +33,8 @@ CREATE TABLE groups (
     group_id SERIAL PRIMARY KEY,
     admin_email VARCHAR(100) NOT NULL,
     group_name VARCHAR(100) NOT NULL UNIQUE,
-	description VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    photo TEXT NOT NULL, 
     FOREIGN KEY (admin_email) REFERENCES account(email) ON DELETE SET NULL
 );
 
@@ -76,4 +77,3 @@ CREATE TABLE favorite_movies (
     PRIMARY KEY (movie_id, user_id), 
     FOREIGN KEY (user_id) REFERENCES account(user_id) ON DELETE CASCADE
 );
-

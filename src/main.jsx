@@ -13,6 +13,7 @@ import UserAccount from './screens/UserAccount.jsx'
 import Home from './components/Home.jsx'
 import Showtime from './components/ShowTime.jsx'
 import MoviePage from './components/MoviePage.jsx'
+import CreateGroup from './screens/CreateGroup.jsx'
 
 //creating router for navigation and authentication
 const router = createBrowserRouter([
@@ -57,7 +58,11 @@ const router = createBrowserRouter([
       {
         path: 'account',
         element: <UserAccount />
-      }
+      },
+      {
+        path: 'account/creategroup',
+        element: <CreateGroup/>
+      },
     ]
   }
 ])

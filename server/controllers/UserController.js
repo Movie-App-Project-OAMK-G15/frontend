@@ -16,8 +16,8 @@ const createUserObject = (id, firstname, familyname, email, token=undefined) => 
 
 async function postRegistration(req, res, next) {
     try {
-        if(!req.body.firstname || req.body.email.firstname === 0) return next(new ApiError('Invalid firstname for user', 400))
-        if(!req.body.familyname || req.body.email.familyname === 0) return next(new ApiError('Invalid familyname for user', 400))
+        if(!req.body.firstname || req.body.firstname.length === 0) return next(new ApiError('Invalid firstname for user', 400))
+        if(!req.body.familyname || req.body.familyname.length === 0) return next(new ApiError('Invalid familyname for user', 400))
         if(!req.body.email || req.body.email.length === 0) return next(new ApiError('Invalid email for user', 400))
         if(!req.body.password || req.body.password.length < 8) return next(new ApiError('Invalid password for user', 400))
         const hashedPassword = await hash(req.body.password, 10)
