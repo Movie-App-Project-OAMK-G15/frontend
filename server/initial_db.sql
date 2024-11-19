@@ -24,9 +24,12 @@ CREATE TABLE review (
     review_content TEXT NOT NULL,
     likes INT DEFAULT 0,
     dislikes INT DEFAULT 0,
-	movie_id INT NOT NULL,
+    movie_id INT NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5),
+    created_at TIMESTAMP DEFAULT (NOW() AT TIME ZONE 'UTC' + INTERVAL '2 hours'),
     FOREIGN KEY (user_email) REFERENCES account(email) ON DELETE CASCADE
 );
+
 
 -- 3. Create 'group' table
 CREATE TABLE groups (
