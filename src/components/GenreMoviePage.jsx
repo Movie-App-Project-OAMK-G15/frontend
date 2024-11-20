@@ -35,12 +35,12 @@ const GenreMoviesPage = () => {
 
   const addFavorite = async (movieId) => {
     try {
-      const userId = user.user_id; //retrievee userid from user context
-      const response = await axios.post('http://localhost:3001/user/add-favorite', {
+      const userId = user.id; //retrievee userid from user context
+      const response = await axios.post('http://localhost:3001/user/addfavorite', {
         movie_id: movieId,
         user_id: userId,
       });
-      console.log('Movie added to favorites:', response.data);
+      console.log(response.data);
     } catch (error) {
       console.error('Error adding favorite movie:', error);
     }

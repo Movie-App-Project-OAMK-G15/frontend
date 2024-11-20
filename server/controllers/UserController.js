@@ -1,17 +1,10 @@
-import { selectUserByEmail, postUser, deleteUser } from "../models/User.js";
+import { selectUserByEmail, postUser, deleteUser, getAllFavMovies, postFavMovie } from "../models/User.js";
 import { ApiError } from "../helpers/errorClass.js";
 import { compare, hash } from "bcrypt";
 import jwt from "jsonwebtoken";
 const { sign } = jwt;
-import pool from '../helpers/db.js';
 
-const createUserObject = (
-  id,
-  firstname,
-  familyname,
-  email,
-  token = undefined
-) => {
+const createUserObject = (id, firstname, familyname, email, token = undefined) => {
   return {
     id: id,
     firstname: firstname,
@@ -32,18 +25,9 @@ async function postRegistration(req, res, next) {
     if (!req.body.password || req.body.password.length < 8)
       return next(new ApiError("Invalid password for user", 400));
     const hashedPassword = await hash(req.body.password, 10);
-    const result = await postUser(
-      req.body.firstname,
-      req.body.familyname,
-      req.body.email,
-      hashedPassword
-    );
+    const result = await postUser(req.body.firstname, req.body.familyname, req.body.email, hashedPassword);
     const user = result.rows[0];
-    return res
-      .status(200)
-      .json(
-        createUserObject(user.id, user.firstname, user.familyname, user.email)
-      );
+    return res.status(200).json(createUserObject(user.user_id, user.firstname, user.familyname, user.email));
   } catch (error) {
     return next(error);
   }
@@ -58,20 +42,8 @@ async function postLogin(req, res, next) {
     if (!(await compare(req.body.password, user.password)))
       return next(new ApiError("Invalid credentials", 401));
 
-    const token = sign({ email: req.body.email }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1h",
-    });
-    return res
-      .status(200)
-      .json(
-        createUserObject(
-          user.id,
-          user.firstname,
-          user.familyname,
-          user.email,
-          token
-        )
-      );
+    const token = sign({ email: req.body.email }, process.env.JWT_SECRET_KEY, {expiresIn: "1h"});
+    return res.status(200).json(createUserObject(user.user_id, user.firstname, user.familyname, user.email, token));
   } catch (error) {
     return next(error);
   }
@@ -100,11 +72,10 @@ const addFavorite = async (req, res, next) => {
   console.log(`Received request to add favorite movie. Movie ID: ${movie_id}, User ID: ${user_id}`);
 
   try {
-    const result = await pool.query(
-      "INSERT INTO favorite_movies (movie_id, user_id) VALUES ($1, $2) ON CONFLICT DO NOTHING",
-      [movie_id, user_id]
-    );
-    res.status(200).json({ message: "Movie added to favorites" });
+    const result = await postFavMovie(movie_id, user_id)
+    if(result.rowCount > 0){
+        res.status(200).json({ message: "Movie added to favorites" });
+    }else return next(new ApiError("No fav movie found", 400))
   } catch (error) {
     next(error);
   }
@@ -114,11 +85,11 @@ const addFavorite = async (req, res, next) => {
 const getFavorites = async (req, res, next) => {
   const { userId } = req.params;
   try {
-    const result = await pool.query(
-      "SELECT m.movie_id, m.title, m.poster_path, m.vote_average FROM favorite_movies f JOIN movies m ON f.movie_id = m.movie_id WHERE f.user_id = $1",
-      [userId]
-    );
-    res.status(200).json(result.rows);
+    const result = await getAllFavMovies(userId);
+    console.log(result)
+    if(result.rowCount > 0){
+        res.status(200).json(result.rows);
+    }
   } catch (error) {
     next(error);
   }

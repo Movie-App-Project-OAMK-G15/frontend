@@ -12,7 +12,7 @@ userRouter.post('/login', postLogin)
 userRouter.post('/delete', deleteAccount)
 
 //add favorite movie
-userRouter.post('/add-favorite', addFavorite)
+userRouter.post('/addfavorite', addFavorite)
 
 //get favorite movies for a user
 userRouter.get('/favorites/:userId', getFavorites)
