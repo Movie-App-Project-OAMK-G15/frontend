@@ -48,8 +48,8 @@ export default function CreateGroup(){
                 alert(response.data.state)
             } else alert('Error occured, try again later')
         } catch (error) {
-            const message = error.response && error.response.data ? error.response.data.error : error
-            setNotificationMessage(message)//custom error notification
+            const message = error.message && error.response.data ? error.response.data.error : error
+            setNotificationMessage('Error occured while creating the group. Try to log in again')//custom error notification
             setType('error')//notification type
             setTimeout(() => {
                 setNotificationMessage(null)

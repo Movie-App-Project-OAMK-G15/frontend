@@ -1,4 +1,4 @@
-import { postGroup } from "../models/Group.js";
+import { postGroup, getAllGroups } from "../models/Group.js";
 import { ApiError } from "../helpers/errorClass.js";
 import fs from "fs";
 import path from "path";
@@ -61,4 +61,16 @@ async function postNewGroup(req, res, next) {
     }
 }   
 
-export { postNewGroup };
+async function getGroups(req, res, next){
+    try {
+        const response = await getAllGroups()
+        if(response.rowCount > 0){
+            return res.status(200).json(response.rows);
+        }
+    } catch (error) {
+        console.error("Error in getGroups: ", error);
+        return next(error);
+    }
+}
+
+export { postNewGroup, getGroups };

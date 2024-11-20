@@ -1,11 +1,3 @@
-// CREATE TABLE groups (
-//     group_id SERIAL PRIMARY KEY,
-//     admin_email VARCHAR(100) NOT NULL,
-//     group_name VARCHAR(100) NOT NULL UNIQUE,
-// 	   description VARCHAR(255) NOT NULL,
-//     FOREIGN KEY (admin_email) REFERENCES account(email) ON DELETE SET NULL
-// );
-
 import pool from "../helpers/db.js";
 
 const postGroup = async(adm_mail, g_name, description, photo) => {
