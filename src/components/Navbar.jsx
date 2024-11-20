@@ -11,6 +11,7 @@ const Navbar = () => {
         <li><Link to="/">Home</Link></li>
         <li><Link to="/screenings">Movie screenings</Link></li>
         <li><Link to="/search">Browse movies</Link></li>
+        <li><Link to="/groups">Groups</Link></li>
         {!user.token ? 
         <>
           <li><Link to="/signin">Sign in</Link></li>

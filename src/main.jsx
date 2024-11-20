@@ -14,6 +14,7 @@ import Home from './components/Home.jsx'
 import Showtime from './components/ShowTime.jsx'
 import MoviePage from './components/MoviePage.jsx'
 import CreateGroup from './screens/CreateGroup.jsx'
+import GroupList from './screens/GroupList.jsx'
 
 //creating router for navigation and authentication
 const router = createBrowserRouter([
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: 'signin',
     element: <Authentication authenticationMode={AuthenticationMode.Login}/>
+  },
+  {
+    path: 'groups',
+    element: <GroupList/>
   },
   {
     element: <ProtectedRoute/>,
