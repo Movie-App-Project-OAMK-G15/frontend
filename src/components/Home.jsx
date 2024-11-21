@@ -45,7 +45,6 @@ const Home = () => {
                 <Slider images={images} />
             </div>  
             <div>
-                <h2>Top rated</h2>
                 <div className="movie-grid">
                     <PopularMovieList movieList={movieList} setMovieList={setMovieList}/>
                 </div>
