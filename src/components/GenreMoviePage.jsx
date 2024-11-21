@@ -62,9 +62,12 @@ const GenreMoviesPage = () => {
               <div className="card-body">
                 <h5 className="card-title">{movie.title}</h5>
                 <p className="card-text">Rating: {movie.vote_average}</p>
-                <button onClick={() => addFavorite(movie.id)} className="btn btn-primary">
-                  Add to Favorites
-                </button>
+                {/*conditionally render the Add to Favorites button */}
+                {user.id ? (
+                  <button onClick={() => addFavorite(movie.id)} className="btn btn-primary">
+                    Add to Favorites
+                  </button>
+                ) : null}
               </div>
             </div>
           </div>

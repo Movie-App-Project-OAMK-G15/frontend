@@ -31,9 +31,9 @@ const FavMovies = () => {
       const movieDetailsRequests = userFavMovies.map(item =>
         axios.get(`https://api.themoviedb.org/3/movie/${item.movie_id}`, options));
   
-      // Wait for all requests to complete
+      //wait for all requests to complete
       const movieDetailsResponses = await Promise.all(movieDetailsRequests);
-      // Extract data from responses
+      //extract data from responses
       setMovies(movieDetailsResponses)
     } catch (error) {
       alert(error)
