@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Navbar from "./Navbar";
+import { UserContext } from '../context/UserContext';
+import Navbar from "./Navbar.jsx";
 
 const GenreMoviesPage = () => {
+  //retrieve user from UserContext
+  const { user } = useContext(UserContext); 
   //extract the genreId parameter from the URL
   const { genreId } = useParams();
-  //to store the list of movies
+  //store the list of movies
   const [movies, setMovies] = useState([]);
-  //to store the name of the genre
+  //store the name of the genre
   const [genreName, setGenreName] = useState("");
   //TMDB API key from .env
   const tmdbKey = import.meta.env.VITE_TMDB_API_KEY;
@@ -27,29 +30,25 @@ const GenreMoviesPage = () => {
         }
       )
       .then((response) => setMovies(response.data.results))
-      .catch((error) => console.error(error));
-
-    //fetch the genre name
-    axios
-      .get("https://api.themoviedb.org/3/genre/movie/list?language=en", {
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${tmdbKey}`,
-        },
-      })
-      .then((response) => {
-        const genre = response.data.genres.find(
-          (g) => g.id === parseInt(genreId)
-        );
-        if (genre) setGenreName(genre.name);
-      })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error('Error fetching movies:', error));
   }, [genreId, tmdbKey]);
 
+  const addFavorite = async (movieId) => {
+    try {
+      const userId = user.id; //retrievee userid from user context
+      const response = await axios.post('http://localhost:3001/user/addfavorite', {
+        movie_id: movieId,
+        user_id: userId,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error adding favorite movie:', error);
+    }
+  };
+
   return (
-    <div>
-    <Navbar/>
     <div className="container my-4">
+     < Navbar/>
       <h2 className="mb-4">{genreName} Movies</h2>
       <div className="row">
         {movies.map((movie) => (
@@ -63,6 +62,12 @@ const GenreMoviesPage = () => {
               <div className="card-body">
                 <h5 className="card-title">{movie.title}</h5>
                 <p className="card-text">Rating: {movie.vote_average}</p>
+                {/*conditionally render the Add to Favorites button */}
+                {user.id ? (
+                  <button onClick={() => addFavorite(movie.id)} className="btn btn-primary">
+                    Add to Favorites
+                  </button>
+                ) : null}
               </div>
             </div>
           </div>
@@ -72,7 +77,6 @@ const GenreMoviesPage = () => {
       <Link to="/" className="btn btn-secondary mt-3">
         Back to Genres
       </Link>
-    </div>
     </div>
   );
 };

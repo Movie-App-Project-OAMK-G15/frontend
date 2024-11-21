@@ -15,4 +15,17 @@ const deleteUser = async(email) => {
         [email])
 }
 
-export { postUser, selectUserByEmail, deleteUser }
+const postFavMovie = async(movie_id, user_id) => {
+    return pool.query("INSERT INTO favorite_movies (movie_id, user_id) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+        [movie_id, user_id]
+      );
+}
+
+const getAllFavMovies = async(user_id) => {
+    return pool.query("SELECT * FROM favorite_movies WHERE user_id = $1",
+        [user_id]
+      );
+}
+
+
+export { postUser, selectUserByEmail, deleteUser, postFavMovie, getAllFavMovies }
