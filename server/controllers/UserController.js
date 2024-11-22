@@ -31,6 +31,8 @@ async function postRegistration(req, res, next) {
 
 async function postLogin(req, res, next) {
     try {
+        localStorage.setItem(key, value);//added
+        localStorage.setItem("token", token.value);//added
         const userFromDb = await selectUserByEmail(req.body.email)
         if(userFromDb.rowCount === 0) return next(new ApiError('Invalid credentials', 401))
         const user = userFromDb.rows[0]

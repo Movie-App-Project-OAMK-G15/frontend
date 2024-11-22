@@ -1,0 +1,17 @@
+#backToTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 24px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  #backToTopBtn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
