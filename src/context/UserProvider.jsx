@@ -5,7 +5,7 @@ import axios from 'axios'
 const url = import.meta.env.VITE_API_URL
 
 export default function UserProvider({children}) {
-
+    const [groups, setGroups] = useState([])
     const userfromSessionStorage = sessionStorage.getItem('user')
     const [user, setUser] = useState(userfromSessionStorage ? JSON.parse(userfromSessionStorage) : {id: "", firstname: "", familyname: "", email: '', password: ''})
 
@@ -66,8 +66,17 @@ export default function UserProvider({children}) {
         }
     }
 
+    const getGroups = async() => {
+        try {
+            const res = await axios.get(url + '/group/getgroups')
+            setGroups(res.data)
+        } catch (error) {
+            throw error
+        }
+    }
+
         return (
-            <UserContext.Provider value={{user, setUser, signUp, signIn, logOut, getToken, deleteAccount}}>
+            <UserContext.Provider value={{user, setUser, signUp, signIn, logOut, getToken, deleteAccount, getGroups, groups, setGroups}}>
                 { children }
             </UserContext.Provider>
         )

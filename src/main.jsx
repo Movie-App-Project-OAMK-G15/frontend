@@ -15,6 +15,7 @@ import Showtime from './components/ShowTime.jsx'
 import MoviePage from './components/MoviePage.jsx'
 import CreateGroup from './screens/CreateGroup.jsx'
 import GroupList from './screens/GroupList.jsx'
+import GroupView from './screens/GroupView.jsx'
 
 //creating router for navigation and authentication
 const router = createBrowserRouter([
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
       {
         path: 'account/creategroup',
         element: <CreateGroup/>
+      },
+      {
+        path: 'groups/:groupId',
+        element: <GroupView/>
       },
     ]
   }
