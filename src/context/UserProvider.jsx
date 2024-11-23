@@ -75,8 +75,15 @@ export default function UserProvider({children}) {
         }
     }
 
+    const updateBio = (newBio) => {
+        setUser (prevUser  => ({
+            ...prevUser ,
+            bio: newBio
+        }));
+    };
+
         return (
-            <UserContext.Provider value={{user, setUser, signUp, signIn, logOut, getToken, deleteAccount, getGroups, groups, setGroups}}>
+            <UserContext.Provider value={{user, setUser, signUp, signIn, logOut, getToken, deleteAccount, getGroups, groups, setGroups, updateBio}}>
                 { children }
             </UserContext.Provider>
         )
