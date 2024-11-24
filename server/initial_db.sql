@@ -13,8 +13,10 @@ CREATE TABLE account (
     firstname VARCHAR(50) NOT NULL,
     familyname VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-	phone VARCHAR(20), --can be null 
-    password VARCHAR(255) NOT NULL
+    phone VARCHAR(20), -- Can be null
+    password VARCHAR(255) NOT NULL,
+    bio VARCHAR(255), -- Short bio about the user, optional
+    user_photo VARCHAR(255) -- Path to the user's photo file, optional
 );
 
 -- 2. Create 'review' table
