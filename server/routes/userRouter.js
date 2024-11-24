@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { Router } from "express"
-import { postRegistration, postLogin, deleteAccount, addFavorite, getFavorites } from "../controllers/UserController.js";
+import { postRegistration, postLogin, deleteAccount, addFavorite, getFavorites, updateUserBio, getUserBio } from "../controllers/UserController.js";
 
 dotenv.config();
 const userRouter = Router()
@@ -16,5 +16,12 @@ userRouter.post('/addfavorite', addFavorite)
 
 //get favorite movies for a user
 userRouter.get('/favorites/:userId', getFavorites)
+
+//add bio
+userRouter.put('/bio/:userId', updateUserBio)
+
+//get bio
+userRouter.get('/bio/:userId', getUserBio)
+
 
 export default userRouter

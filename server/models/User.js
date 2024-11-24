@@ -31,5 +31,17 @@ const getAllFavMovies = async(user_id) => {
       );
 }
 
+const addBio = async (userId, bio) => {
+    return pool.query("UPDATE account SET bio = $1 WHERE user_id = $2", 
+        [bio, userId]
+    );
+};
 
-export { postUser, selectUserByEmail, deleteUser, postFavMovie, getAllFavMovies, getAllUsers }
+const getBio = async (userId) => {
+    return pool.query("SELECT bio FROM account WHERE user_id = $1", 
+        [userId]
+    );
+};
+
+
+export { postUser, selectUserByEmail, deleteUser, postFavMovie, getAllFavMovies, getAllUsers, addBio, getBio };
