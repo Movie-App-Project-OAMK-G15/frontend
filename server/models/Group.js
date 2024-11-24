@@ -9,4 +9,14 @@ const getAllGroups = async() => {
     return pool.query('select * from groups;')
 } 
 
-export { postGroup, getAllGroups }
+const getAllSubs = async() => {
+    return pool.query('select * from group_subscriptions;')
+}
+
+const getPostsGyGroupId = async(id) => {
+    return pool.query("SELECT * FROM group_posts WHERE group_id = $1",
+        [id]
+    )
+}
+
+export { postGroup, getAllGroups, getAllSubs, getPostsGyGroupId }

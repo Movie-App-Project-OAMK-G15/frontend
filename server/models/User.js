@@ -1,5 +1,9 @@
 import pool from "../helpers/db.js";
 
+const getAllUsers = async() => {
+    return pool.query('select * from account;')
+}
+
 const postUser = async(firstname, familyname, email, hashedPassword) => {
     return pool.query('insert into account (firstname, familyname, email, password) values ($1, $2, $3, $4) returning *;', 
             [firstname, familyname, email, hashedPassword])
@@ -28,4 +32,4 @@ const getAllFavMovies = async(user_id) => {
 }
 
 
-export { postUser, selectUserByEmail, deleteUser, postFavMovie, getAllFavMovies }
+export { postUser, selectUserByEmail, deleteUser, postFavMovie, getAllFavMovies, getAllUsers }
