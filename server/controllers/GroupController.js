@@ -1,4 +1,4 @@
-import { postGroup, getAllGroups, getAllSubs, getPostsGyGroupId } from "../models/Group.js";
+import { postGroup, getAllGroups, getAllSubs, getPostsGyGroupId, postNewRequest, getAllRequests } from "../models/Group.js";
 import { ApiError } from "../helpers/errorClass.js";
 import fs from "fs";
 import path from "path";
@@ -75,6 +75,7 @@ async function getGroups(req, res, next){
 
 async function getSubs(req, res, next) {
     try {
+        if(!req.body.group_id || req.body.group_id.length === 0) return next(new ApiError('Invalid groupId for group', 400));
         const response = await getAllSubs(req.body.group_id)
         if(response.rowCount > 0){
             return res.status(200).json(response.rows);
@@ -85,4 +86,31 @@ async function getSubs(req, res, next) {
     }
 }
 
-export { postNewGroup, getGroups, getSubs };
+async function postRequest(req, res, next) {
+    try {
+        if(!req.body.group_id || req.body.group_id.length === 0) return next(new ApiError('Invalid groupId for group', 400));
+        if(!req.body.user_email || req.body.user_email.length === 0) return next(new ApiError('Invalid user_eamil for group', 400));
+
+        const response = await postNewRequest(req.body.group_id, req.body.user_email)
+        if(response.rowCount > 0){
+            return res.status(200).json({state: `request: ${req.body.user_email} sent a request to join a group`});
+        }
+    } catch (error) {
+        console.error("Error in postRequest: ", error);
+        return next(error);
+    }
+}
+
+async function getRequests(req, res, next) {
+    try {
+        const response = await getAllRequests()
+        if(response.rowCount > 0){
+            return res.status(200).json(response.rows);
+        }
+    } catch (error) {
+        console.error("Error in getRequests: ", error);
+        return next(error);
+    }
+}
+
+export { postNewGroup, getGroups, getSubs, postRequest, getRequests };

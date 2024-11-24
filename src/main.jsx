@@ -16,6 +16,7 @@ import MoviePage from './components/MoviePage.jsx'
 import CreateGroup from './screens/CreateGroup.jsx'
 import GroupList from './screens/GroupList.jsx'
 import GroupView from './screens/GroupView.jsx'
+import GroupAdminPanel from './screens/GroupAdminPanel.jsx'
 
 //creating router for navigation and authentication
 const router = createBrowserRouter([
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: 'groups/:groupId',
         element: <GroupView/>
+      },
+      {
+        path: 'groups/admin/:groupId',
+        element: <GroupAdminPanel/>
       },
     ]
   }

@@ -17,18 +17,15 @@ export default function GroupView(){
 
     async function getSubs() {
         try {
-            const options = {
-                method: 'POST',
+            const json = JSON.stringify({group_id: groupId})
+            const headers = {
                 headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `${user.token}`,
-                },
-                body: JSON.stringify({
-                  groupId: groupId
-                })
-              };
-              
-            const response = await axios.post(url + '/group/getfollowers', options)
+                    "Content-Type": "application/json",
+                    "Authorization": `${user.token}`,
+                }
+            };        
+        
+            const response = await axios.post(url + '/group/getfollowers', json, headers)
             console.log(response.data)
         } catch (error) {
             alert(error)
@@ -39,7 +36,7 @@ export default function GroupView(){
         <>
             <Navbar/>
             {groups.filter(group => group.group_id == groupId).map(item => 
-                <div className="group-container">
+                <div key={groupId} className="group-container">
                     <div className="group-header">
                         <img
                             src={"/server" + item.photo} // Group image
@@ -49,7 +46,6 @@ export default function GroupView(){
                         <div className="group-info">
                             <h2 className="group-name">{item.group_name}</h2>
                         </div>
-                        <button className="subscribe-button">Subscribe</button>
                     </div>
                 </div>
             )}

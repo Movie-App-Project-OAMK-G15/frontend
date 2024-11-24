@@ -2,6 +2,7 @@
 DROP TABLE IF EXISTS comments CASCADE;
 DROP TABLE IF EXISTS group_posts CASCADE;
 DROP TABLE IF EXISTS group_subscriptions CASCADE;
+DROP TABLE IF EXISTS group_requests CASCADE;
 DROP TABLE IF EXISTS groups CASCADE;
 DROP TABLE IF EXISTS review CASCADE;
 DROP TABLE IF EXISTS favorite_movies CASCADE;
@@ -45,7 +46,7 @@ CREATE TABLE groups (
 
 -- 4. Create 'group_subscriptions' table for many-to-many relationship between 'account' and 'group'
 CREATE TABLE group_subscriptions (
-    group_id INT NOT NULL,
+    group_id SERIAL NOT NULL,
     user_email VARCHAR(100) NOT NULL,
     PRIMARY KEY (group_id, user_email),
     FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE,
@@ -82,3 +83,14 @@ CREATE TABLE favorite_movies (
     PRIMARY KEY (movie_id, user_id), 
     FOREIGN KEY (user_id) REFERENCES account(user_id) ON DELETE CASCADE
 );
+
+-- 8. Create 'group_requests' table
+CREATE TABLE group_requests (
+    request_id SERIAL PRIMARY KEY,       -- Unique ID for each request
+    user_email VARCHAR(100) NOT NULL,    -- Reference to the user's email
+    group_id INT NOT NULL,               -- Reference to the group
+    request_time TIMESTAMP DEFAULT (NOW() AT TIME ZONE 'UTC' + INTERVAL '4 hours'),
+    FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE, -- Reference to groups
+    FOREIGN KEY (user_email) REFERENCES account(email) ON DELETE CASCADE -- Reference to users
+);
+

@@ -10,7 +10,7 @@ const getAllGroups = async() => {
 } 
 
 const getAllSubs = async(group_id) => {
-    return pool.query('select * from group_subscriptions where group_id = $1;',
+    return pool.query('select * from group_subscriptions;',
         [group_id]
     )
 }
@@ -21,4 +21,14 @@ const getPostsGyGroupId = async(group_id) => {
     )
 }
 
-export { postGroup, getAllGroups, getAllSubs, getPostsGyGroupId }
+const postNewRequest = async(group_id, user_email) => {
+    return pool.query("INSERT INTO group_requests (user_email, group_id) VALUES ($1, $2);",
+        [user_email, group_id]
+    )
+}
+
+const getAllRequests = async() => {
+    return pool.query("SELECT * FROM group_requests;")
+}
+
+export { postGroup, getAllGroups, getAllSubs, getPostsGyGroupId, postNewRequest, getAllRequests }
