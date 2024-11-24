@@ -4,6 +4,7 @@ import cors from 'cors';
 import userRouter from './routes/userRouter.js';
 import groupRouter from './routes/groupRouter.js';
 import path from 'path';
+import reviewRouter from './routes/reviewRouter.js';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const port = 3001;
 app.use('/user', userRouter);
 app.use('/group', groupRouter);
+app.use('/reviews', reviewRouter);
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     res.status(statusCode).json({ error: err.message });

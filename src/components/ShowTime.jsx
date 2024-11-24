@@ -61,30 +61,28 @@ const Showtime = () => {
 
         setLoading(true);
         try {
-            const response = await fetch(`https://www.finnkino.fi/xml/Schedule/?area=${selectedArea}&dt=${selectedDate}`);
+            const response = await fetch(`https://www.finnkino.fi/xml/Schedule/?id=${id}&area=${selectedArea}&dt=${selectedDate}`);
             const xml = await response.text();
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xml, 'application/xml');
-            const showtimeElements = Array.from(xmlDoc.getElementsByTagName('Show'));
-
+            const showtimeElements = Array.from(xmlDoc.getElementsByTagName('Show')).filter(show =>
+                show.getElementsByTagName('EventID')[0].textContent === id);
+            
             const tempShowtimes = showtimeElements.map(showtime => ({
                 date: showtime.getElementsByTagName('dttmShowStart')[0].textContent,
                 area: showtime.getElementsByTagName('Theatre')[0].textContent,
-                eventID: showtime.getElementsByTagName('EventID')[0].textContent
+                eventID: showtime.getElementsByTagName('EventID')[0].textContent 
             }));
 
-            const uniqueShowtimes = Array.from(new Set(tempShowtimes.map(show => show.date)))
-                .map(date => tempShowtimes.find(show => show.date === date));
+            setShowtimes(tempShowtimes);
 
-            setShowtimes(uniqueShowtimes);
-
-            if (uniqueShowtimes.length > 0) {
-                fetchMovieDetails(id);  // Fetch movie details based on the URL param
+            if (tempShowtimes.length > 0) {
+                fetchMovieDetails(id);
             } else {
                 setLoading(false);
             }
         } catch (error) {
-            setError('Failed to fetch showtimes.',error);
+            setError('Failed to fetch showtimes.');
             setLoading(false);
         }
     };
