@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useUser } from '../context/useUser';
 
 const ReviewForm = ({ movieId, onReviewSubmit }) => {
   const [reviewForm, setReviewForm] = useState({ content: '', userEmail: '', rating: 1 });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const {user} = useUser()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +25,7 @@ const ReviewForm = ({ movieId, onReviewSubmit }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userEmail: reviewForm.userEmail,
+          userEmail: user.email,
           reviewContent: reviewForm.content,
           movieId,
           rating: reviewForm.rating,
@@ -75,7 +77,7 @@ const ReviewForm = ({ movieId, onReviewSubmit }) => {
             ))}
           </div>
         </div>
-        <div className="mb-3">
+        {/* <div className="mb-3">
           <input
             type="email"
             className="form-control"
@@ -83,7 +85,7 @@ const ReviewForm = ({ movieId, onReviewSubmit }) => {
             value={reviewForm.userEmail}
             onChange={(e) => setReviewForm({ ...reviewForm, userEmail: e.target.value })}
           />
-        </div>
+        </div> */}
         <button className="btn btn-primary">Submit Review</button>
       </form>
     </div>

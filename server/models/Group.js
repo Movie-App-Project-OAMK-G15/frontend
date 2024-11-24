@@ -9,13 +9,15 @@ const getAllGroups = async() => {
     return pool.query('select * from groups;')
 } 
 
-const getAllSubs = async() => {
-    return pool.query('select * from group_subscriptions;')
+const getAllSubs = async(group_id) => {
+    return pool.query('select * from group_subscriptions where group_id = $1;',
+        [group_id]
+    )
 }
 
-const getPostsGyGroupId = async(id) => {
+const getPostsGyGroupId = async(group_id) => {
     return pool.query("SELECT * FROM group_posts WHERE group_id = $1",
-        [id]
+        [group_id]
     )
 }
 

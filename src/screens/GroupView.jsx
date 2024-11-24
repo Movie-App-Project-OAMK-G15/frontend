@@ -1,22 +1,44 @@
 import { useUser } from "../context/useUser"
 import { useEffect } from "react"
 import { useParams } from "react-router-dom"
+import axios from "axios"
 import Navbar from "../components/Navbar"
 import '../styles/GroupView.css'
+const url = import.meta.env.VITE_API_URL
 
 export default function GroupView(){
-    const {groups, getGroups} = useUser()
+    const {groups, getGroups, user} = useUser()
     const {groupId} = useParams()
     useEffect(() => {
         getGroups()
+        getSubs()
         console.log(groups)
     }, [])
+
+    async function getSubs() {
+        try {
+            const options = {
+                method: 'POST',
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `${user.token}`,
+                },
+                body: JSON.stringify({
+                  groupId: groupId
+                })
+              };
+              
+            const response = await axios.post(url + '/group/getfollowers', options)
+            console.log(response.data)
+        } catch (error) {
+            alert(error)
+        }
+    }
 
     return (
         <>
             <Navbar/>
-            {groups.filter(group => group.group_id == groupId)
-            .map(item => 
+            {groups.filter(group => group.group_id == groupId).map(item => 
                 <div className="group-container">
                     <div className="group-header">
                         <img

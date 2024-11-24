@@ -1,4 +1,4 @@
-import { postGroup, getAllGroups } from "../models/Group.js";
+import { postGroup, getAllGroups, getAllSubs, getPostsGyGroupId } from "../models/Group.js";
 import { ApiError } from "../helpers/errorClass.js";
 import fs from "fs";
 import path from "path";
@@ -73,4 +73,16 @@ async function getGroups(req, res, next){
     }
 }
 
-export { postNewGroup, getGroups };
+async function getSubs(req, res, next) {
+    try {
+        const response = await getAllSubs(req.body.group_id)
+        if(response.rowCount > 0){
+            return res.status(200).json(response.rows);
+        }
+    } catch (error) {
+        console.error("Error in getSubs: ", error);
+        return next(error);
+    }
+}
+
+export { postNewGroup, getGroups, getSubs };

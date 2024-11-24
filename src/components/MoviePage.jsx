@@ -5,8 +5,10 @@ import Navbar from './Navbar';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import ReviewForm from './ReviewForm';
 import ReviewList from './ReviewList';
+import { useUser } from '../context/useUser';
 
 const MoviePage = () => {
+  const {user} = useUser()
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -119,10 +121,12 @@ const MoviePage = () => {
           </div>
         </div>
 
-        {/* Review Form and List */}
-        <ReviewForm movieId={movieId} onReviewSubmit={handleReviewSubmit} />
-        <ReviewList movieId={movieId} reviews={reviews} /> {/* Pass reviews as a prop */}
-
+        {user.token ? <>
+            <ReviewForm movieId={movieId} onReviewSubmit={handleReviewSubmit} />
+            <ReviewList movieId={movieId} reviews={reviews} />
+            </>
+        :<p>You have to log in to leave a review!</p>}
+       
         {/* Recommended Movies Section */}
         <div className="row mt-5">
           <h4>Recommended Movies</h4>
