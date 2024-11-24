@@ -37,6 +37,25 @@ const MoviePage = () => {
     fetchMovieDetails();
   }, [movieId]);
 
+  // Fetch reviews for the movie
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/reviews/${movieId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setReviews(data); // Set the fetched reviews
+        } else {
+          console.error('Failed to fetch reviews');
+        }
+      } catch (err) {
+        console.error('Fetch Reviews Error:', err.message);
+      }
+    };
+
+    fetchReviews();
+  }, [movieId]);
+
   // Function to handle new review submission
   const handleReviewSubmit = (newReview) => {
     // Add the new review to the front of the list (assuming new reviews are added first)
