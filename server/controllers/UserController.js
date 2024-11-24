@@ -1,4 +1,4 @@
-import { selectUserByEmail, postUser, deleteUser, getAllFavMovies, postFavMovie } from "../models/User.js";
+import { selectUserByEmail, postUser, deleteUser, getAllFavMovies, postFavMovie, addBio, getBio } from "../models/User.js";
 import { ApiError } from "../helpers/errorClass.js";
 import { compare, hash } from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -94,10 +94,49 @@ const getFavorites = async (req, res, next) => {
   }
 };
 
+const updateUserBio = async (req, res, next) => {
+  try {
+    const { userId } = req.params; 
+    const { bio } = req.body;
+    if (!userId) {
+      return next(new ApiError("User  ID is required", 400));
+    }
+
+    const result = await addBio(userId, bio);
+    if (result.rowCount === 0) {
+      return next(new ApiError("Failed to update bio", 400));
+    }
+
+    return res.status(200).json({ message: "Bio updated successfully" });
+  } catch (error) {
+      return next(error);
+  }
+}
+
+const getUserBio = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    if (!userId) {
+      return next(new ApiError("User  ID is required", 400));
+    }
+
+    const result = await getBio(userId);
+    if (result.rowCount === 0) {
+      return next(new ApiError("No bio found for this user", 404));
+    }
+    const bio = result.rows[0].bio;
+    return res.status(200).json({ bio });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 export {
   postRegistration,
   postLogin,
   deleteAccount,
   addFavorite,
   getFavorites,
+  updateUserBio,
+  getUserBio
 };
