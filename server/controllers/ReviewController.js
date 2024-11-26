@@ -1,4 +1,4 @@
-import { getReviewsByMovieId, addReview } from '../models/Review.js';
+import { getReviewsByMovieId, addReview, deleteReview } from '../models/Review.js';
 
 // Example usage
 export const fetchReviews = async (req, res) => {
@@ -27,5 +27,20 @@ export const createReview = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: 'Failed to add review' });
+  }
+};
+
+//Delete the review from the database
+export const removeReview = async (req, res) => {
+  const { reviewId } = req.params; // Review ID from the URL
+  const { userEmail } = req.body; // User email from the request body
+ 
+
+  try {
+    const deletedReview = await deleteReview(reviewId, userEmail);
+    res.status(200).json({ message: "Review deleted successfully", review: deletedReview });
+  } catch (error) {
+    console.error(error.message);
+    res.status(400).json({ error: error.message });
   }
 };

@@ -8,14 +8,17 @@ import ReviewList from './ReviewList';
 import { useUser } from '../context/useUser';
 
 const MoviePage = () => {
-  const { user } = useUser();
-  const { movieId } = useParams();
-  const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { user } = useUser(); // Get the current user's information (authentication context)
+  const { movieId } = useParams(); // Get the movieId from the route parameters
+  const [movie, setMovie] = useState(null); // State to store movie details
+  const [loading, setLoading] = useState(true); // State to manage loading state
+  const [error, setError] = useState(''); // State to store error messages
   const [reviews, setReviews] = useState([]); // State to store reviews
 
+   // TMDB API key from environment variables
   const tmdbkey = import.meta.env.VITE_TMDB_API_KEY;
+
+  // Fetch movie details from TMDB
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -24,15 +27,15 @@ const MoviePage = () => {
         const response = await fetch(url, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${tmdbkey}`,
+            Authorization: `Bearer ${tmdbkey}`, // API key for authorization
           },
         });
         const data = await response.json();
-        setMovie(data);
+        setMovie(data); // Store the fetched movie data in state
       } catch (err) {
-        setError('Error fetching movie details');
+        setError('Error fetching movie details'); // Handle any errors
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading to false after the operation completes
       }
     };
 
@@ -48,10 +51,10 @@ const MoviePage = () => {
           const data = await response.json();
           setReviews(data); // Set the fetched reviews
         } else {
-          console.error('Failed to fetch reviews');
+          console.error('Failed to fetch reviews'); // Log errors if fetching fails
         }
       } catch (err) {
-        console.error('Fetch Reviews Error:', err.message);
+        console.error('Fetch Reviews Error:', err.message); // Log  exceptions
       }
     };
 
@@ -64,7 +67,39 @@ const MoviePage = () => {
     setReviews((prevReviews) => [newReview, ...prevReviews]);
   };
 
+  // Handle Delete Review
+  const handleDelete = async (reviewId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/reviews/${reviewId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userEmail: user.email }), // Pass user's email for verification
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete'); // Handle unsuccessful deletions
+      }
+      // Update the local reviews state after deletion
+      setReviews((prevReviews) => prevReviews.filter((review) => review.id !== reviewId));
+      console.log('Delete successful');
+    } catch (err) {
+      console.error('Delete failed', err);
+    }
+  };
+
+  // Handle Edit Review (Placeholder)
+  const handleEdit = (reviewId) => {
+    console.log(`Editing review with ID: ${reviewId}`);
+    // Implement edit logic as needed
+  };
+
+  // Display a loading message while fetching data
+
   if (loading) return <p>Loading...</p>;
+
+  // Display an error message if fetching data fails
   if (error) return <p className="text-danger">{error}</p>;
 
   return (
@@ -121,6 +156,7 @@ const MoviePage = () => {
           </div>
         </div>
 
+        {/* Reviews Section - Check if the user is logged in*/}
         {user.token ? (
           <ReviewForm movieId={movieId} onReviewSubmit={handleReviewSubmit} />
         ) : (
@@ -130,7 +166,7 @@ const MoviePage = () => {
         {/*review List Section */}
         <div className="row mt-5">
           <h4>User Reviews</h4>
-          <ReviewList movieId={movieId} reviews={reviews} />
+          <ReviewList movieId={movieId} reviews={reviews} onEdit={ handleEdit} onDelete={handleDelete} />
         </div>
 
         {/* Recommended Movies Section */}
