@@ -3,7 +3,6 @@ import React from 'react';
 const ReviewList = ({ reviews }) => {
   return (
     <div className="mb-4">
-      <h4>Reviews</h4>
       {reviews.length > 0 ? (
         reviews.map((review) => (
           <div key={review.id} className="card mb-3">

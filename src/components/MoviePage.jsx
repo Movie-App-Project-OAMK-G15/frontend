@@ -8,7 +8,7 @@ import ReviewList from './ReviewList';
 import { useUser } from '../context/useUser';
 
 const MoviePage = () => {
-  const {user} = useUser()
+  const { user } = useUser();
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -121,12 +121,18 @@ const MoviePage = () => {
           </div>
         </div>
 
-        {user.token ? <>
-            <ReviewForm movieId={movieId} onReviewSubmit={handleReviewSubmit} />
-            </>
-        :<p>You have to log in to leave a review!</p>}
-        <ReviewList movieId={movieId} reviews={reviews} />
-       
+        {user.token ? (
+          <ReviewForm movieId={movieId} onReviewSubmit={handleReviewSubmit} />
+        ) : (
+          <p>You have to log in to leave a review!</p>
+        )}
+
+        {/*review List Section */}
+        <div className="row mt-5">
+          <h4>User Reviews</h4>
+          <ReviewList movieId={movieId} reviews={reviews} />
+        </div>
+
         {/* Recommended Movies Section */}
         <div className="row mt-5">
           <h4>Recommended Movies</h4>

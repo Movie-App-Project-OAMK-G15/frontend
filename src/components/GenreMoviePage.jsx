@@ -1,82 +1,112 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { UserContext } from '../context/UserContext';
+import { UserContext } from "../context/UserContext";
 import Navbar from "./Navbar.jsx";
 
 const GenreMoviesPage = () => {
-  //retrieve user from UserContext
-  const { user } = useContext(UserContext); 
-  //extract the genreId parameter from the URL
+  //get user context
+  const { user } = useContext(UserContext);
+  //get genreId from URL parameters
   const { genreId } = useParams();
-  //store the list of movies
+  //navigate function for navigation
+  const navigate = useNavigate();
+  //state to store movies
   const [movies, setMovies] = useState([]);
-  //store the name of the genre
+  //state to store genre name
   const [genreName, setGenreName] = useState("");
-  //TMDB API key from .env
+  //to manage loading state
+  const [loading, setLoading] = useState(true);
+  //to manage error state
+  const [error, setError] = useState("");
+  //TMDB API key from environment variables
   const tmdbKey = import.meta.env.VITE_TMDB_API_KEY;
 
+  //useEffect hook to fetch movies when the component mounts or genreId changes
   useEffect(() => {
-    //fetch movies for the selected genre
-    axios
-      .get(
-        `https://api.themoviedb.org/3/discover/movie?with_genres=${genreId}&include_adult=false&language=en-US&sort_by=popularity.desc`,
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${tmdbKey}`,
-          },
-        }
-      )
-      .then((response) => setMovies(response.data.results))
-      .catch((error) => console.error('Error fetching movies:', error));
-  }, [genreId, tmdbKey]);
+    const fetchMovies = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/discover/movie?with_genres=${genreId}&include_adult=false&language=en-US&sort_by=popularity.desc`,
+          {
+            headers: {
+              accept: "application/json",
+              Authorization: `Bearer ${tmdbKey}`,
+            },
+          }
+        );
+        //set movies state with fetched data
+        setMovies(response.data.results);
+        //setloading state to false
+        setLoading(false);
+      } catch (err) {
+        setError("Error fetching movies");
+        setLoading(false);
+      }
+    };
+    //call fetchMovies function
+    fetchMovies();
+  }, [genreId, tmdbKey]); //dependencies array for useEffect
 
-  const addFavorite = async (movieId) => {
+  //function to add a movie to the user's favorites
+  const addFavorite = async (movieId, event) => {
+    event.stopPropagation(); // Prevent triggering the movie click event
     try {
-      const userId = user.id; //retrievee userid from user context
-      const response = await axios.post('http://localhost:3001/user/addfavorite', {
-        movie_id: movieId,
-        user_id: userId,
-      });
-      console.log(response.data);
+      const userId = user.id; //retrieve user id from user context
+      const response = await axios.post(
+        "http://localhost:3001/user/addfavorite",
+        {
+          movie_id: movieId,
+          user_id: userId,
+        }
+      );
+      alert("Added to Favorites"); //show alert when clicking add to fav btn
+      console.log(response.data); //log response data
     } catch (error) {
-      console.error('Error adding favorite movie:', error);
+      console.error("Error adding favorite movie:", error); //log error if request fails
     }
   };
 
+  //function to handle movie card click and navigate to movie details page
+  const handleMovieClick = (movieId) => {
+    navigate(`/movie/${movieId}`); //navigate to the movie details page
+  };
+
+  if (loading) return <p>Loading...</p>; //display loading message
+  if (error) return <p className="text-danger">{error}</p>; //display error message
+
   return (
-    <div className="container my-4">
-     < Navbar/>
-      <h2 className="mb-4">{genreName} Movies</h2>
-      <div className="row">
-        {movies.map((movie) => (
-          <div key={movie.id} className="col-md-3 mb-4">
-            <div className="card">
-              <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} //movie poster image
-                className="card-img-top"
-                alt={movie.title}
-              />
-              <div className="card-body">
-                <h5 className="card-title">{movie.title}</h5>
-                <p className="card-text">Rating: {movie.vote_average}</p>
-                {/*conditionally render the Add to Favorites button */}
-                {user.id ? (
-                  <button onClick={() => addFavorite(movie.id)} className="btn btn-primary">
-                    Add to Favorites
-                  </button>
-                ) : null}
+    <div>
+      <Navbar />
+      <div className="container my-4">
+        <h2 className="mb-4">{genreName} Movies</h2> {/*display genre name */}
+        <div className="row">
+          {movies.map((movie) => (
+            <div key={movie.id} className="col-md-3 mb-4">
+              <div className="card" onClick={() => handleMovieClick(movie.id)}>
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} //movie poster image
+                  className="card-img-top"
+                  alt={movie.title}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{movie.title}</h5>
+                  {/*conditionally render the Add to Favorites button */}
+                  {user.id ? (
+                    <button
+                      onClick={(event) => addFavorite(movie.id, event)}
+                      className="btn btn-primary"
+                    >
+                      Add to Favorites
+                    </button>
+                  ) : null}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-      {/*to navigate back to the genres page */}
-      <Link to="/" className="btn btn-secondary mt-3">
-        Back to Genres
-      </Link>
     </div>
   );
 };
