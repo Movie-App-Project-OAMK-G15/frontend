@@ -21,6 +21,7 @@ export default function GroupList(){
     useEffect(() => {
         getGroups()
         findRequests()
+        //findFollowers()
     }, [refresh])
 
     async function findRequests() {
@@ -32,7 +33,6 @@ export default function GroupList(){
             };
             const response = await axios.get(backendLink + "/group/allrequests", headers)
             setRequests(response.data)
-            console.log(response.data)
         } catch (error) {
             alert(error)
         }
@@ -84,10 +84,14 @@ export default function GroupList(){
         }
     }
 
-    function navToGroup(id){
-        navigate(`/groups/${id}`)
+    function moveToAdminPanel(id){
+        const checkAdm = groups.filter(group => user.email == group.admin_email)
+        if (checkAdm.length > 0) {
+            navigate(`/groups/admin/${id}`)
+        } else {
+            alert("You are not an admin!")
+        }
     }
-    // onClick={() => navToGroup(group.group_id)}
     return (
         <>
             <Navbar/>
@@ -110,7 +114,7 @@ export default function GroupList(){
                         className="subscribe-button" 
                         onClick={(e) => {
                             e.stopPropagation(); // Prevent navigation
-                            alert("Admin panel opens here.");
+                            moveToAdminPanel(group.group_id)
                         }}
                     >
                         Admin panel
@@ -125,7 +129,7 @@ export default function GroupList(){
                         >
                             Request pending
                         </button>
-                    ) : (
+                    ) : (followers.filter())(
                         <button 
                             className="subscribe-button" 
                             onClick={(e) => {

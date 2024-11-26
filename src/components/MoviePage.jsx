@@ -123,9 +123,9 @@ const MoviePage = () => {
 
         {user.token ? <>
             <ReviewForm movieId={movieId} onReviewSubmit={handleReviewSubmit} />
-            <ReviewList movieId={movieId} reviews={reviews} />
             </>
         :<p>You have to log in to leave a review!</p>}
+        <ReviewList movieId={movieId} reviews={reviews} />
        
         {/* Recommended Movies Section */}
         <div className="row mt-5">

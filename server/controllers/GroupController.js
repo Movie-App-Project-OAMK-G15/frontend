@@ -1,4 +1,4 @@
-import { postGroup, getAllGroups, getAllSubs, getPostsGyGroupId, postNewRequest, getAllRequests } from "../models/Group.js";
+import { postGroup, getAllGroups, getAllSubsForGroup, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest } from "../models/Group.js";
 import { ApiError } from "../helpers/errorClass.js";
 import fs from "fs";
 import path from "path";
@@ -76,7 +76,7 @@ async function getGroups(req, res, next){
 async function getSubs(req, res, next) {
     try {
         if(!req.body.group_id || req.body.group_id.length === 0) return next(new ApiError('Invalid groupId for group', 400));
-        const response = await getAllSubs(req.body.group_id)
+        const response = await getAllSubsForGroup(req.body.group_id)
         if(response.rowCount > 0){
             return res.status(200).json(response.rows);
         }
@@ -113,4 +113,41 @@ async function getRequests(req, res, next) {
     }
 }
 
-export { postNewGroup, getGroups, getSubs, postRequest, getRequests };
+async function getGroupUsingId(req, res, next) {
+    try {
+        const response = await getGroupById(req.body.group_id)
+        if(response.rowCount > 0){
+            return res.status(200).json(response.rows);
+        }
+    } catch (error) {
+        console.error("Error in getGroupUsingId: ", error);
+        return next(error);
+    }
+}
+
+async function getRequestsByGId(req, res, next) {
+    try {
+        if(!req.body.group_id || req.body.group_id.length === 0) return next(new ApiError('Invalid groupId for group', 400));
+        const response = await getRequestsByGroupId(req.body.group_id)
+        if(response.rowCount > 0){
+            return res.status(200).json(response.rows);
+        }
+    } catch (error) {
+        console.error("Error in getRequestsByGId: ", error);
+        return next(error);
+    }
+}
+
+async function approveRequestById(req, res, next) {
+    try {
+        const response = await approveRequest(req.body.req_id)
+        if(response.rowCount > 0){
+            return res.status(200).json(response.rows);
+        }
+    } catch (error) {
+        console.error("Error in approveRequestById: ", error);
+        return next(error);
+    }
+}
+
+export { postNewGroup, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById };

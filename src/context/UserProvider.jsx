@@ -5,6 +5,7 @@ import axios from 'axios'
 const url = import.meta.env.VITE_API_URL
 
 export default function UserProvider({children}) {
+    const [currentGroup, setCurrentGroup] = useState([])
     const [groups, setGroups] = useState([])
     const userfromSessionStorage = sessionStorage.getItem('user')
     const [user, setUser] = useState(userfromSessionStorage ? JSON.parse(userfromSessionStorage) : {id: "", firstname: "", familyname: "", email: '', password: ''})
@@ -75,6 +76,22 @@ export default function UserProvider({children}) {
         }
     }
 
+    const getGroupById = async(group_id) => {
+        try {
+            const json = JSON.stringify({group_id: group_id})
+            const headers = {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `${user.token}`
+                }
+            }; 
+            const res = await axios.post(url + '/group/groupbyid', json, headers)
+            setCurrentGroup(res.data)
+        } catch (error) {
+            throw error
+        }
+    }
+
     const updateBio = (newBio) => {
         setUser (prevUser  => ({
             ...prevUser ,
@@ -83,7 +100,7 @@ export default function UserProvider({children}) {
     };
 
         return (
-            <UserContext.Provider value={{user, setUser, signUp, signIn, logOut, getToken, deleteAccount, getGroups, groups, setGroups, updateBio}}>
+            <UserContext.Provider value={{user, setUser, signUp, signIn, logOut, getToken, deleteAccount, getGroups, groups, setGroups, updateBio, getGroupById, currentGroup}}>
                 { children }
             </UserContext.Provider>
         )
