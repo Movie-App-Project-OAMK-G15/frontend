@@ -1,6 +1,6 @@
 import express from 'express';
 import { fetchReviews, createReview } from '../controllers/reviewController.js';
-import { auth } from '../helpers/auth.js';
+//import { auth } from '../helpers/auth.js';
 
 const reviewRouter = express.Router();
 
