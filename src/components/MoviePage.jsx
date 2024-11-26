@@ -1,19 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from './Navbar';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import ReviewForm from './ReviewForm';
-import ReviewList from './ReviewList';
-import { useUser } from '../context/useUser';
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Navbar from "./Navbar";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import ReviewForm from "./ReviewForm";
+import ReviewList from "./ReviewList";
+import { useUser } from "../context/useUser";
+//import BrowseReviewPage from "./BrowseReview";
 
 const MoviePage = () => {
-  const { user } = useUser(); // Get the current user's information (authentication context)
-  const { movieId } = useParams(); // Get the movieId from the route parameters
-  const [movie, setMovie] = useState(null); // State to store movie details
-  const [loading, setLoading] = useState(true); // State to manage loading state
-  const [error, setError] = useState(''); // State to store error messages
-  const [reviews, setReviews] = useState([]); // State to store reviews
+  //get user context
+  const { user } = useUser();
+  //get movieId from URL parameters
+  const { movieId } = useParams();
+  //state to store movie details
+  const [movie, setMovie] = useState(null);
+  //to manage loading state
+  const [loading, setLoading] = useState(true);
+  //to manage error state
+  const [error, setError] = useState("");
+  const [reviews, setReviews] = useState([]); //state to store reviews
 
    // TMDB API key from environment variables
   const tmdbkey = import.meta.env.VITE_TMDB_API_KEY;
@@ -25,7 +31,7 @@ const MoviePage = () => {
       const url = `https://api.themoviedb.org/3/movie/${movieId}?append_to_response=videos,credits,recommendations`;
       try {
         const response = await fetch(url, {
-          method: 'GET',
+          method: "GET",
           headers: {
             Authorization: `Bearer ${tmdbkey}`, // API key for authorization
           },
@@ -46,7 +52,9 @@ const MoviePage = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/reviews/${movieId}`);
+        const response = await fetch(
+          `http://localhost:3001/reviews/${movieId}`
+        );
         if (response.ok) {
           const data = await response.json();
           setReviews(data); // Set the fetched reviews
@@ -61,9 +69,9 @@ const MoviePage = () => {
     fetchReviews();
   }, [movieId]);
 
-  // Function to handle new review submission
+  //function to handle new review submission
   const handleReviewSubmit = (newReview) => {
-    // Add the new review to the front of the list (assuming new reviews are added first)
+    //add the new review to the front of the list (assuming new reviews are added first)
     setReviews((prevReviews) => [newReview, ...prevReviews]);
   };
 
@@ -107,7 +115,7 @@ const MoviePage = () => {
       <Navbar />
       <div className="container mt-4">
         <div className="row">
-          {/* Left Column: Poster and Title */}
+          {/*left Column: Poster and Title */}
           <div className="col-md-4 mb-4">
             <h1 className="mb-4">{movie?.title}</h1>
             {movie?.poster_path && (
@@ -119,25 +127,29 @@ const MoviePage = () => {
             )}
           </div>
 
-          {/* Right Column: Movie Details */}
+          {/*right Column: Movie Details */}
           <div className="col-md-8">
-            {/* About Section */}
+            {/*about Section */}
             <div className="card mb-4">
               <div className="card-body">
                 <h4>About the Movie</h4>
-                <p>{movie?.overview || 'No description available.'}</p>
+                <p>{movie?.overview || "No description available."}</p>
               </div>
             </div>
 
-            {/* Rating Section */}
+            {/*rating Section */}
             <div className="card mb-4">
               <div className="card-body">
                 <h4>Rating</h4>
-                <p>{movie?.vote_average ? `${movie.vote_average} / 10` : 'No rating available'}</p>
+                <p>
+                  {movie?.vote_average
+                    ? `${movie.vote_average} / 10`
+                    : "No rating available"}
+                </p>
               </div>
             </div>
 
-            {/* Trailer Section */}
+            {/*trailer Section */}
             {movie?.videos?.results?.length > 0 && (
               <div className="card mb-4">
                 <div className="card-body">
@@ -164,22 +176,31 @@ const MoviePage = () => {
         )}
 
         {/*review List Section */}
-        <div className="row mt-5">
-          <h4>User Reviews</h4>
-          <ReviewList movieId={movieId} reviews={reviews} onEdit={ handleEdit} onDelete={handleDelete} />
+        <div className="container mt-5">
+          <div className="row mt-5">
+            <h4>User Reviews</h4>
+            <ReviewList movieId={movieId} reviews={reviews.slice(0, 3)} /> {/* Show only the latest 2 or 3 reviews */}
+            
+            <Link to={`/reviews/${movieId}`} className="btn btn-primary">
+              Browse More Reviews
+            </Link>
+          </div>
         </div>
 
         {/* Recommended Movies Section */}
         <div className="row mt-5">
           <h4>Recommended Movies</h4>
           {movie?.recommendations?.results?.slice(0, 5).map((rec) => (
-            <div key={rec.id} className="col-md-2 col-sm-4 col-6 mb-4 text-center">
+            <div
+              key={rec.id}
+              className="col-md-2 col-sm-4 col-6 mb-4 text-center"
+            >
               <Link to={`/movie/${rec.id}`}>
                 <img
                   src={`https://image.tmdb.org/t/p/w200${rec.poster_path}`}
                   alt={rec.title}
                   className="rounded mb-2"
-                  style={{ width: '100%' }}
+                  style={{ width: "100%" }}
                 />
                 <p className="small">{rec.title}</p>
               </Link>
