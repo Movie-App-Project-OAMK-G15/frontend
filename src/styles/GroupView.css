@@ -1,0 +1,55 @@
+/* General Container Styling */
+.container .col-md-9 {
+    max-width: 75%; /* Control width of the header and subscribers container */
+    margin: 0 auto; /* Center them */
+}
+
+/* Group Header Styles */
+.group-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.group-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.group-description {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Subscribers Section */
+.subscribers-container {
+    width: 40%; /* Ensure subscribers section is 40% of the header */
+}
+
+.subscriber-box {
+    width: 20%; /* 4 subscribers per row */
+    text-align: center;
+}
+
+.subscriber-photo {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    padding: 2px;
+}
+
+.subscriber-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Shadow and Spacing */
+.shadow-sm {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.text-muted {
+    color: #888 !important;
+}
