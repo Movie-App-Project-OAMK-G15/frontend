@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { Router } from "express"
 import { auth } from '../helpers/auth.js';
-import { postNewGroup, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById } from "../controllers/GroupController.js";
+import { postNewGroup, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail } from "../controllers/GroupController.js";
 
 dotenv.config();
 const groupRouter = Router()
@@ -21,5 +21,9 @@ groupRouter.get('/allrequests', getRequests)
 groupRouter.post('/requestsforgroup', auth, getRequestsByGId)
 
 groupRouter.get('/getgroups', getGroups)
+
+groupRouter.get('/getfollowersall', getFollowersAll)
+
+groupRouter.post('/removeuser', auth, removeSubscriberByMail)
 
 export default groupRouter

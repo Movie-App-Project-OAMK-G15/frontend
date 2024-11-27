@@ -50,7 +50,13 @@ const approveRequest = async(req_id) => {
 }
 
 const getAllFollowers = async() => {
-    return pool.query("SELECT * FROM group_requests;")
+    return pool.query("SELECT * FROM get_all_subscribers();")
 }
 
-export { postGroup, getAllGroups, getAllSubsForGroup, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest }
+const removeSubscriber = async(uMail) => {
+    return pool.query("DELETE FROM group_subscriptions WHERE user_email = ($1)",
+        [uMail]
+    )
+}
+
+export { postGroup, getAllGroups, getAllSubsForGroup, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeSubscriber }

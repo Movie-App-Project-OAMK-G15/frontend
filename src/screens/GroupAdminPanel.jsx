@@ -1,7 +1,8 @@
 import Navbar from "../components/Navbar"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useUser } from "../context/useUser"
+import GroupView from "./GroupView"
 import '../styles/GroupAdminPanel.css'
 import axios from "axios"
 const backendLink = import.meta.env.VITE_API_URL
@@ -11,6 +12,7 @@ export default function GroupAdminPanel(){
     const [subs, setSubs] = useState([])
     const [requests, setRequests] = useState([])
     const {user, groups, getGroups, currentGroup, getGroupById} = useUser()
+    const navigate = useNavigate()
     useEffect(() => {
         getGroupById(groupId)
         getMyRequsets(groupId)
@@ -80,8 +82,26 @@ export default function GroupAdminPanel(){
         }
     }
 
-    async function removeFromTheGroup(id) {
-        
+    async function removeFromTheGroup(mail) {
+        try {
+            const usermail = {
+                email: mail
+            }
+            const json = JSON.stringify(usermail)
+            const headers = {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `${user.token}`
+                }
+            };
+            const response = await axios.post(backendLink + '/group/removeuser', json, headers)
+            if(response.data.status){
+                alert('user has been deleted')
+                setSubs(subs.filter(sub => sub.email != mail))
+            }
+        } catch (error) {
+            alert(error)
+        }
     }
 
     return (
@@ -112,7 +132,7 @@ export default function GroupAdminPanel(){
                 <div className="request-name">
                     {sub.firstname} {sub.familyname}
                 </div>
-                <button className="request-button" onClick={() => removeFromTheGroup(sub.user_email)}>
+                <button className="request-button" onClick={() => removeFromTheGroup(sub.email)}>
                     Remove from the group
                 </button>
             </div>

@@ -21,7 +21,7 @@ export default function GroupList(){
     useEffect(() => {
         getGroups()
         findRequests()
-        //findFollowers()
+        findFollowers()
     }, [refresh])
 
     async function findRequests() {
@@ -45,7 +45,7 @@ export default function GroupList(){
                     "Content-Type": "application/json",
                 }
             };
-            const response = await axios.get(backendLink + "/group/getfollowers", headers)
+            const response = await axios.get(backendLink + "/group/getfollowersall", headers)
             setFollowers(response.data)
             console.log(response.data)
         } catch (error) {
@@ -92,6 +92,11 @@ export default function GroupList(){
             alert("You are not an admin!")
         }
     }
+
+    function viewGroupPage(group_id){
+        navigate(`/groups/${group_id}`)
+    }
+
     return (
         <>
             <Navbar/>
@@ -99,54 +104,70 @@ export default function GroupList(){
             <h2>List of available groups</h2>
             <div className="groups-container">
             {groups.map((group) => (
-                <div className="group-item" key={group.group_id}>
-                    <img 
-                        className="group-image"
-                        src={`/server${group.photo}` || "https://via.placeholder.com/150x150/e0fff/FFF?text=No+photo+available+yet+:("} 
-                        alt={`${group.group_name} photo`} 
-                    />
-                    <div className="group-details">
-                        <p className="group-name">{group.group_name}</p>
-                        <p className="group-description">{group.description}</p>
+                    <div className="group-item" key={group.group_id}>
+                        <img 
+                            className="group-image"
+                            src={`/server${group.photo}` || "https://via.placeholder.com/150x150/e0fff/FFF?text=No+photo+available+yet+:("} 
+                            alt={`${group.group_name} photo`} 
+                        />
+                        <div className="group-details">
+                            <p className="group-name">{group.group_name}</p>
+                            <p className="group-description">{group.description}</p>
+                        </div>
+                        {user.email === group.admin_email ? (
+                            <button 
+                                className="subscribe-button" 
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Prevent navigation
+                                    moveToAdminPanel(group.group_id);
+                                }}
+                            >
+                                Admin panel
+                            </button>
+                        ) : user.token ? (
+                            requests.some
+                            (req => req.user_email === user.email && 
+                            group.group_id === req.group_id) ? (
+                                <button 
+                                    className="subscribe-button" 
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // Prevent navigation
+                                        alert("Your request to join the group is still pending. Wait for group admin to approve it.");
+                                    }}
+                                >
+                                    Request pending
+                                </button>
+                            ) : followers.some(follower => 
+                                follower.email === user.email && 
+                                follower.group_ids.some(gId => gId === group.group_id)
+                            ) ? (
+                                <button 
+                                    className="subscribe-button" 
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // Prevent navigation
+                                        viewGroupPage(group.group_id); // Function to view group page
+                                    }}
+                                >
+                                    View page
+                                </button>
+                            ) : (
+                                <button 
+                                    className="subscribe-button" 
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // Prevent navigation
+                                        handleSubscribe(group.group_id);
+                                    }}
+                                >
+                                    Subscribe
+                                </button>
+                            )
+                        ) : (
+                            <button className="subscribe-button" onClick={(e) => e.stopPropagation()}>
+                                Log in to subscribe
+                            </button>
+                        )}
                     </div>
-                    {user.email == group.admin_email ? (
-                        <button 
-                        className="subscribe-button" 
-                        onClick={(e) => {
-                            e.stopPropagation(); // Prevent navigation
-                            moveToAdminPanel(group.group_id)
-                        }}
-                    >
-                        Admin panel
-                    </button>
-                    ) : (user.token ? requests.filter(req => req.user_email === user.email && group.group_id === req.group_id).length > 0 ? (
-                        <button 
-                            className="subscribe-button" 
-                            onClick={(e) => {
-                                e.stopPropagation(); // Prevent navigation
-                                alert("Your request to join the group is still pending. Wait for group admin to approve it.");
-                            }}
-                        >
-                            Request pending
-                        </button>
-                    ) : (
-                        <button 
-                            className="subscribe-button" 
-                            onClick={(e) => {
-                                e.stopPropagation(); // Prevent navigation
-                                handleSubscribe(group.group_id);
-                            }}
-                        >
-                            Subscribe
-                        </button>
-                    )
-                     : ( 
-                        <button className="subscribe-button" onClick={(e) => e.stopPropagation()}>
-                            Log in to subscribe
-                        </button>
-                    ))}
-                </div>
-            ))}
+                ))}
             </div>
         </>
     )

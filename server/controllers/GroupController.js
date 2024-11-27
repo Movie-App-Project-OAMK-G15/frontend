@@ -1,4 +1,4 @@
-import { postGroup, getAllGroups, getAllSubsForGroup, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest } from "../models/Group.js";
+import { postGroup, getAllGroups, getAllSubsForGroup, removeSubscriber, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers } from "../models/Group.js";
 import { ApiError } from "../helpers/errorClass.js";
 import fs from "fs";
 import path from "path";
@@ -113,6 +113,18 @@ async function getRequests(req, res, next) {
     }
 }
 
+async function getFollowersAll(req, res, next) {
+    try {
+        const response = await getAllFollowers()
+        if(response.rowCount > 0){
+            return res.status(200).json(response.rows);
+        }
+    } catch (error) {
+        console.error("Error in getRequests: ", error);
+        return next(error);
+    }
+}
+
 async function getGroupUsingId(req, res, next) {
     try {
         const response = await getGroupById(req.body.group_id)
@@ -150,4 +162,16 @@ async function approveRequestById(req, res, next) {
     }
 }
 
-export { postNewGroup, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById };
+async function removeSubscriberByMail(req, res, next) {
+    try {
+        const response = await removeSubscriber(req.body.email)
+        if(response.rowCount > 0){
+            return res.status(200).json({status: `user ${req.body.email} was deleted from the group`});
+        }
+    } catch (error) {
+        console.error("Error in approveRequestById: ", error);
+        return next(error);
+    }
+}
+
+export { postNewGroup, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail };

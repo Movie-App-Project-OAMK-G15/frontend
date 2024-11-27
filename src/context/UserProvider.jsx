@@ -86,6 +86,7 @@ export default function UserProvider({children}) {
                 }
             }; 
             const res = await axios.post(url + '/group/groupbyid', json, headers)
+            console.log(res.data)
             setCurrentGroup(res.data)
         } catch (error) {
             throw error
