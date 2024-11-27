@@ -129,7 +129,7 @@ export default function GroupList(){
                         >
                             Request pending
                         </button>
-                    ) : (followers.filter())(
+                    ) : (
                         <button 
                             className="subscribe-button" 
                             onClick={(e) => {
