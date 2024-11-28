@@ -179,7 +179,7 @@ const MoviePage = () => {
         <div className="container mt-5">
           <div className="row mt-5">
             <h4>User Reviews</h4>
-            <ReviewList movieId={movieId} reviews={reviews.slice(0, 3)} /> {/* Show only the latest 2 or 3 reviews */}
+            <ReviewList movieId={movieId} reviews={reviews.slice(0, 3)} onEdit={handleEdit} onDelete={handleDelete}/> {/* Show only the latest 2 or 3 reviews */}
             
             <Link to={`/reviews/${movieId}`} className="btn btn-primary">
               Browse More Reviews
