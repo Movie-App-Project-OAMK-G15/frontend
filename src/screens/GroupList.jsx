@@ -107,7 +107,7 @@ export default function GroupList(){
                     <div className="group-item" key={group.group_id}>
                         <img 
                             className="group-image"
-                            src={`/server${group.photo}` || "https://via.placeholder.com/150x150/e0fff/FFF?text=No+photo+available+yet+:("} 
+                            src={`${group.photo}` || "https://via.placeholder.com/150x150/e0fff/FFF?text=No+photo+available+yet+:("} 
                             alt={`${group.group_name} photo`} 
                         />
                         <div className="group-details">

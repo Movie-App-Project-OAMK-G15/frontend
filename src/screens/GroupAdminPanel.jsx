@@ -71,12 +71,33 @@ export default function GroupAdminPanel(){
                 }
             };
             const response = await axios.post(backendLink + '/group/approverequest', json, headers)
-            console.log(response.data)
             setSubs((prevSubs) => [...prevSubs, response.data[0]]);
             setRequests((prevRequests) =>
                 prevRequests.filter((req) => req.request_id !== req_id)
             );
             console.log(response.data)
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+    async function rejectRequest(req_Id) {
+        try {
+            const reqId = {
+                req_id: parseInt(req_Id)
+            }
+            const json = JSON.stringify(reqId)
+            const headers = {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `${user.token}`
+                }
+            };
+            const response = await axios.post(backendLink + '/group/rejectrequest', json, headers)
+            console.log(response.data)
+            setRequests((prevRequests) =>
+                prevRequests.filter((req) => req.request_id !== req_Id)
+            );
         } catch (error) {
             alert(error)
         }
@@ -117,6 +138,9 @@ export default function GroupAdminPanel(){
                     <div className="request-name">
                         {req.firstname} {req.familyname}
                     </div>
+                    <button className="request-button" onClick={() => rejectRequest(req.request_id)}>
+                        Reject Request
+                    </button>
                     <button className="request-button" onClick={() => approveRequest(req.request_id)}>
                         Approve Request
                     </button>

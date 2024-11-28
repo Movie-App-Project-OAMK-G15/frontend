@@ -59,4 +59,10 @@ const removeSubscriber = async(uMail) => {
     )
 }
 
-export { postGroup, getAllGroups, getAllSubsForGroup, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeSubscriber }
+const removeRequest = async(req_id) => {
+    return pool.query('delete from group_requests where request_id = $1',
+        [req_id]
+    )
+}
+
+export { postGroup, getAllGroups, getAllSubsForGroup, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeSubscriber, removeRequest }

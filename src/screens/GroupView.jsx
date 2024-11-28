@@ -85,9 +85,7 @@ export default function GroupView(){
                 </div>
             </div>
         </div>
-    ))}
-</>
-
-    
+        ))}
+    </>
     )
 }

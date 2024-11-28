@@ -16,33 +16,34 @@ export default function CreateGroup(){
     const {user} = useUser() 
     
     const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setGroupPhoto(reader.result); // Base64 encoded string
-            };
-            reader.readAsDataURL(file); // Convert file to Base64
-        }    
+        setGroupPhoto(event.target.files[0]);
     }
     
     const handleSubmit = async(event) => {
         event.preventDefault()
-        const groupInfo = {
-            adm_mail: `${user.email}`,
-            g_name: gName,
-            description: gDesc,
-            photo: groupPhoto,
-        }
-        const json = JSON.stringify(groupInfo)
+
+        // Create FormData object to include the file and other data
+        const formData = new FormData();
+        formData.append("adm_mail", user.email); // Admin email
+        formData.append("g_name", gName);        // Group name
+        formData.append("description", gDesc);  // Group description
+        formData.append("photo", groupPhoto);
+        // const groupInfo = {
+        //     adm_mail: `${user.email}`,
+        //     g_name: gName,
+        //     description: gDesc,
+        //     photo: groupPhoto,
+        // }
+        // console.log(groupInfo)
+        // const json = JSON.stringify(groupInfo)
         const headers = {
             headers: {
-                "Content-Type": "application/json",
                 "Authorization": `${user.token}`,
             }
-        };        
+        };    
+        console.log(formData)    
         try{
-            const response = await axios.post(url + '/group/newgroup', json, headers)
+            const response = await axios.post(url + '/group/newgroup', formData, headers)
             console.log(response.data)
             if(response.data.state){
                 alert(response.data.state)

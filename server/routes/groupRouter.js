@@ -1,12 +1,14 @@
 import dotenv from 'dotenv';
+import multer from 'multer';
+const upload = multer({ dest: 'uploads/' });
 import { Router } from "express"
 import { auth } from '../helpers/auth.js';
-import { postNewGroup, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail } from "../controllers/GroupController.js";
+import { postNewGroup, removeRequestById, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail } from "../controllers/GroupController.js";
 
 dotenv.config();
 const groupRouter = Router()
 
-groupRouter.post('/newgroup', auth, postNewGroup)
+groupRouter.post('/newgroup', auth, upload.single('photo'), postNewGroup)
 
 groupRouter.post('/getfollowers', auth, getSubs)
 
@@ -23,6 +25,8 @@ groupRouter.post('/requestsforgroup', auth, getRequestsByGId)
 groupRouter.get('/getgroups', getGroups)
 
 groupRouter.get('/getfollowersall', getFollowersAll)
+
+groupRouter.post('/rejectrequest', auth, removeRequestById)
 
 groupRouter.post('/removeuser', auth, removeSubscriberByMail)
 
