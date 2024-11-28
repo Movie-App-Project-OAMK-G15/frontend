@@ -102,7 +102,39 @@ const MoviePage = () => {
     console.log(`Editing review with ID: ${reviewId}`);
     // Implement edit logic as needed
   };
-
+  // Function to handle review updates
+  const handleUpdate = async (reviewId, newContent, newRating) => {
+    try {
+      const response = await fetch(`http://localhost:3001/reviews/${reviewId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userEmail: user.email, // User's email for authorization
+          reviewContent: newContent, // Updated review content
+          rating: newRating, // Updated review rating
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to update review');
+      }
+  
+      const updatedReview = await response.json();
+  
+      // Update the local state with the updated review
+      setReviews((prevReviews) =>
+        prevReviews.map((review) =>
+          review.id === reviewId ? updatedReview : review
+        )
+      );
+      //console.log('Review updated successfully');
+    } catch (err) {
+      console.error('Update failed', err);
+    }
+  };
+  
   // Display a loading message while fetching data
 
   if (loading) return <p>Loading...</p>;
@@ -179,7 +211,7 @@ const MoviePage = () => {
         <div className="container mt-5">
           <div className="row mt-5">
             <h4>User Reviews</h4>
-            <ReviewList movieId={movieId} reviews={reviews.slice(0, 3)} onEdit={handleEdit} onDelete={handleDelete}/> {/* Show only the latest 2 or 3 reviews */}
+            <ReviewList movieId={movieId} reviews={reviews.slice(0, 3)} onEdit={handleEdit} onDelete={handleDelete} onUpdate={handleUpdate}/> {/* Show only the latest 2 or 3 reviews */}
             
             <Link to={`/reviews/${movieId}`} className="btn btn-primary">
               Browse More Reviews
