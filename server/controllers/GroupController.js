@@ -1,4 +1,4 @@
-import { postGroup, getAllGroups, getAllSubsForGroup, removeSubscriber, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeRequest } from "../models/Group.js";
+import { postGroup, getAllGroups, getAllSubsForGroup, removeSubscriber, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeRequest } from "../models/Group.js";
 import { ApiError } from "../helpers/errorClass.js";
 import { uploadToImgBB } from "../helpers/uploadPhoto.js";
 import multer from "multer";
@@ -155,4 +155,16 @@ async function removeRequestById(req, res, next) {
     }
 }
 
-export { postNewGroup, removeRequestById, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail };
+async function getPostsGyGroup(req, res, next) {
+    try {
+        const response = await getPostsGyGroupId(req.body.group_id)
+        if(response.rowCount > 0){
+            return res.status(200).json(response.rows);
+        }
+    } catch (error) {
+        console.error("Error in removeRequestById: ", error);
+        return next(error);
+    }
+}
+
+export { postNewGroup, getPostsGyGroup, removeRequestById, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail };

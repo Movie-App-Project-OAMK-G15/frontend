@@ -11,7 +11,7 @@ export default function GroupAdminPanel(){
     const {groupId} = useParams()
     const [subs, setSubs] = useState([])
     const [requests, setRequests] = useState([])
-    const {user, groups, getGroups, currentGroup, getGroupById} = useUser()
+    const {user, currentGroup, getGroupById} = useUser()
     const navigate = useNavigate()
     useEffect(() => {
         getGroupById(groupId)
@@ -129,6 +129,7 @@ export default function GroupAdminPanel(){
         <>
         <Navbar/>
         <h2>Admin Panel for <p className="group-name">{currentGroup.map(group => group.group_name).join(", ")}</p></h2>
+        <button className="request-button" onClick={() => navigate(`/groups/${groupId}`)}>View group</button>
         <div className="group-header">
             <p>Requests to join the group:</p>
         </div>

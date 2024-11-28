@@ -10,11 +10,29 @@ const url = import.meta.env.VITE_API_URL
 export default function GroupView(){
     const {currentGroup, getGroupById, user} = useUser()
     const [subs, setSubs] = useState([])
+    const [posts, setPosts] = useState([])
     const {groupId} = useParams()
     useEffect(() => {
         getGroupById(groupId)
         getSubsForGroup()
+        getPosts()
     }, [])
+
+    async function getPosts() {
+        try {
+            const json = JSON.stringify({group_id: groupId})
+            const headers = {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `${user.token}`,
+                }
+            }; 
+            const response = await axios.post(url + '/group/getpostsfrogroup', json, headers)
+            setPosts(response.data)
+        } catch (error) {
+            alert(error)
+        }
+    }
 
     async function getSubsForGroup() {
         try {
@@ -45,7 +63,7 @@ export default function GroupView(){
                         {/* Group Header Section */}
                         <div className="d-flex align-items-center">
                             <img 
-                                src={`/server${item.photo}` || "https://via.placeholder.com/100x100"} 
+                                src={`${item.photo}` || "https://via.placeholder.com/100x100"} 
                                 alt={`${item.group_name} logo`} 
                                 className="group-image img-fluid rounded"
                             />
@@ -83,6 +101,11 @@ export default function GroupView(){
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="group-posts">
+                <h2>Posts</h2>
+                <button>Add new post</button>
+                                
             </div>
         </div>
         ))}
