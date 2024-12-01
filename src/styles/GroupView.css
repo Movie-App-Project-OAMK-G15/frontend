@@ -1,10 +1,10 @@
-/* General Container Styling */
+
 .container .col-md-9 {
-    max-width: 75%; /* Control width of the header and subscribers container */
-    margin: 0 auto; /* Center them */
+    max-width: 75%; 
+    margin: 0 auto; 
 }
 
-/* Group Header Styles */
+
 .group-image {
     width: 100px;
     height: 100px;
@@ -21,13 +21,13 @@
     color: #6c757d;
 }
 
-/* Subscribers Section */
+
 .subscribers-container {
-    width: 40%; /* Ensure subscribers section is 40% of the header */
+    width: 40%; 
 }
 
 .subscriber-box {
-    width: 20%; /* 4 subscribers per row */
+    width: 20%; 
     text-align: center;
 }
 
@@ -45,7 +45,6 @@
     color: #555;
 }
 
-/* Shadow and Spacing */
 .shadow-sm {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

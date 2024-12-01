@@ -1,7 +1,6 @@
-import { postGroup, getAllGroups, getAllSubsForGroup, removeSubscriber, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeRequest } from "../models/Group.js";
+import { postGroup, getAllGroups, getAllSubsForGroup, deleteGroup, unfollowGroup, removeSubscriber, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeRequest } from "../models/Group.js";
 import { ApiError } from "../helpers/errorClass.js";
 import { uploadToImgBB } from "../helpers/uploadPhoto.js";
-import multer from "multer";
 
 // Ensure the uploads folder exists and handle the file path
 async function postNewGroup(req, res, next) {
@@ -155,6 +154,30 @@ async function removeRequestById(req, res, next) {
     }
 }
 
+async function unfollowGroupByEmail(req, res, next) {
+    try {
+        const { group_id, user_email } = req.body;
+
+        if (!group_id || !user_email) {
+            return res.status(400).json({ error: "Group ID and user email are required." });
+        }
+
+        const { rows } = await unfollowGroup(group_id, user_email);
+
+        if (rows && rows.length > 0) {
+            return res.status(200).json({
+                status: `Successfully unfollowed group.`,
+            });
+        } else {
+            return res.status(404).json({ status: "No data was deleted. User may not be subscribed to the group." });
+        }
+    } catch (error) {
+        console.error("Error in unfollowGroupByEmail: ", error);
+        return next(error);
+    }
+
+}
+
 async function getPostsGyGroup(req, res, next) {
     try {
         const response = await getPostsGyGroupId(req.body.group_id)
@@ -167,4 +190,16 @@ async function getPostsGyGroup(req, res, next) {
     }
 }
 
-export { postNewGroup, getPostsGyGroup, removeRequestById, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail };
+async function deleteGroupById(req, res, next) {
+    try {
+        const response = await deleteGroup(req.body.group_id)
+        if(response.rowCount > 0){
+            return res.status(200).json({status: `group with id ${req.body.group_id} has been deleted`});
+        }
+    } catch (error) {
+        console.error("Error in deleteGroupById: ", error);
+        return next(error);
+    }
+}
+
+export { postNewGroup, unfollowGroupByEmail, deleteGroupById, getPostsGyGroup, removeRequestById, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail };

@@ -18,7 +18,7 @@ import GroupList from './screens/GroupList.jsx'
 import GroupView from './screens/GroupView.jsx'
 import GroupAdminPanel from './screens/GroupAdminPanel.jsx'
 import BrowseReviewPage from './components/BrowseReview.jsx'
-
+import AddGroupPosts from './screens/AddGroupPost.jsx'
 
 //creating router for navigation and authentication
 const router = createBrowserRouter([
@@ -83,6 +83,10 @@ const router = createBrowserRouter([
       {
         path: 'groups/admin/:groupId',
         element: <GroupAdminPanel/>
+      },
+      {
+        path: 'groups/newpost/:groupId',
+        element: <AddGroupPosts/>
       },
     ]
   }

@@ -2,7 +2,6 @@ import Navbar from "../components/Navbar"
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useUser } from "../context/useUser"
-import GroupView from "./GroupView"
 import '../styles/GroupAdminPanel.css'
 import axios from "axios"
 const backendLink = import.meta.env.VITE_API_URL
@@ -125,11 +124,31 @@ export default function GroupAdminPanel(){
         }
     }
 
+    async function deleteGroup() {
+       try {
+        const json = JSON.stringify({group_id: groupId})
+        const headers = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `${user.token}`
+            }
+        };
+        const response = await axios.post(backendLink + '/group/deletegroup', json, headers)
+        if(response.data.status){
+            alert('group has been deleted')
+            navigate('/groups')
+        }
+       } catch (error) {
+        alert(error)
+       } 
+    }
+
     return (
         <>
         <Navbar/>
         <h2>Admin Panel for <p className="group-name">{currentGroup.map(group => group.group_name).join(", ")}</p></h2>
         <button className="request-button" onClick={() => navigate(`/groups/${groupId}`)}>View group</button>
+        <button className="request-button" onClick={deleteGroup}>Delete group</button>
         <div className="group-header">
             <p>Requests to join the group:</p>
         </div>

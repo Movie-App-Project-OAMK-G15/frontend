@@ -61,6 +61,7 @@ CREATE TABLE group_posts (
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
     image VARCHAR(255),  -- Optional image field; can be a URL or file path
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Automatically sets the timestamp when the post is created
     FOREIGN KEY (user_email) REFERENCES account(email) ON DELETE CASCADE,
     FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE
 );

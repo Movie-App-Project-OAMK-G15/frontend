@@ -28,14 +28,6 @@ export default function CreateGroup(){
         formData.append("g_name", gName);        // Group name
         formData.append("description", gDesc);  // Group description
         formData.append("photo", groupPhoto);
-        // const groupInfo = {
-        //     adm_mail: `${user.email}`,
-        //     g_name: gName,
-        //     description: gDesc,
-        //     photo: groupPhoto,
-        // }
-        // console.log(groupInfo)
-        // const json = JSON.stringify(groupInfo)
         const headers = {
             headers: {
                 "Authorization": `${user.token}`,
@@ -62,23 +54,52 @@ export default function CreateGroup(){
         <>
             <Navbar/>
             <ErrorNotification message={notificationMessage} type={type}/>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Group name:</label>
-                    <input id='group_name' type='text' value={gName} onChange={event => setGname(event.target.value)}/>
+            <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm bg-light">
+                <div className="mb-3">
+                    <label htmlFor="group_name" className="form-label">
+                        Group Name:
+                    </label>
+                    <input
+                        id="group_name"
+                        type="text"
+                        value={gName}
+                        onChange={(event) => setGname(event.target.value)}
+                        className="form-control"
+                        placeholder="Enter the group name"
+                    />
                 </div>
-                <div>
-                    <label>Group description:</label>
-                    <input id='email_field' type='text' value={gDesc} onChange={event => setGdesc(event.target.value)}/>
+                <div className="mb-3">
+                    <label htmlFor="group_description" className="form-label">
+                        Group Description:
+                    </label>
+                    <textarea
+                        id="group_description"
+                        value={gDesc}
+                        onChange={(event) => setGdesc(event.target.value)}
+                        className="form-control"
+                        rows="4" // Adjust the size of the description field
+                        placeholder="Enter the group description"
+                    ></textarea>
                 </div>
-                <div>
-                    <label>Group Photo</label>
-                    <input type="file" accept="image/*" onChange={handleFileChange} />
+                <div className="mb-3">
+                    <label htmlFor="group_photo" className="form-label">
+                        Group Photo:
+                    </label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="form-control"
+                        id="group_photo"
+                    />
                 </div>
-                <div>
-                    <button id="create_group_submit">Create</button>
+                <div className="text-center">
+                    <button id="create_group_submit" className="btn btn-primary">
+                        Create Group
+                    </button>
                 </div>
             </form>
+
         </>
     )
 }

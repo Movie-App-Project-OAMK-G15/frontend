@@ -22,7 +22,7 @@ const getAllSubsForGroup = async(group_id) => {
 }
 
 const getPostsGyGroupId = async(group_id) => {
-    return pool.query("SELECT * FROM group_posts WHERE group_id = $1",
+    return pool.query("SELECT * FROM get_posts_with_user_info_by_group($1)",
         [group_id]
     )
 }
@@ -65,4 +65,34 @@ const removeRequest = async(req_id) => {
     )
 }
 
-export { postGroup, getAllGroups, getAllSubsForGroup, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeSubscriber, removeRequest }
+const deleteGroup = async(group_id) => {
+    return pool.query('DELETE FROM groups WHERE group_id = $1;',
+        [group_id]
+    )
+}
+
+const unfollowGroup = async(group_id, user_email) => {
+    const deleteQuery = `
+         WITH deleted_subscriptions AS (
+            DELETE FROM group_subscriptions
+            WHERE group_id = $1 AND user_email = $2
+            RETURNING group_id, user_email
+        ),
+        deleted_posts AS (
+            DELETE FROM group_posts
+            WHERE group_id = $1 AND user_email = $2
+            RETURNING post_id
+        ),
+        deleted_comments AS (
+            DELETE FROM comments
+            WHERE user_email = $2 OR post_id IN (SELECT post_id FROM deleted_posts)
+            RETURNING comment_id
+        )
+        SELECT 
+            (SELECT COUNT(*) FROM deleted_subscriptions) AS subscriptions_deleted;
+    `;
+    return pool.query(deleteQuery, [group_id, user_email]
+    )
+}
+
+export { postGroup, unfollowGroup, deleteGroup, getAllGroups, getAllSubsForGroup, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeSubscriber, removeRequest }

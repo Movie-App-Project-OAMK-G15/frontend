@@ -5,6 +5,9 @@ dotenv.config();
 
 const uploadToImgBB = async (filePath) => {
     try {
+        if(!filePath){
+            return next()
+        }
         const imageData = fs.readFileSync(filePath); // Read the image file
         const base64Image = imageData.toString('base64');
         const response = await axios.post(
