@@ -1,4 +1,4 @@
-import { getReviewsByMovieId, addReview, deleteReview } from '../models/Review.js';
+import { getReviewsByMovieId, addReview, deleteReview, getReviewByIdAndUserEmail, updateReview } from '../models/Review.js';
 
 // Example usage
 export const fetchReviews = async (req, res) => {
@@ -42,5 +42,30 @@ export const removeReview = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(400).json({ error: error.message });
+  }
+};
+
+// Update review function
+export const updateReviewHandler = async (req, res) => {
+  //console.log('Request body:', req.body); // Debugging
+
+  const { reviewId } = req.params; // Extract reviewId from request params
+  const { reviewContent, rating, userEmail } = req.body; // Extract data from request body
+
+  try {
+    // Verify that the user owns the review
+    const existingReview = await getReviewByIdAndUserEmail(reviewId, userEmail);
+
+    if (!existingReview) {
+      return res.status(403).json({ error: 'Unauthorized to update this review' });
+    }
+
+    // Update the review in the database
+    const updatedReview = await updateReview(reviewId, reviewContent, rating);
+
+    res.status(200).json(updatedReview); // Respond with the updated review
+  } catch (err) {
+    console.error('Error updating review:', err.message);
+    res.status(500).json({ error: 'Failed to update review' });
   }
 };

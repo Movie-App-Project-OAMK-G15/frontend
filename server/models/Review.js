@@ -33,3 +33,28 @@ export const deleteReview = async (reviewId, userEmail) => {
   
   return result.rows[0];
 };
+
+// Fetch a review by ID and user email
+export const getReviewByIdAndUserEmail = async (reviewId, userEmail) => {
+  const result = await pool.query(
+    'SELECT * FROM review WHERE review_id = $1 AND user_email = $2',
+    [reviewId, userEmail]
+  );
+  return result.rows[0];
+};
+
+// Update a review by ID
+export const updateReview = async (reviewId, reviewContent, rating) => {
+  try {
+  const result = await pool.query(
+    'UPDATE review SET review_content = $1, rating = $2, created_at = NOW() WHERE review_id = $3 RETURNING *',
+    [reviewContent, rating, reviewId]
+  );
+  return result.rows[0]; // Return the updated review
+  
+  } catch (err) {
+    console.error('Database update error:', err);
+    throw new Error('Database update failed');
+  }
+
+};
