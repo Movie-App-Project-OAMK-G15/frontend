@@ -47,7 +47,7 @@ export const getReviewByIdAndUserEmail = async (reviewId, userEmail) => {
 export const updateReview = async (reviewId, reviewContent, rating) => {
   try {
   const result = await pool.query(
-    'UPDATE review SET review_content = $1, rating = $2, created_at = NOW() WHERE review_id = $3 RETURNING *',
+    'UPDATE review SET review_content = $1, rating = $2, created_at = NOW() WHERE review_id = $3 RETURNING review_id AS id, user_email, review_content, movie_id, rating, created_at',
     [reviewContent, rating, reviewId]
   );
   return result.rows[0]; // Return the updated review
