@@ -53,6 +53,12 @@ const getAllFollowers = async() => {
     return pool.query("SELECT * FROM get_all_subscribers();")
 }
 
+const editGroupInfo = async(group_name, description, photo, group_id) => {
+    return pool.query("UPDATE groups SET group_name = $1, description = $2, photo = $3 WHERE group_id = $4;",
+        [group_name, description, photo, group_id]
+    )
+}
+
 const removeSubscriber = async(uMail) => {
     return pool.query("DELETE FROM group_subscriptions WHERE user_email = ($1)",
         [uMail]
@@ -95,4 +101,4 @@ const unfollowGroup = async(group_id, user_email) => {
     )
 }
 
-export { postGroup, unfollowGroup, deleteGroup, getAllGroups, getAllSubsForGroup, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeSubscriber, removeRequest }
+export { postGroup, editGroupInfo, unfollowGroup, deleteGroup, getAllGroups, getAllSubsForGroup, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeSubscriber, removeRequest }

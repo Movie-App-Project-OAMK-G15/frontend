@@ -12,6 +12,12 @@ export default function GroupAdminPanel(){
     const [requests, setRequests] = useState([])
     const {user, currentGroup, getGroupById} = useUser()
     const navigate = useNavigate()
+
+    const [editMode, setEditMode] = useState(false) // State for toggle edit mode
+    const [groupName, setGroupName] = useState("") // State for group name
+    const [groupDescription, setGroupDescription] = useState("") // State for group description
+    const [groupPhoto, setGroupPhoto] = useState(null) // State for group photo
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -125,7 +131,7 @@ export default function GroupAdminPanel(){
             const response = await axios.post(backendLink + '/group/removeuser', json, headers)
             if(response.data.status){
                 alert('user has been deleted')
-                setSubs(subs.filter(sub => sub.email != mail))
+                setSubs(subs.filter(sub => sub.email !== mail))
             }
         } catch (error) {
             alert(error)
@@ -133,6 +139,9 @@ export default function GroupAdminPanel(){
     }
 
     async function deleteGroup() {
+        if(!window.confirm('Are you sure you want to delete your group?')){
+            return
+        }
        try {
         const json = JSON.stringify({group_id: groupId})
         const headers = {
@@ -151,45 +160,176 @@ export default function GroupAdminPanel(){
        } 
     }
 
+    // Toggle edit mode and pre-fill data
+    const handleEditClick = () => {
+        setEditMode(true)
+        const group = currentGroup[0]; // Assuming only one group is returned
+        console.log(group)
+        setGroupName(group.group_name)
+        setGroupDescription(group.description)
+        //setGroupPhoto(group.photo) // Placeholder for group photo, may be updated when admin uploads a new photo
+    }
+
+    const handleCancelEdit = () => {
+        setEditMode(false)
+    }
+
+    async function handleEdit(e) {
+        e.preventDefault()
+        try {
+            const group = currentGroup[0];
+            const headers = {
+                headers: {
+                    "Authorization": `${user.token}`
+                }
+            };
+
+            const formData = new FormData();
+            formData.append("group_name", groupName); 
+            formData.append("description", groupDescription);        
+            formData.append("group_id", groupId);  
+            formData.append("photo", groupPhoto == null ? group.photo : groupPhoto);
+
+            const response = await axios.post(backendLink + '/group/editinfo', formData, headers)
+                if(response.data.status){
+                    alert('group info has been edited')
+                    navigate(`/groups/${groupId}`);
+                }else{
+                    alert('Something went wrong')
+                    return
+                }
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+    const handleFileChange = (event) => {
+        setGroupPhoto(event.target.files[0]);
+    }
+
+    // UI for group editing
     return (
         <>
-        <Navbar/>
-        <h2>Admin Panel for <p className="group-name">{currentGroup.map(group => group.group_name).join(", ")}</p></h2>
-        <button className="request-button" onClick={() => navigate(`/groups/${groupId}`)}>View group</button>
-        <button className="request-button" onClick={deleteGroup}>Delete group</button>
-        <div className="group-header">
-            <p>Requests to join the group:</p>
-        </div>
-        <div className="requests-container">
-            {requests.length > 0 ? (requests.map((req, index) => (
-                <div className="request-card" key={index}>
-                    <div className="request-name">
-                        {req.firstname} {req.familyname}
-                    </div>
-                    <button className="request-button" onClick={() => rejectRequest(req.request_id)}>
-                        Reject Request
-                    </button>
-                    <button className="request-button" onClick={() => approveRequest(req.request_id)}>
-                        Approve Request
-                    </button>
+        <Navbar />
+        <div className="container mt-4">
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                {/* Header Section */}
+                <div className="d-flex align-items-center">
+                    {/* Group Image */}
+                    <img
+                        src={`${currentGroup.map(group => group.photo)}`}
+                        alt="Group"
+                        className="rounded-circle border me-3"
+                        style={{ width: '110px', height: '110px', objectFit: 'cover' }}
+                    />
+                    {/* Group Name */}
+                    <h5 className="mb-0">
+                        Admin Panel for <span className="text-primary">{currentGroup.map(group => group.group_name).join(", ")}</span>
+                    </h5>
                 </div>
-            ))) : <div>No requests</div>}
-        </div>
-        <div className="group-header">
-            <p>Subscribers:</p>
-        </div>
-        <div className="requests-container">
-            {subs.length ? (subs.map((sub, index) => (
-                <div className="request-card" key={index}>
-                <div className="request-name">
-                    {sub.firstname} {sub.familyname}
+                {/* Action Buttons */}
+                <div>
+                    <button className="btn btn-secondary me-2" onClick={() => navigate(`/groups/${groupId}`)}>View Group</button>
+                    <button className="btn btn-danger" onClick={deleteGroup}>Delete Group</button>
                 </div>
-                <button className="request-button" onClick={() => removeFromTheGroup(sub.email)}>
-                    Remove from the group
-                </button>
             </div>
-            ))) : <div>No followers</div>}
+
+            {/* Edit Button */}
+            <div className="text-end">
+                <button className="btn btn-primary" onClick={handleEditClick}>Edit Group</button>
+            </div>
+
+            {editMode ? (
+                <div className="mt-4">
+                    <h3>Edit Group Details</h3>
+                    <form onSubmit={handleEdit}>
+                        {/* Group Name */}
+                        <div className="mb-3">
+                            <label htmlFor="group_name" className="form-label">Group Name:</label>
+                            <input
+                                id="group_name"
+                                type="text"
+                                className="form-control"
+                                value={groupName}
+                                onChange={(e) => setGroupName(e.target.value)}
+                                placeholder="Enter group name"
+                            />
+                        </div>
+
+                        {/* Group Description */}
+                        <div className="mb-3">
+                            <label htmlFor="group_description" className="form-label">Group Description:</label>
+                            <textarea
+                                id="group_description"
+                                className="form-control"
+                                rows="4"
+                                value={groupDescription}
+                                onChange={(e) => setGroupDescription(e.target.value)}
+                                placeholder="Enter group description"
+                            />
+                        </div>
+
+                        {/* Group Photo */}
+                        <div className="mb-3">
+                            <label htmlFor="group_photo" className="form-label">Group Photo:</label>
+                            <input
+                                id="group_photo"
+                                type="file"
+                                className="form-control"
+                                accept="image/*"
+                                onChange={handleFileChange}
+                            />
+                        </div>
+
+                        {/* Save and Cancel buttons */}
+                        <div className="d-flex justify-content-between">
+                            <button type="submit" className="btn btn-success">Save Changes</button>
+                            <button type="button" className="btn btn-secondary" onClick={handleCancelEdit}>Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            ) : (
+                <>
+                    {/* Requests Section */}
+                    <div className="mt-4">
+                        <h3>Requests to Join the Group:</h3>
+                        <div className="list-group">
+                            {requests.length > 0 ? (
+                                requests.map((req, index) => (
+                                    <div className="list-group-item d-flex justify-content-between align-items-center" key={index}>
+                                        <span>{req.firstname} {req.familyname}</span>
+                                        <div>
+                                            <button className="btn btn-success btn-sm me-2" onClick={() => approveRequest(req.request_id)}>Approve</button>
+                                            <button className="btn btn-danger btn-sm" onClick={() => rejectRequest(req.request_id)}>Reject</button>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div>No pending requests</div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Subscribers Section */}
+                    <div className="mt-4">
+                        <h3>Subscribers:</h3>
+                        <div className="list-group">
+                            {subs.length ? (
+                                subs.map((sub, index) => (
+                                    <div className="list-group-item d-flex justify-content-between align-items-center" key={index}>
+                                        <span>{sub.firstname} {sub.familyname}</span>
+                                        <button className="btn btn-danger btn-sm" onClick={() => removeFromTheGroup(sub.email)}>Remove</button>
+                                    </div>
+                                ))
+                            ) : (
+                                <div>No followers</div>
+                            )}
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
+
         </>
     )
 }

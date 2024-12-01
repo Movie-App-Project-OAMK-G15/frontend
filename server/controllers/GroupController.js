@@ -1,4 +1,4 @@
-import { postGroup, getAllGroups, getAllSubsForGroup, deleteGroup, unfollowGroup, removeSubscriber, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeRequest } from "../models/Group.js";
+import { postGroup, getAllGroups, editGroupInfo, getAllSubsForGroup, deleteGroup, unfollowGroup, removeSubscriber, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeRequest } from "../models/Group.js";
 import { ApiError } from "../helpers/errorClass.js";
 import { uploadToImgBB } from "../helpers/uploadPhoto.js";
 
@@ -32,14 +32,35 @@ async function postNewGroup(req, res, next) {
 async function getGroups(req, res, next){
     try {
         const response = await getAllGroups()
-        if(response.rowCount > 0){
-            return res.status(200).json(response.rows);
-        }
+        return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getGroups: ", error);
         return next(error);
     }
 }
+
+async function editGroup(req, res, next){
+    try {
+        if(!req.body.group_name || req.body.group_name.length === 0) return next(new ApiError('Invalid group name for group', 400));
+        if(!req.body.description || req.body.description.length === 0) return next(new ApiError('Invalid description for group', 400));
+        if(!req.body.group_id) return next(new ApiError('Invalid photo for group', 400));
+
+        const { file } = req; // Access the uploaded file
+        if (!file) {
+            console.log(req.file)
+            const response = await editGroupInfo(req.body.group_name, req.body.description, req.body.photo, req.body.group_id)
+            return res.status(200).json({status: 'Group info edited', resp: response.rowCount});
+            // return res.status(400).json({ error: 'No file uploaded.' });
+        }
+        const imageUrl = await uploadToImgBB(file.path);
+        const response = await editGroupInfo(req.body.group_name, req.body.description, imageUrl, req.body.group_id)
+        return res.status(200).json({status: 'Group info edited', resp: response.rowCount});
+    } catch (error) {
+        console.error("Error in editGroup: ", error);
+        return next(error);
+    }
+}
+
 
 async function getSubs(req, res, next) {
     try {
@@ -188,4 +209,4 @@ async function deleteGroupById(req, res, next) {
     }
 }
 
-export { postNewGroup, unfollowGroupByEmail, deleteGroupById, getPostsGyGroup, removeRequestById, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail };
+export { postNewGroup, editGroup, unfollowGroupByEmail, deleteGroupById, getPostsGyGroup, removeRequestById, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail };
