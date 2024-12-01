@@ -45,9 +45,7 @@ async function getSubs(req, res, next) {
     try {
         if(!req.body.group_id || req.body.group_id.length === 0) return next(new ApiError('Invalid groupId for group', 400));
         const response = await getAllSubsForGroup(req.body.group_id)
-        if(response.rowCount > 0){
-            return res.status(200).json(response.rows);
-        }
+        return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getSubs: ", error);
         return next(error);
@@ -72,9 +70,7 @@ async function postRequest(req, res, next) {
 async function getRequests(req, res, next) {
     try {
         const response = await getAllRequests()
-        if(response.rowCount > 0){
-            return res.status(200).json(response.rows);
-        }
+        return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getRequests: ", error);
         return next(error);
@@ -84,9 +80,7 @@ async function getRequests(req, res, next) {
 async function getFollowersAll(req, res, next) {
     try {
         const response = await getAllFollowers()
-        if(response.rowCount > 0){
-            return res.status(200).json(response.rows);
-        }
+        return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getRequests: ", error);
         return next(error);
@@ -96,9 +90,7 @@ async function getFollowersAll(req, res, next) {
 async function getGroupUsingId(req, res, next) {
     try {
         const response = await getGroupById(req.body.group_id)
-        if(response.rowCount > 0){
-            return res.status(200).json(response.rows);
-        }
+        return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getGroupUsingId: ", error);
         return next(error);
@@ -109,9 +101,7 @@ async function getRequestsByGId(req, res, next) {
     try {
         if(!req.body.group_id || req.body.group_id.length === 0) return next(new ApiError('Invalid groupId for group', 400));
         const response = await getRequestsByGroupId(req.body.group_id)
-        if(response.rowCount > 0){
-            return res.status(200).json(response.rows);
-        }
+        return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getRequestsByGId: ", error);
         return next(error);
@@ -121,9 +111,7 @@ async function getRequestsByGId(req, res, next) {
 async function approveRequestById(req, res, next) {
     try {
         const response = await approveRequest(req.body.req_id)
-        if(response.rowCount > 0){
-            return res.status(200).json(response.rows);
-        }
+        return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in approveRequestById: ", error);
         return next(error);
@@ -181,9 +169,7 @@ async function unfollowGroupByEmail(req, res, next) {
 async function getPostsGyGroup(req, res, next) {
     try {
         const response = await getPostsGyGroupId(req.body.group_id)
-        if(response.rowCount > 0){
-            return res.status(200).json(response.rows);
-        }
+        return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in removeRequestById: ", error);
         return next(error);

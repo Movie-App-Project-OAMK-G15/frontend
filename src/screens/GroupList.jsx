@@ -19,9 +19,17 @@ export default function GroupList(){
     //navigation
     const navigate = useNavigate()
     useEffect(() => {
-        getGroups()
-        findRequests()
-        findFollowers()
+        async function fetchData() {
+            try {
+                await getGroups()
+                await findRequests()
+                await findFollowers()
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                alert("Failed to load group data.");
+            }
+        }
+        fetchData();
     }, [refresh])
 
     async function findRequests() {

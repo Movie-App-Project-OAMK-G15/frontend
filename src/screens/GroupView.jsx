@@ -16,10 +16,18 @@ export default function GroupView(){
     const navigate = useNavigate()
 
     useEffect(() => {
-        getGroupById(groupId)
-        getSubsForGroup()
-        getPosts()
-    }, [])
+        async function fetchData() {
+            try {
+                await getGroupById(groupId);
+                await getSubsForGroup();
+                await getPosts();
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                alert("Failed to load group data.");
+            }
+        }
+        fetchData();
+    }, [groupId])
 
     async function getPosts() {
         try {

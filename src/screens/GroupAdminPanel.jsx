@@ -13,9 +13,17 @@ export default function GroupAdminPanel(){
     const {user, currentGroup, getGroupById} = useUser()
     const navigate = useNavigate()
     useEffect(() => {
-        getGroupById(groupId)
-        getMyRequsets(groupId)
-        getSubs(groupId)
+        async function fetchData() {
+            try {
+                await getGroupById(groupId)
+                await getMyRequsets(groupId)
+                await getSubs(groupId)
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                alert("Failed to load group data.");
+            }
+        }
+        fetchData();
     }, [])
 
     async function getSubs(groupId) {
