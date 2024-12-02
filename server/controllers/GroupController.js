@@ -1,4 +1,4 @@
-import { postGroup, getAllGroups, editGroupInfo, getAllSubsForGroup, deleteGroup, unfollowGroup, removeSubscriber, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeRequest } from "../models/Group.js";
+import { postGroup, getAllGroups, getUsersGroups, editGroupInfo, getAllSubsForGroup, deleteGroup, unfollowGroup, removeSubscriber, getPostsGyGroupId, postNewRequest, getAllRequests, getRequestsByGroupId, getGroupById, approveRequest, getAllFollowers, removeRequest } from "../models/Group.js";
 import { ApiError } from "../helpers/errorClass.js";
 import { uploadToImgBB } from "../helpers/uploadPhoto.js";
 
@@ -35,6 +35,16 @@ async function getGroups(req, res, next){
         return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getGroups: ", error);
+        return next(error);
+    }
+}
+
+async function getUsersGroupsByEmail(req, res, next){
+    try {
+        const response = await getUsersGroups(req.body.user_email)
+        return res.status(200).json(response.rows);
+    } catch (error) {
+        console.error("Error in getUsersGroupsByEmail: ", error);
         return next(error);
     }
 }
@@ -209,4 +219,4 @@ async function deleteGroupById(req, res, next) {
     }
 }
 
-export { postNewGroup, editGroup, unfollowGroupByEmail, deleteGroupById, getPostsGyGroup, removeRequestById, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail };
+export { postNewGroup, editGroup, unfollowGroupByEmail, getUsersGroupsByEmail, deleteGroupById, getPostsGyGroup, removeRequestById, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail };

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React,{ useEffect } from "react";
 import BioUpdate from "../components/BioUpdate";
+import UserGroups from "../components/UserGroups";
 
 
 export default function UserAccount() {
@@ -57,6 +58,7 @@ export default function UserAccount() {
                     </div>
                 </div>
                 <button onClick={() => navigate(`/account/favmovies/${user.id}`)}>Favourite movies</button>
+                <button onClick={() => navigate(`/account/mygroups/${user.id}`)}>My groups</button>
             </div>
         </>
     );
