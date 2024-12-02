@@ -44,7 +44,7 @@ const Home = () => {
             <Navbar />
             <h2>Home Page</h2>
             <div>
-                <DynamicSlides/>
+                <DynamicSlides movies = {movieList}/>
             </div> 
             <div>
                 <div className="movie-grid">
