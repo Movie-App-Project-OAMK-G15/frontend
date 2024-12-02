@@ -4,6 +4,8 @@ import GenresPage from "./GenrePage.jsx";
 import Navbar from "./Navbar.jsx";
 import '../styles/Home.css'
 import { useEffect, useState } from "react";
+import 'bootstrap'
+import DynamicSlides from "./MovieJigaJiga.jsx";
 const tmdbKey = import.meta.env.VITE_TMDB_API_KEY
 
 const Home = () => {
@@ -41,9 +43,9 @@ const Home = () => {
         <>
             <Navbar />
             <h2>Home Page</h2>
-            <div className="App">
-                <Slider images={images} />
-            </div>  
+            <div>
+                <DynamicSlides/>
+            </div> 
             <div>
                 <div className="movie-grid">
                     <PopularMovieList movieList={movieList} setMovieList={setMovieList}/>

@@ -1,4 +1,4 @@
-.slider {
+/* .slider {
     position: relative;
     width: 100%;
     max-width: 300px;
@@ -56,4 +56,58 @@
   .dot.active {
     background-color: #717171;
   }
-  
+   */
+   /* Custom styling for carousel arrows */
+/* Ensuring the carousel doesn't overflow */
+.slider-container {
+  width: 100%;
+  overflow: hidden;  /* Prevent horizontal scroll */
+  position: relative;
+}
+
+/* Slick carousel - Remove unwanted margins */
+.slick-slide {
+  padding: 0 5px; /* Adjust the padding between slides if necessary */
+}
+
+/* Custom styling for carousel arrows */
+.slick-prev, .slick-next {
+  font-size: 30px; /* Adjust the size */
+  color: black;    /* Make arrows black */
+  z-index: 1;      /* Ensure arrows are on top of content */
+  position: absolute;
+  top: 50%;        /* Vertically center the arrows */
+  transform: translateY(-50%); /* Adjust for exact centering */
+}
+
+.slick-prev {
+  left: 10px;      /* Space the left arrow from the edge */
+}
+
+.slick-next {
+  right: 10px;     /* Space the right arrow from the edge */
+}
+
+/* Optional: Styling for hover effect */
+.slick-prev:hover, .slick-next:hover {
+  color: #555;  /* Darker shade on hover */
+}
+
+.slick-prev, .slick-next {
+  color: transparent; /* Make the text transparent */
+  background: none; /* Remove any background */
+}
+
+.slick-prev::before, .slick-next::before {
+  content: ''; /* Remove the default text */
+}
+
+/* Change arrow colors to black */
+.slick-prev, .slick-next {
+  color: black; /* Set the arrow color to black */
+}
+
+.slick-prev::before, .slick-next::before {
+  color: black !important; /* Force the color of the arrows to black */
+}
+

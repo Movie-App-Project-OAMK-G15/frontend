@@ -1,33 +1,16 @@
-
 .navbar {
-    background-color: #a5a5a5;
-    padding: 1rem;
-  }
-  
-  .nav-links {
-    list-style-type: none;
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .nav-link {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.1rem;
-    font-weight: 500;
-    transition: color 0.3s;
-  }
-  
-  .nav-link:hover {
-    color: #ffd700;
-  }
-  
-  .nav-link.active {
-    color: #ffd700;
-    font-weight: bold;
-    border-bottom: 2px solid #ffd700;
-  }
-  
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ffc107 !important; /* Optional hover effect */
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
