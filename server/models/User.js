@@ -43,5 +43,17 @@ const getBio = async (userId) => {
     );
 };
 
+const updateProfilePic = async(userId, profilePicUrl) => {
+    return pool.query("UPDATE account SET user_photo = $1 WHERE user_id = $2",
+        [profilePicUrl, userId]
+    )
+}
 
-export { postUser, selectUserByEmail, deleteUser, postFavMovie, getAllFavMovies, getAllUsers, addBio, getBio };
+const getProfilePic = async(userId) => {
+    return pool.query("SELECT user_photo FROM account WHERE user_id = $1",
+        [userId]
+    )
+}
+
+
+export { postUser, selectUserByEmail, deleteUser, postFavMovie, getAllFavMovies, getAllUsers, addBio, getBio, updateProfilePic, getProfilePic };
