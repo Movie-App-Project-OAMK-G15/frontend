@@ -56,7 +56,7 @@ export default function UserAccount() {
                         <button className="btn btn-primary" onClick={() => navigate('/account/creategroup')}>Create group</button>
                     </div>
                 </div>
-                <FavMovies />
+                <button onClick={() => navigate(`/account/favmovies/${user.id}`)}>Favourite movies</button>
             </div>
         </>
     );

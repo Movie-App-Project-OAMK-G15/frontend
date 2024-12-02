@@ -2,6 +2,7 @@ import Slider from "./Slider.jsx";
 import PopularMovieList from "./PopularMovieList.jsx";
 import GenresPage from "./GenrePage.jsx";
 import Navbar from "./Navbar.jsx";
+import IndividualIntervalsExample from "./BigCarousel.jsx";
 import '../styles/Home.css'
 import { useEffect, useState } from "react";
 import 'bootstrap'
@@ -41,9 +42,12 @@ const Home = () => {
 
     return (
         <>
-            <Navbar />
-            <h2>Home Page</h2>
+            <Navbar/>
             <div>
+                <IndividualIntervalsExample movies={movieList}/>
+            </div>
+            <div>
+                <p>Popular now</p>
                 <DynamicSlides movies = {movieList}/>
             </div> 
             <div>

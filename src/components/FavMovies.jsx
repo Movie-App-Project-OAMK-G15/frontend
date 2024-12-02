@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react";
+import Navbar from "./Navbar";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useUser } from "../context/useUser";
@@ -42,6 +43,7 @@ const FavMovies = () => {
 
   return (
     <div>
+      <Navbar/>
       <div className="container my-4">
         <h2 className="mb-4">My Favorite Movies</h2>
         <div className="row">

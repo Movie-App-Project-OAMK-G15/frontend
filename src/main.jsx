@@ -1,8 +1,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import FavMovies from './components/FavMovies.jsx';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap"
 import ErrorPage from './screens/ErrorPage.jsx'
 import Authentication from './screens/Authentication.jsx'
 import { AuthenticationMode } from './screens/Authentication.jsx'
@@ -66,6 +69,10 @@ const router = createBrowserRouter([
   {
     path: '/reviews/:movieId',
     element: <BrowseReviewPage />
+  },
+  {
+    path: '/account/favmovies/:userId',
+    element: <FavMovies />
   },
   {
     element: <ProtectedRoute/>,
