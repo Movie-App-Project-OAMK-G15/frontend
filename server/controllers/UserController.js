@@ -1,8 +1,9 @@
-import { selectUserByEmail, postUser, deleteUser, getAllFavMovies, postFavMovie, addBio, getBio } from "../models/User.js";
+import { selectUserByEmail, postUser, deleteUser, getAllFavMovies, postFavMovie, addBio, getBio, updateProfilePic, getProfilePic } from "../models/User.js";
 import { ApiError } from "../helpers/errorClass.js";
 import { compare, hash } from "bcrypt";
 import jwt from "jsonwebtoken";
 const { sign } = jwt;
+import { uploadToImgBB } from "../helpers/uploadPhoto.js";
 
 const createUserObject = (id, firstname, familyname, email, token = undefined) => {
   return {
@@ -131,6 +132,39 @@ const getUserBio = async (req, res, next) => {
   }
 }
 
+const changeProfilePic = async(req, res, next) => {
+  try {
+    const { userId } = req.params; 
+    const { file } = req;
+    const profilePicUrl = await uploadToImgBB(file.path);
+
+    const result = await updateProfilePic(userId, profilePicUrl);
+    console.log("Database update result:", result);
+    if (result.rowCount === 0) {
+        return next(new ApiError("Failed to update profile picture", 400));
+    }
+
+    return res.status(200).json({ message: "Profile picture updated successfully", user: result.rows[0] });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+const getProfilePicture = async (req, res, next) => {
+  try {
+      const { userId } = req.params; 
+      console.log(userId)
+      const response = await getProfilePic(userId);
+      if (!response) {
+          return next(new ApiError("User  not found", 404));
+      }
+
+      return res.status(200).json(response.rows);
+  } catch (error) {
+      return next(error);
+  }
+};
+
 export {
   postRegistration,
   postLogin,
@@ -138,5 +172,7 @@ export {
   addFavorite,
   getFavorites,
   updateUserBio,
-  getUserBio
+  getUserBio,
+  changeProfilePic,
+  getProfilePicture
 };

@@ -3,22 +3,25 @@ import Navbar from "../components/Navbar";
 import FavMovies from "../components/FavMovies";
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React,{ useEffect } from "react";
+import React, {useEffect} from "react";
 import BioUpdate from "../components/BioUpdate";
 import UserGroups from "../components/UserGroups";
 
+import UpdateProfilePic from "../components/ProfilePicUpdate";
 
 export default function UserAccount() {
-    const { user, logOut, deleteAccount } = useUser();
+    const { user, logOut, deleteAccount } = useUser ();
     const navigate = useNavigate();
 
-    function handleDelete() {
+
+
+    const handleDelete = () => {
         if (confirm("Are you sure you want to delete this account?")) {
             deleteAccount();
         } else {
-            console.log("User canceled the action.");
+            console.log("User  canceled the action.");
         }
-    }
+    };
 
     useEffect(() => {
         let profilePic = document.getElementById("profile-pic");
@@ -39,6 +42,7 @@ export default function UserAccount() {
         };
     }, []);
 
+
     return (
         <>
             <Navbar />
@@ -46,8 +50,7 @@ export default function UserAccount() {
                 <div className="card">
                     <div className="card-body">
                         <h5 className="card-title">User  Account</h5>
-                        <img src="images/profile.png" id="profile-pic" alt="Profile"/>
-                        <input type="file" accept="image/jpeg, image/png, image/jgp" id="input-file"/>
+                        <UpdateProfilePic />
                         <p className="card-text"><strong>First Name:</strong> {user.firstname}</p>
                         <p className="card-text"><strong>Family Name:</strong> {user.familyname}</p>
                         <p className="card-text"><strong>Email:</strong> {user.email}</p>
