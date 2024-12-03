@@ -32,7 +32,7 @@ groupRouter.get('/allrequests', getRequests)
 
 groupRouter.post('/requestsforgroup', auth, getRequestsByGId)
 
-groupRouter.get('/getgroups', getGroups)
+groupRouter.get('/getgroups', getGroups) // /group/getgroups
 
 groupRouter.get('/getfollowersall', getFollowersAll)
 

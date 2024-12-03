@@ -59,4 +59,8 @@ const updateReview = async (reviewId, reviewContent, rating) => {
 
 };
 
-export { getReviewsByMovieId, addReview, deleteReview, getReviewByIdAndUserEmail, updateReview };
+const getAllReviews = async () => {
+    return pool.query('select * from review;');
+ };
+
+export { getReviewsByMovieId, getAllReviews, addReview, deleteReview, getReviewByIdAndUserEmail, updateReview };
