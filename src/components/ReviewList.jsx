@@ -2,7 +2,7 @@ import { useState } from 'react';
 import React from 'react';
 import { useUser } from '../context/useUser';
 
-const ReviewList = ({ reviews, onEdit, onDelete, onUpdate }) => {
+const ReviewList = ({ reviews, onDelete, onUpdate }) => {
 const { user } = useUser(); // Access the signed-in user's information
 const [editingReviewId, setEditingReviewId] = useState(null); // Track which review is being edited
 const [editedContent, setEditedContent] = useState(''); // Edited review content
