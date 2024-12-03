@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -142,6 +143,25 @@ const MoviePage = () => {
   // Display an error message if fetching data fails
   if (error) return <p className="text-danger">{error}</p>;
 
+  //function to add a movie to the user's favorites
+  const addFavorite = async (movieId, event) => {
+    event.stopPropagation(); // Prevent triggering the movie click event
+    try {
+      const userId = user.id; //retrieve user id from user context
+      const response = await axios.post(
+        "http://localhost:3001/user/addfavorite",
+        {
+          movie_id: movieId,
+          user_id: userId,
+        }
+      );
+      alert("Added to Favorites"); //show alert when clicking add to fav btn
+      console.log(response.data); //log response data
+    } catch (error) {
+      console.error("Error adding favorite movie:", error); //log error if request fails
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -150,6 +170,19 @@ const MoviePage = () => {
           {/*left Column: Poster and Title */}
           <div className="col-md-4 mb-4">
             <h1 className="mb-4">{movie?.title}</h1>
+
+            <div className="card-body">
+                  {/*conditionally render the Add to Favorites button */}
+                  {user.id ? (
+                    <button
+                      onClick={(event) => addFavorite(movie.id, event)}
+                      className="btn btn-primary"
+                    >
+                      Add to Favorites
+                    </button>
+                  ) : null}
+                </div>
+
             {movie?.poster_path && (
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
