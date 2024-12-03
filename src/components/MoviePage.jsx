@@ -249,9 +249,9 @@ const MoviePage = () => {
             <h4>User Reviews</h4>
             <ReviewList movieId={movieId} reviews={reviews.slice(0, 3)} onEdit={handleEdit} onDelete={handleDelete} onUpdate={handleUpdate}/> {/* Show only the latest 2 or 3 reviews */}
             
-            <Link to={`/reviews/${movieId}`} className="btn btn-primary">
+            {/* <Link to={`/reviews/${movieId}`} className="btn btn-primary">
               Browse More Reviews
-            </Link>
+            </Link> */}
           </div>
         </div>
 

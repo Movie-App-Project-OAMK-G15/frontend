@@ -23,50 +23,50 @@ export default function CreateGroup(){
         setGroupPhoto(event.target.files[0]);
     }
     
-    const handleSubmit = async(event) => {
-        event.preventDefault()
-
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+    
         if (!gName.trim() || !gDesc.trim() || !groupPhoto) {
             setNotificationMessage("All fields are required. Please fill out every field.");
-            setType("error"); // Set the notification type
+            setType("error");
             setTimeout(() => {
                 setNotificationMessage(null);
                 setType("");
             }, 3000);
-            return; // Stop further execution
+            return;
         }
-        
-        // Create FormData object to include the file and other data
-        setLoading(true)
+    
+        setLoading(true);
         const formData = new FormData();
-        formData.append("adm_mail", user.email); // Admin email
-        formData.append("g_name", gName);        // Group name
-        formData.append("description", gDesc);  // Group description
+        formData.append("adm_mail", user.email);
+        formData.append("g_name", gName);
+        formData.append("description", gDesc);
         formData.append("photo", groupPhoto);
-        const headers = {
-            headers: {
-                "Authorization": `${user.token}`,
+    
+        try {
+            console.log("Sending form data:", formData);
+            const response = await axios.post(
+                `${url}/group/newgroup`,
+                formData,
+                { headers: { Authorization: `${user.token}` } }
+            );
+            console.log("Response:", response.data);
+            if (response.data.state) {
+                setLoading(false);
+                setResponseData(response.data.state);
+                alert(response.data.state);
+            } else {
+                throw new Error("Unexpected response format");
             }
-        };    
-        console.log(formData)    
-        try{
-            const response = await axios.post(url + '/group/newgroup', formData, headers)
-            console.log(response.data)
-            if(response.data.state){
-                setLoading(false)
-                setResponseData(response.data.state)
-                alert(response.data.state)
-            } else alert('Error occured, try again later')
         } catch (error) {
-            //const message = error.message && error.response.data ? error.response.data.error : error
-            setNotificationMessage('Error occured while creating the group. Try to log in again')//custom error notification
-            setType('error')//notification type
-            setTimeout(() => {
-                setNotificationMessage(null)
-                setType('')
-              }, 3000)
+            console.error("Error creating group:", error);
+            setNotificationMessage('Error occurred while creating the group. Try to log in again');
+            setType('error');
+        } finally {
+            setLoading(false); // Ensure loading stops
         }
-    }
+    };
+    
     return (
         <>
             <Navbar/>

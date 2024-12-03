@@ -22,9 +22,9 @@ import CreateGroup from './screens/CreateGroup.jsx'
 import GroupList from './screens/GroupList.jsx'
 import GroupView from './screens/GroupView.jsx'
 import GroupAdminPanel from './screens/GroupAdminPanel.jsx'
-import BrowseReviewPage from './components/BrowseReview.jsx'
 import AddGroupPosts from './screens/AddGroupPost.jsx'
 import UserGroups from './components/UserGroups.jsx';
+import BrowsingReviews from './screens/BrowsingReviews.jsx';
 
 //creating router for navigation and authentication
 const router = createBrowserRouter([
@@ -52,6 +52,10 @@ const router = createBrowserRouter([
     element: <BrowseMovies/>
   },
   {
+    path: 'browsereviews',
+    element: <BrowsingReviews/>
+  },
+  {
     path: '',
     element: <Home/>
   },
@@ -66,10 +70,6 @@ const router = createBrowserRouter([
   {
     path: 'groups',
     element: <GroupList/>
-  },
-  {
-    path: '/reviews/:movieId',
-    element: <BrowseReviewPage />
   },
   {
     path: '/account/favmovies/:userId',
