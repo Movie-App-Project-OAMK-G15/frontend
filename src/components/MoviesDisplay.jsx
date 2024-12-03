@@ -1,10 +1,12 @@
-import React from 'react';
+import React from 'react'; // Import the React library
 import { Link } from 'react-router-dom'; // Import Link for navigation
 
+// Define MoviesDisplay component
 const MoviesDisplay = ({ movies, loading, error }) => {
   if (loading) return <p className="text-center">Loading...</p>;
   if (error) return <p className="text-danger text-center">{error}</p>;
 
+  // Display the movie results
   return (
     <div className="container">
       {movies.length > 0 ? (

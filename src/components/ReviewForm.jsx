@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { useUser } from '../context/useUser';
+import React, { useState } from 'react'; // Import the useState hook
+import { useUser } from '../context/useUser'; // Import the useUser hook
 
+// Define the ReviewForm component
 const ReviewForm = ({ movieId, onReviewSubmit }) => {
   const [reviewForm, setReviewForm] = useState({ content: '', userEmail: '', rating: 1 });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const {user} = useUser()
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -21,6 +23,7 @@ const ReviewForm = ({ movieId, onReviewSubmit }) => {
         return;
       }
 
+      // Send a POST request to the server
       const response = await fetch(`http://localhost:3001/reviews/${movieId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -32,6 +35,7 @@ const ReviewForm = ({ movieId, onReviewSubmit }) => {
         }),
       });
 
+      // Handle the server response
       if (response.ok) {
         const newReview = await response.json();
         onReviewSubmit(newReview); // Pass new review to parent
@@ -48,6 +52,7 @@ const ReviewForm = ({ movieId, onReviewSubmit }) => {
     }
   };
 
+  // Render the ReviewForm component
   return (
     <div className="mb-4">
       <h4>Add a Review</h4>

@@ -1,8 +1,9 @@
-// SearchForm.jsx
-import React from 'react';
+import React from 'react'; // Import the React library
 
+// Define the SearchForm component
 const SearchForm = ({ handleSearch, searchType, setSearchType, query, setQuery, placeholder, inputType }) => {
 
+  // Render the SearchForm component
   return (
     <form onSubmit={handleSearch} className="d-flex flex-column align-items-center mb-5">
       <div className="input-group mb-3" style={{ maxWidth: '600px' }}>
@@ -11,7 +12,7 @@ const SearchForm = ({ handleSearch, searchType, setSearchType, query, setQuery, 
           onChange={(e) => setSearchType(e.target.value)}
           value={searchType}
         >
-          <option value="title">Title</option>
+          <option value="title">Title</option> 
           <option value="genre">Genre</option>
           <option value="year">Release Year</option>
         </select>
