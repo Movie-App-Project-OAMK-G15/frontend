@@ -10,6 +10,7 @@ import { useUser } from "../context/useUser";
 import "../styles/MoviePage.css";
 //import BrowseReviewPage from "./BrowseReview";
 
+// MoviePage component
 const MoviePage = () => {
   //get user context
   const { user } = useUser();
@@ -163,6 +164,7 @@ const MoviePage = () => {
     }
   };
 
+  //render the movie details
   return (
     <div>
       <Navbar />

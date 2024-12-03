@@ -1,30 +1,35 @@
-import { useState } from 'react';
-import React from 'react';
-import { useUser } from '../context/useUser';
+import { useState } from 'react'; // Import the useState hook
+import React from 'react'; // Import the React library
+import { useUser } from '../context/useUser'; // Import the useUser hook
 
+// Define the ReviewList component
 const ReviewList = ({ reviews, onDelete, onUpdate }) => {
 const { user } = useUser(); // Access the signed-in user's information
 const [editingReviewId, setEditingReviewId] = useState(null); // Track which review is being edited
 const [editedContent, setEditedContent] = useState(''); // Edited review content
 const [editedRating, setEditedRating] = useState(0); // Edited review rating
 
+// Function to start editing a review
 const startEditing = (review) => {
   setEditingReviewId(review.id);
   setEditedContent(review.review_content);
   setEditedRating(review.rating);
 };
 
+// Function to cancel editing
 const cancelEditing = () => {
   setEditingReviewId(null);
   setEditedContent('');
   setEditedRating(0);
 };
 
+// Function to handle the update operation
 const handleUpdate = () => {
   onUpdate(editingReviewId, editedContent, editedRating); // Call the update handler
   cancelEditing(); // Exit editing mode
 };
 
+// Render the ReviewList component
   return (
     <div className="mb-4">
       {reviews.length > 0 ? (

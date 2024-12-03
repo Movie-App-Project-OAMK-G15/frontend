@@ -1,6 +1,6 @@
 import { getReviewsByMovieId, addReview, deleteReview, getReviewByIdAndUserEmail, updateReview } from '../models/Review.js';
 
-// Example usage
+// Fetch reviews function
 export const fetchReviews = async (req, res) => {
   const { movieId } = req.params;
   try {
@@ -12,6 +12,7 @@ export const fetchReviews = async (req, res) => {
   }
 };
 
+// Create review function
 export const createReview = async (req, res) => {
   const { userEmail, reviewContent, movieId, rating } = req.body;
 
