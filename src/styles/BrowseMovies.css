@@ -1,18 +1,112 @@
 /* Back-to-Top Button Styling */
 #backToTopBtn {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    font-size: 24px;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease-in-out;
+}
+
+#backToTopBtn:hover {
+  background-color: #0056b3;
+}
+
+/* Ensure it doesn’t cover important content */
+@media (max-width: 768px) {
+  #backToTopBtn {
+    bottom: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    font-size: 16px;
   }
-  
-  #backToTopBtn:hover {
-    background-color: #0056b3; 
+}
+.browse-movies-page {
+/* General Form Styling */
+form {
+  width: 100%;
+}
+
+.form-select,
+.form-control {
+  font-size: 1rem;
+}
+
+button {
+  font-size: 1rem;
+}
+
+/* SearchForm Responsive Adjustments */
+@media (max-width: 576px) {
+  .form-select,
+  .form-control {
+    font-size: 0.9rem;
   }
+
+  button {
+    font-size: 0.9rem;
+  }
+}
+
+/* MoviesDisplay Card Styling */
+.browse-movies .card {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.browse-movies .card:hover {
+  transform: scale(1.03);
+}
+
+/* Card Content: Titles and Text */
+.card-title,
+.card-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+/* Image Styling */
+img {
+  border-radius: 8px 8px 0 0;
+}
+
+/* MoviesDisplay Responsive Adjustments */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .card-text {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .card-text {
+    font-size: 0.8rem;
+  }
+
+  img {
+    height: auto;
+  }
+}
+}

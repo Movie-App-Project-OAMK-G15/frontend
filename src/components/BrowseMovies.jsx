@@ -126,7 +126,7 @@ const BrowseMovies = () => {
 
 // Return the JSX for the BrowseMovies component
   return ( 
-    <div>
+    <div className="browse-movies-page">
       <Navbar />
       <div className="container mt-5">
         <h1 className="text-center mb-4">Movie Search</h1>
@@ -139,7 +139,9 @@ const BrowseMovies = () => {
           placeholder={placeholder}
           inputType={inputType}
         />
+        <div className="row">
         <MoviesDisplay movies={movies} loading={loading} error={error} />
+        </div>
       </div>
 
       {/* Back-to-Top Button */}
