@@ -8,15 +8,15 @@ const Screenings = () => {
     const [areas, setAreas] = useState([]);
     const [selectedArea, setSelectedArea] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
-    const [movies, setMovies] = useState([])
-    const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
+    const [movies, setMovies] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleShowtimeNavigation = (id) => {
         if (selectedArea && selectedDate) {
-            navigate(`/showtime/${id}`, { state: { area: selectedArea, date: selectedDate } })
+            navigate(`/showtime/${id}`, { state: { area: selectedArea, date: selectedDate } });
         }
-    }
+    };
 
     async function showAreaList(xml) {
         try {
@@ -38,9 +38,15 @@ const Screenings = () => {
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xml, 'application/xml');
             const dates = Array.from(xmlDoc.getElementsByTagName('dateTime'));
+            const today = new Date();
             const tempDates = dates.map(date => ({
                 dateTime: date.textContent.split('T')[0]
-            }));
+            }))
+            .filter(date => {
+                const dateObj = new Date(date.dateTime);
+                const diffDays = (dateObj - today) / (1000 * 60 * 60 * 24);
+                return diffDays >= 0 && diffDays < 14;
+            });
             setDates(tempDates);
         } catch (error) {
             alert('Error fetching or parsing XML data:', error);
@@ -50,16 +56,14 @@ const Screenings = () => {
     async function fetchMovies() {
         if (!selectedArea || !selectedDate) return;
 
-        setLoading(true); 
+        setLoading(true);
         try {
-          
-            const scheduleResponse = await fetch(`https://www.finnkino.fi/xml/Schedule/?area=${selectedArea}&date=${selectedDate}`);
+            const scheduleResponse = await fetch(`https://www.finnkino.fi/xml/Schedule/?area=${selectedArea}&dt=${selectedDate}`);
             const scheduleXml = await scheduleResponse.text();
             const scheduleParser = new DOMParser();
             const scheduleDoc = scheduleParser.parseFromString(scheduleXml, 'application/xml');
             const scheduleMovies = Array.from(scheduleDoc.getElementsByTagName('Show'));
 
-         
             const eventIDs = new Set(scheduleMovies.map(movie => movie.getElementsByTagName('EventID')[0].textContent));
 
             const eventsResponse = await fetch(`https://www.finnkino.fi/xml/Events/`);
@@ -87,10 +91,10 @@ const Screenings = () => {
         } catch (error) {
             alert('Error fetching movies:', error);
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
     }
-    
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -105,13 +109,13 @@ const Screenings = () => {
                 console.log(error);
             }
         }
-        
+
         fetchData();
-    }, [])
+    }, []);
 
     useEffect(() => {
-        fetchMovies()
-    }, [selectedArea, selectedDate])
+        fetchMovies();
+    }, [selectedArea, selectedDate]);
 
     return (
         <div>
@@ -157,14 +161,13 @@ const Screenings = () => {
                                     <h2>{movie.title}</h2>
                                     <p>Duration: {movie.duration} minutes</p>
                                     <p>Rating: {movie.rating}</p>
-                                    <p>Release Date: {movie.releaseDate}</p> 
+                                    <p>Release Date: {movie.releaseDate}</p>
                                     <div className="button-showtime">
                                         <button className='bttn-showtime' onClick={() => handleShowtimeNavigation(movie.id)}>
                                             Showtime
                                         </button>
                                     </div>
                                 </div>
-                                
                             </div>
                         ))}
                     </div>

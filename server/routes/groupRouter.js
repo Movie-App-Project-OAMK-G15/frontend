@@ -3,12 +3,14 @@ import multer from 'multer';
 const upload = multer({ dest: 'uploads/' });
 import { Router } from "express"
 import { auth } from '../helpers/auth.js';
-import { postNewGroup, editGroup, deleteGroupById, getUsersGroupsByEmail, unfollowGroupByEmail, removeRequestById, getPostsGyGroup, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail } from "../controllers/GroupController.js";
+import { postNewGroup, editGroup, deleteGroupById, getUsersGroupsByEmail, getUsersOwnGroupsByEmail, unfollowGroupByEmail, removeRequestById, getPostsGyGroup, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail } from "../controllers/GroupController.js";
 
 dotenv.config();
 const groupRouter = Router()
 
 groupRouter.post('/getusergroups', auth, getUsersGroupsByEmail)
+
+groupRouter.post('/getuserowngroups', auth, getUsersOwnGroupsByEmail)
 
 groupRouter.post('/editinfo', auth, upload.single('photo'), editGroup)
 

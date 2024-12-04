@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React,{ useEffect } from "react";
 import BioUpdate from "../components/BioUpdate";
 import UserGroups from "../components/UserGroups";
+import UserOwnGroups from "../components/UserOwnGroups";
 
 
 export default function UserAccount() {
@@ -59,6 +60,7 @@ export default function UserAccount() {
                 </div>
                 <button onClick={() => navigate(`/account/favmovies/${user.id}`)}>Favourite movies</button>
                 <button onClick={() => navigate(`/account/mygroups/${user.id}`)}>My groups</button>
+                <button onClick={() => navigate(`/account/myowngroups/${user.id}`)}>My own groups</button>
             </div>
         </>
     );

@@ -25,6 +25,7 @@ import GroupAdminPanel from './screens/GroupAdminPanel.jsx'
 import BrowseReviewPage from './components/BrowseReview.jsx'
 import AddGroupPosts from './screens/AddGroupPost.jsx'
 import UserGroups from './components/UserGroups.jsx';
+import UserOwnGroups from './components/UserOwnGroups.jsx';
 
 //creating router for navigation and authentication
 const router = createBrowserRouter([
@@ -101,6 +102,10 @@ const router = createBrowserRouter([
       {
         path: 'account/mygroups/:userId',
         element: <UserGroups />
+      },
+      {
+        path: 'account/myowngroups/:userId',
+        element: <UserOwnGroups />
       },
     ]
   }

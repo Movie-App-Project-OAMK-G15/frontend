@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
+import { format } from 'date-fns';
 import '../styles/ShowTime.css';
 
 const Showtime = () => {
@@ -35,6 +36,10 @@ const Showtime = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        fetchShowtimes();
+    }, [selectedArea, selectedDate]);
+
     const showAreaList = (xml) => {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xml, 'application/xml');
@@ -50,24 +55,31 @@ const Showtime = () => {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xml, 'application/xml');
         const dates = Array.from(xmlDoc.getElementsByTagName('dateTime'));
+        const today = new Date();
         const tempDates = dates.map(date => ({
             dateTime: date.textContent.split('T')[0]
-        }));
+        }))
+        .filter(date => {
+            const dateObj = new Date(date.dateTime);
+            const diffDays = (dateObj - today) / (1000 * 60 * 60 * 24);
+            return diffDays >= 0 && diffDays < 14;
+        });
         setDates(tempDates);
     };
 
     const fetchShowtimes = async () => {
         if (!selectedArea || !selectedDate) return;
-
+        const newDate = new Date(selectedDate)
+        let changedDate = format(newDate, 'dd-MM-yyyy')
         setLoading(true);
         try {
-            const response = await fetch(`https://www.finnkino.fi/xml/Schedule/?id=${id}&area=${selectedArea}&dt=${selectedDate}`);
+            const response = await fetch(`https://www.finnkino.fi/xml/Schedule/?area=${selectedArea}&dt=${changedDate}`);
             const xml = await response.text();
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xml, 'application/xml');
             const showtimeElements = Array.from(xmlDoc.getElementsByTagName('Show')).filter(show =>
                 show.getElementsByTagName('EventID')[0].textContent === id);
-            
+
             const tempShowtimes = showtimeElements.map(showtime => ({
                 date: showtime.getElementsByTagName('dttmShowStart')[0].textContent,
                 area: showtime.getElementsByTagName('Theatre')[0].textContent,
@@ -86,19 +98,6 @@ const Showtime = () => {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        fetchShowtimes();
-    }, [selectedArea, selectedDate]);
-
-    const groupedShowtimes = showtimes.reduce((acc, showtime) => {
-        const area = showtime.area;
-        if (!acc[area]) {
-            acc[area] = [];
-        }
-        acc[area].push(showtime);
-        return acc;
-    }, {});
 
     const fetchMovieDetails = async (eventID) => {
         try {
@@ -127,6 +126,15 @@ const Showtime = () => {
             setLoading(false);
         }
     };
+
+    const groupedShowtimes = showtimes.reduce((acc, showtime) => {
+        const area = showtime.area;
+        if (!acc[area]) {
+            acc[area] = [];
+        }
+        acc[area].push(showtime);
+        return acc;
+    }, {});
 
     return (
         <div>
@@ -170,6 +178,7 @@ const Showtime = () => {
                         id="date-dropdown" 
                         value={selectedDate} 
                         onChange={(e) => {
+                            console.log(e.target.value)
                             setSelectedDate(e.target.value);
                             setShowtimes([]);
                             setMovieDetails(null);
