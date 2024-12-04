@@ -66,7 +66,7 @@ const getUsersGroups = async(user_email) => {
 }
 
 const getUsersOwnGroups = async(user_email) => {
-    return pool.query("SELECT * FROM get_user_own_group($1);", 
+    return pool.query("SELECT * FROM get_user_own_groups($1);", 
         [user_email]
     )
 }

@@ -19,7 +19,7 @@ export default function UserOwnGroups(){
     }, [])
     async function getMyOwnGroups() {
         try {
-            const json = JSON.stringify({admin_email: user.email})
+            const json = JSON.stringify({user_email: user.email})
             const headers = {
                 headers: {
                     "Content-Type": "application/json",
