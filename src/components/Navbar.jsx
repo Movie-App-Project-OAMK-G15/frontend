@@ -50,6 +50,11 @@ const Navbar = () => {
                 Groups
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/browsereviews">
+                Reviews
+              </Link>
+            </li>
           </ul>
 
           {/* Right-aligned account-related links */}

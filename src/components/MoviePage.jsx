@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -6,8 +7,10 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import ReviewForm from "./ReviewForm";
 import ReviewList from "./ReviewList";
 import { useUser } from "../context/useUser";
+import "../styles/MoviePage.css";
 //import BrowseReviewPage from "./BrowseReview";
 
+// MoviePage component
 const MoviePage = () => {
   //get user context
   const { user } = useUser();
@@ -142,25 +145,58 @@ const MoviePage = () => {
   // Display an error message if fetching data fails
   if (error) return <p className="text-danger">{error}</p>;
 
+  //function to add a movie to the user's favorites
+  const addFavorite = async (movieId, event) => {
+    event.stopPropagation(); // Prevent triggering the movie click event
+    try {
+      const userId = user.id; //retrieve user id from user context
+      const response = await axios.post(
+        "http://localhost:3001/user/addfavorite",
+        {
+          movie_id: movieId,
+          user_id: userId,
+        }
+      );
+      alert("Added to Favorites"); //show alert when clicking add to fav btn
+      console.log(response.data); //log response data
+    } catch (error) {
+      console.error("Error adding favorite movie:", error); //log error if request fails
+    }
+  };
+
+  //render the movie details
   return (
     <div>
       <Navbar />
       <div className="container mt-4">
         <div className="row">
           {/*left Column: Poster and Title */}
-          <div className="col-md-4 mb-4">
-            <h1 className="mb-4">{movie?.title}</h1>
+          <div className="col-lg-4 col-md-5 mb-4">
+            <h1 className="mb-3">{movie?.title}</h1>
+
+            <div className="mb-3">
+                  {/*conditionally render the Add to Favorites button */}
+                  {user.id ? (
+                    <button
+                      onClick={(event) => addFavorite(movie.id, event)}
+                      className="btn btn-primary w-100 w-md-auto"
+                    >
+                      Add to Favorites
+                    </button>
+                  ) : null}
+                </div>
+
             {movie?.poster_path && (
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
-                className="img-fluid rounded mb-4"
+                className="img-fluid rounded"
               />
             )}
           </div>
 
           {/*right Column: Movie Details */}
-          <div className="col-md-8">
+          <div className="col-lg-8 col-md-7">
             {/*about Section */}
             <div className="card mb-4">
               <div className="card-body">
@@ -209,13 +245,13 @@ const MoviePage = () => {
 
         {/*review List Section */}
         <div className="container mt-5">
-          <div className="row mt-5">
+          <div className="row">
             <h4>User Reviews</h4>
             <ReviewList movieId={movieId} reviews={reviews.slice(0, 3)} onEdit={handleEdit} onDelete={handleDelete} onUpdate={handleUpdate}/> {/* Show only the latest 2 or 3 reviews */}
             
-            <Link to={`/reviews/${movieId}`} className="btn btn-primary">
+            {/* <Link to={`/reviews/${movieId}`} className="btn btn-primary">
               Browse More Reviews
-            </Link>
+            </Link> */}
           </div>
         </div>
 
@@ -225,7 +261,7 @@ const MoviePage = () => {
           {movie?.recommendations?.results?.slice(0, 5).map((rec) => (
             <div
               key={rec.id}
-              className="col-md-2 col-sm-4 col-6 mb-4 text-center"
+              className="col-lg-2 col-md-3 col-sm-4 col-6 mb-4 text-center"
             >
               <Link to={`/movie/${rec.id}`}>
                 <img

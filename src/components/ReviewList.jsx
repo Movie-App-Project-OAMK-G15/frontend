@@ -1,30 +1,35 @@
-import { useState } from 'react';
-import React from 'react';
-import { useUser } from '../context/useUser';
+import { useState } from 'react'; // Import the useState hook
+import React from 'react'; // Import the React library
+import { useUser } from '../context/useUser'; // Import the useUser hook
 
-const ReviewList = ({ reviews, onEdit, onDelete, onUpdate }) => {
+// Define the ReviewList component
+const ReviewList = ({ reviews, onDelete, onUpdate }) => {
 const { user } = useUser(); // Access the signed-in user's information
 const [editingReviewId, setEditingReviewId] = useState(null); // Track which review is being edited
 const [editedContent, setEditedContent] = useState(''); // Edited review content
 const [editedRating, setEditedRating] = useState(0); // Edited review rating
 
+// Function to start editing a review
 const startEditing = (review) => {
   setEditingReviewId(review.id);
   setEditedContent(review.review_content);
   setEditedRating(review.rating);
 };
 
+// Function to cancel editing
 const cancelEditing = () => {
   setEditingReviewId(null);
   setEditedContent('');
   setEditedRating(0);
 };
 
+// Function to handle the update operation
 const handleUpdate = () => {
   onUpdate(editingReviewId, editedContent, editedRating); // Call the update handler
   cancelEditing(); // Exit editing mode
 };
 
+// Render the ReviewList component
   return (
     <div className="mb-4">
       {reviews.length > 0 ? (
@@ -48,12 +53,14 @@ const handleUpdate = () => {
                     min="1"
                     max="5"
                   />
-                  <button className="btn btn-success me-2" onClick={handleUpdate}>
+                  <div className="d-flex flex-column flex-md-row gap-2">
+                  <button className="btn btn-success me-md-2 mb-2 mb-md-0" onClick={handleUpdate}>
                     Save Changes
                   </button>
                   <button className="btn btn-secondary" onClick={cancelEditing}>
                     Cancel
                   </button>
+                  </div>
                 </>
               ) : (
                 <>
@@ -66,9 +73,9 @@ const handleUpdate = () => {
               </p>
               {/* Conditionally render Edit and Delete buttons */}
               {user.email === review.user_email && (
-                  <div>
+                  <div className="d-flex flex-column flex-md-row gap-2">
                     <button
-                      className="btn btn-warning me-2"
+                      className="btn btn-warning me-md-2 mb-2 mb-md-0"
                       onClick={() => startEditing(review)}
                     >
                       Edit Review

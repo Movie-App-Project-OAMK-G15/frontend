@@ -13,7 +13,6 @@ async function postGroupPost(req, res, next) {
         const { file } = req; // Access the uploaded file
         if (!file) {
             const response = await postNewPost(req.body.user_email, req.body.group_id, req.body.title, req.body.content);  
-            console.log(response)
             if (response.rowCount > 0) {
                 return res.status(200).json({state: `post: ${req.body.title} has been created`});
             } else {

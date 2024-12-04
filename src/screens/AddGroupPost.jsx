@@ -56,7 +56,6 @@ export default function AddGroupPosts(){
             if(response.data.state){
                 setLoading(false)
                 setResponseData(response.data.state)
-                alert(response.data.state)
             } else alert('Error occured, try again later')
         } catch (error) {
             alert(error)

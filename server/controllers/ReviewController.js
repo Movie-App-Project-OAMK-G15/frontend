@@ -1,6 +1,6 @@
-import { getReviewsByMovieId, addReview, deleteReview, getReviewByIdAndUserEmail, updateReview } from '../models/Review.js';
+import { getReviewsByMovieId, getAllReviews, addReview, deleteReview, getReviewByIdAndUserEmail, updateReview } from '../models/Review.js';
 
-// Example usage
+// Fetch reviews function
 export const fetchReviews = async (req, res) => {
   const { movieId } = req.params;
   try {
@@ -12,6 +12,7 @@ export const fetchReviews = async (req, res) => {
   }
 };
 
+// Create review function
 export const createReview = async (req, res) => {
   const { userEmail, reviewContent, movieId, rating } = req.body;
 
@@ -69,3 +70,13 @@ export const updateReviewHandler = async (req, res) => {
     res.status(500).json({ error: 'Failed to update review' });
   }
 };
+
+export async function getReviewsAll(req, res){
+  try {
+      const response = await getAllReviews()
+      return res.status(200).json(response.rows);
+  } catch (error) {
+      console.error("Error in getReviewsAll: ", error);
+      return res.status(500).json({ error: 'Failed to load reviews' });
+  }
+}

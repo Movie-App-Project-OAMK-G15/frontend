@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios'; 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from './Navbar.jsx';
-import SearchForm from './SearchForm.jsx';
-import MoviesDisplay from './MoviesDisplay.jsx';
-import '../styles/BrowseMovies.css';
+import React, { useState, useEffect } from 'react'; // Import the useState and useEffect hooks
+import axios from 'axios';  // Import the axios library
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import the Bootstrap CSS
+import Navbar from './Navbar.jsx';  // Import the Navbar component
+import SearchForm from './SearchForm.jsx';  // Import the SearchForm component
+import MoviesDisplay from './MoviesDisplay.jsx';  // Import the MoviesDisplay component
+import '../styles/BrowseMovies.css';  // Import the BrowseMovies CSS
 
 // Define BrowseMovies component and State Initialization
 const BrowseMovies = () => {
-  const [query, setQuery] = useState('');
-  const [movies, setMovies] = useState([]);
-  const [searchType, setSearchType] = useState('title');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState('');   // Set query state to empty string
+  const [movies, setMovies] = useState([]); // Set movies state to empty array
+  const [searchType, setSearchType] = useState('title'); // Set searchType state to 'title' by default
+  const [error, setError] = useState(''); // Set error state to empty string
+  const [loading, setLoading] = useState(false); // Set loading state to false  
   const [genreMap,setGenreMap] = useState({}); // state for storing genre map
   const tmdbkey = import.meta.env.VITE_TMDB_API_KEY; // Access Token
 
@@ -124,9 +124,9 @@ const BrowseMovies = () => {
   }, []);
 
 
-
-  return (
-    <div>
+// Return the JSX for the BrowseMovies component
+  return ( 
+    <div className="browse-movies-page">
       <Navbar />
       <div className="container mt-5">
         <h1 className="text-center mb-4">Movie Search</h1>
@@ -139,7 +139,9 @@ const BrowseMovies = () => {
           placeholder={placeholder}
           inputType={inputType}
         />
+        <div className="row">
         <MoviesDisplay movies={movies} loading={loading} error={error} />
+        </div>
       </div>
 
       {/* Back-to-Top Button */}

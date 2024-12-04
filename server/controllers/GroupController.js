@@ -67,7 +67,6 @@ async function editGroup(req, res, next){
 
         const { file } = req; // Access the uploaded file
         if (!file) {
-            console.log(req.file)
             const response = await editGroupInfo(req.body.group_name, req.body.description, req.body.photo, req.body.group_id)
             return res.status(200).json({status: 'Group info edited', resp: response.rowCount});
             // return res.status(400).json({ error: 'No file uploaded.' });

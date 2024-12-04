@@ -1,0 +1,151 @@
+/* General container styling */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+   /* Heading styles (for h1 and h4 elements) */
+  h1, h4 {
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  /* Styling for the card component */
+  .card {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  /* Padding for card body */
+  .card-body {
+    padding: 20px;
+  }
+  
+  /* Button Styling */
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  
+   /* Hover effect for the primary button */
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+   /* General button styling */
+  .btn {
+    border-radius: 5px;
+    font-weight: 600;
+  }
+  
+  /* Styling for success button */
+  .btn-success {
+    background-color: #28a745;
+    border: none;
+  }
+  
+  /* Movie Title */
+  h1 {
+    font-size: 2.5rem;
+    color: #333;
+  }
+  
+  /* Image Styling */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Trailer iframe */
+  iframe {
+    border-radius: 10px;
+    border: none;
+    margin-top: 15px;
+  }
+  
+  /* Reviews Section - Styling for the review list section */
+  .review-list {
+    margin-top: 20px;
+  }
+  
+  /* Styling for the review list heading */
+  .review-list h4 {
+    margin-bottom: 20px;
+  }
+  
+   /* Styling for individual review cards */
+  .review-card {
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* User Reviews and Button */
+  .user-review {
+    margin-top: 20px;
+  }
+  
+  /* Styling for error messages */
+  p.text-danger {
+    font-weight: bold;
+  }
+  
+  /* Recommended Movies Section -Styling for recommended movie images */
+  .recommended-movies img {
+    transition: transform 0.3s ease;
+  }
+  
+  /* Hover effect for recommended movie images */
+  .recommended-movies img:hover {
+    transform: scale(1.05);
+  }
+  
+   /* Styling for movie titles under recommended movies */
+  .recommended-movies .small {
+    font-size: 0.9rem;
+    color: #555;
+    text-align: center;
+  }
+  
+  /* Responsive Design */
+  /* For screens smaller than 768px (Tablets and below) */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+  
+    .col-lg-4, .col-md-5 {
+      margin-bottom: 20px;
+    }
+  
+    .btn {
+      width: 100%;
+    }
+  
+    iframe {
+      height: 200px;
+    }
+  }
+  
+  /* For screens smaller than 576px (Mobile Phones) */
+  @media (max-width: 576px) {
+    .recommended-movies img {
+      width: 100%;
+    }
+  
+    h4 {
+      font-size: 1.2rem;
+    }
+  
+    .btn-primary {
+      font-size: 0.9rem;
+      padding: 8px 12px;
+    }
+  }

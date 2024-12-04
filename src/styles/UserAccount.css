@@ -1,0 +1,16 @@
+.profile-picture-container {
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-weight: bold;
+    color: #007bff; 
+}
+
+.btn {
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
