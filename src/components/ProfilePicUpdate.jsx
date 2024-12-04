@@ -19,7 +19,7 @@ export default function UpdateProfilePic() {
                         }
                     });
                     console.log(response.data); // Log the response to verify the data
-                    setProfilePicUrl(response.data.profilePicture);
+                    setProfilePicUrl(response.data);
                 } catch (error) {
                     console.error("Error fetching profile picture:", error);
                     setErrorMessage("Failed to fetch profile picture. Please try again.");
@@ -34,7 +34,8 @@ export default function UpdateProfilePic() {
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         setProfilePicFile(file);
-        setProfilePicUrl(URL.createObjectURL(file));
+        let arr = [{user_photo: URL.createObjectURL(file)}]
+        setProfilePicUrl(arr);
     };
 
     const handleSave = async (event) => {
@@ -57,19 +58,14 @@ export default function UpdateProfilePic() {
 
     return (
         <div className="profile-picture-container">
-            {profilePicUrl && (
-                <img 
-                src={profilePicUrl} 
+            {profilePicUrl && profilePicUrl.map((pic, index) => 
+            <img key={index}
+                src={pic.user_photo} 
                 id="profile-pic" 
                 alt="Profile" 
                 className="img-fluid rounded-circle" 
                 style={{ width: '100px', height: '100px' }} 
-                onError={(e) => {
-                    e.target.onerror = null; // Prevent infinite loop
-                    e.target.src = 'uploads'; // Set a placeholder image
-                }} 
-            />
-            )}
+            />)}
             {isEditing ? (
                 <>
                     <input type="file" accept="image/jpeg, image/png" onChange={handleFileChange} />
