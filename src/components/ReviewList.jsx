@@ -1,6 +1,7 @@
 import { useState } from 'react'; // Import the useState hook
 import React from 'react'; // Import the React library
 import { useUser } from '../context/useUser'; // Import the useUser hook
+import {format} from "date-fns";// Import the format function from date-fns for date formatting
 
 // Define the ReviewList component
 const ReviewList = ({ reviews, onDelete, onUpdate }) => {
@@ -69,7 +70,7 @@ const handleUpdate = () => {
               <p className="card-text">{review.review_content}</p>
               <p className="text-muted">
                 Reviewed by: {review.user_email || 'Anonymous'} on{' '}
-                {new Date(review.created_at).toLocaleString()}
+                {format(new Date(new Date(review.created_at).setHours(new Date(review.created_at).getHours() + 2)), 'dd.MM.yyyy HH:mm')}
               </p>
               {/* Conditionally render Edit and Delete buttons */}
               {user.email === review.user_email && (
