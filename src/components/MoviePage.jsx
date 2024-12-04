@@ -172,9 +172,9 @@ const MoviePage = () => {
         <div className="row">
           {/*left Column: Poster and Title */}
           <div className="col-lg-4 col-md-5 mb-4">
-            <h1 className="mb-4">{movie?.title}</h1>
+            <h1 className="mb-3">{movie?.title}</h1>
 
-            <div className="card-body">
+            <div className="mb-3">
                   {/*conditionally render the Add to Favorites button */}
                   {user.id ? (
                     <button
@@ -190,7 +190,7 @@ const MoviePage = () => {
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
-                className="img-fluid rounded mb-4"
+                className="img-fluid rounded"
               />
             )}
           </div>
