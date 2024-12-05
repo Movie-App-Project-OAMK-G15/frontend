@@ -26,6 +26,7 @@ import AddGroupPosts from './screens/AddGroupPost.jsx'
 import UserGroups from './components/UserGroups.jsx';
 import BrowsingReviews from './screens/BrowsingReviews.jsx';
 import UserOwnGroups from './components/UserOwnGroups.jsx';
+import UserChoice from './components/User_Choice.jsx';
 
 //creating router for navigation and authentication
 const router = createBrowserRouter([
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
     element: <FavMovies />
   },
   {
+    path: '/userChoice',
+    element: <UserChoice />
+  },
+  {
     element: <ProtectedRoute/>,
     children: [
       {
@@ -107,6 +112,7 @@ const router = createBrowserRouter([
         path: 'account/myowngroups/:userId',
         element: <UserOwnGroups />
       },
+     
     ]
   }
 ])

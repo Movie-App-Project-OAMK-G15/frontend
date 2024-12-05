@@ -1,4 +1,4 @@
-import { selectUserByEmail, postUser, deleteUser, getAllFavMovies, postFavMovie, addBio, getBio, updateProfilePic, getProfilePic } from "../models/User.js";
+import { selectUserByEmail, postUser, deleteUser, getAllFavMovies, postFavMovie, addBio, getBio, updateProfilePic, getProfilePic, getAllUsers } from "../models/User.js";
 import { ApiError } from "../helpers/errorClass.js";
 import { compare, hash } from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -164,7 +164,15 @@ const getProfilePicture = async (req, res, next) => {
       return next(error);
   }
 };
-
+//getalluser
+const getAllUsersController = async (req, res, next) => {
+  try {
+    const users = await getAllUsers();
+    return res.status(200).json(users);
+  } catch (error) {
+    return next(error);
+  }
+};
 export {
   postRegistration,
   postLogin,
@@ -174,5 +182,6 @@ export {
   updateUserBio,
   getUserBio,
   changeProfilePic,
-  getProfilePicture
+  getProfilePicture,
+  getAllUsersController
 };

@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { Router } from "express"
-import { postRegistration, postLogin, deleteAccount, addFavorite, getFavorites, updateUserBio, getUserBio, changeProfilePic, getProfilePicture } from "../controllers/UserController.js";
+import { postRegistration, postLogin, deleteAccount, addFavorite, getFavorites, updateUserBio, getUserBio, changeProfilePic, getProfilePicture, getAllUsersController } from "../controllers/UserController.js";
 import multer from 'multer';
 
 dotenv.config();
@@ -29,6 +29,8 @@ userRouter.get('/bio/:userId', getUserBio)
 userRouter.post('/profile-pic/:userId', upload.single('profilePic') ,changeProfilePic)
 
 userRouter.get('/getpic/:userId', getProfilePicture)
+
+userRouter.get("/all", getAllUsersController);
 
 
 export default userRouter

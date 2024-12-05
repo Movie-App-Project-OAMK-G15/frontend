@@ -55,6 +55,11 @@ const Navbar = () => {
                 Reviews
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/userChoice">
+                People's Choices
+              </Link>
+            </li>
           </ul>
 
           {/* Right-aligned account-related links */}
