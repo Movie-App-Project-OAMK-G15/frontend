@@ -1,4 +1,5 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -6,11 +7,11 @@ import { useUser } from "../context/useUser";
 
 const FavMovies = () => {
   //get user from UserContext
+  const { userId } = useParams();
   const { user } = useUser();
   //store favorite movies
   const [movies, setMovies] = useState([]);
   //retrieve user ID from user context
-  const userId = user.id;
   const tmdbKey = import.meta.env.VITE_TMDB_API_KEY
 
   useEffect(() => {

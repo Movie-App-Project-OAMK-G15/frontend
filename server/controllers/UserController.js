@@ -168,7 +168,7 @@ const getProfilePicture = async (req, res, next) => {
 const getAllUsersController = async (req, res, next) => {
   try {
     const users = await getAllUsers();
-    return res.status(200).json(users);
+    return res.status(200).json(users.rows);
   } catch (error) {
     return next(error);
   }

@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import axios from 'axios'
+const url = import.meta.env.VITE_API_URL
 
 const UserChoice = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    async function fetchUsers(){
       try {
-        const response = await fetch('http://localhost:3001/user/all');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log("Fetched users:", data);
-        setUsers(data.rows || []);
+        const headers = {
+          headers: {
+              "Content-Type": "application/json",
+          }
+        }; 
+        const response = await axios.get(url + '/user/all', headers);
+        console.log("Fetched users:", response.data);
+        setUsers(response.data);
       } catch (error) {
-        console.error("Error fetching users:", error);
-        alert("Error fetching users: " + error.message);
+        alert("Error fetching users: " + error);
       }
     };
 
@@ -48,7 +50,7 @@ const UserChoice = () => {
                     </h5>
                     <button
                       className="btn btn-primary"
-                      onClick={() => handleShowFavorites(user.id)}
+                      onClick={() => handleShowFavorites(user.user_id)}
                     >
                       Show Favorite Movies
                     </button>
