@@ -63,4 +63,12 @@ const getAllReviews = async () => {
     return pool.query('select * from review;');
  };
 
-export { getReviewsByMovieId, getAllReviews, addReview, deleteReview, getReviewByIdAndUserEmail, updateReview };
+ const getReviewsByUserEmail = async (userEmail) => {
+  const result = await pool.query(
+    'SELECT * FROM review WHERE user_email = $1 ORDER BY created_at DESC',
+    [userEmail]
+  );
+  return result.rows; // Return all reviews for the user
+};
+
+export { getReviewsByMovieId, getAllReviews, addReview, deleteReview, getReviewByIdAndUserEmail, updateReview, getReviewsByUserEmail };
