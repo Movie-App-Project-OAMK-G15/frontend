@@ -36,7 +36,7 @@ export default function UserAccount() {
                         <div className="col-md-4">
                             <div className="card mb-4">
                                 <div className="card-body text-center">
-                                    <h5 className="card-title">Profile Picture</h5>
+                                    <h5 className="card-title">My Account</h5>
                                     <UpdateProfilePic />
                                     <h2>___________________________</h2>
                                     <div className="mt-3">
@@ -53,7 +53,6 @@ export default function UserAccount() {
                         <div className="col-md-8">
                             <div className="card mb-4">
                                 <div className="card-body">
-                                    <h5 className="card-title">User  Account</h5>
                                     <p className="card-text"><strong>First Name:</strong> {user.firstname}</p>
                                     <p className="card-text"><strong>Family Name:</strong> {user.familyname}</p>
                                     <p className="card-text"><strong>Email:</strong> {user.email}</p>
