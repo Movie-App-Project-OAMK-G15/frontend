@@ -9,7 +9,6 @@ const BioUpdate = () => {
     const [message, setMessage] = useState(''); 
     const [error, setError] = useState(''); 
     const [isEditing, setIsEditing] = useState(false); 
-
     
     useEffect(() => {
         const fetchBio = async () => {

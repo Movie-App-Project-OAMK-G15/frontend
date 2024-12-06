@@ -4,7 +4,6 @@ import ErrorNotification from '../components/ErrorNotification.jsx'
 import Navbar from '../components/Navbar.jsx'
 import { useUser } from '../context/useUser'
 import '../styles/Authentication.css'
-
 //enum implementation for js object for setting a authentication mode
 //for further conditional rendering
 export const AuthenticationMode = Object.freeze({
@@ -18,6 +17,7 @@ export default function Authentication({authenticationMode}) {
     const [notificationMessage, setNotificationMessage] = useState(null)
     //custom notification/error type
     const [type, setType] = useState("")
+    const [loading, setLoading] = useState(false);
     //import from context
     const {user, setUser, signUp, signIn, confirmEmail} = useUser()
     //navigation
@@ -55,36 +55,67 @@ export default function Authentication({authenticationMode}) {
     const handleSubmit = async(event) => {
         event.preventDefault()
 
+        const res = validateSignupInput(user.email, user.password)
 
-
-        try {
-            if(authenticationMode === AuthenticationMode.Register){//register(sign up) option
-                await signUp() //calling context function 
-                navigate('/confirm') //if no errors -> navigating to confirm page
-                //setNotificationMessage('New account has been created successfully!') //custom message
-                //timeout for custom message
-                // setTimeout(() => {
-                //     setNotificationMessage(null)
-                // }, 3000)
-            }else{//login option
-                await signIn() //calling context function 
-                navigate('/account') //if no errors -> navigating to user account page
-            }   
-        } catch (error) {
-            const message = error.response && error.response.data ? error.response.data.error : error
-            setNotificationMessage(message)//custom error notification
-            setType('error')//notification type
-            setTimeout(() => {
-                setNotificationMessage(null)
-                setType('')
-              }, 3000)
+        if(res.isValid){
+            try {
+                if(authenticationMode === AuthenticationMode.Register){//register(sign up) option
+                    if(user.firstname.length == 0 || user.familyname.length == 0){
+                        setNotificationMessage('firstname or family name are too short')//custom error notification
+                            setType('error')//notification type
+                            setTimeout(() => {
+                                setNotificationMessage(null)
+                                setType('')
+                              }, 3000)
+                            return
+                    }
+                    setLoading(true)
+                    await signUp() //calling context function 
+                    setLoading(false)
+                    navigate('/confirm') //if no errors -> navigating to confirm page
+                }else{//login option
+                    setLoading(true)
+                    await signIn() //calling context function 
+                    setLoading(false)
+                    navigate('/account') //if no errors -> navigating to user account page
+                }   
+            } catch (error) {
+                const message = error.response && error.response.data ? error.response.data.error : error
+                setNotificationMessage(message)//custom error notification
+                setType('error')//notification type
+                setTimeout(() => {
+                    setNotificationMessage(null)
+                    setType('')
+                  }, 3000)
+            }
+        }else if(res.message == "Invalid email format."){
+            setNotificationMessage(res.message)//custom error notification
+                setType('error')//notification type
+                setTimeout(() => {
+                    setNotificationMessage(null)
+                    setType('')
+                  }, 3000)
+        }else{
+            setNotificationMessage(res.message)//custom error notification
+                setType('error')//notification type
+                setTimeout(() => {
+                    setNotificationMessage(null)
+                    setType('')
+                  }, 5000)
         }
     }
 
     const handleEmailCode = async() => {
         try {
+            setLoading(true)
             await confirmEmail(code)
+            setLoading(false)
             navigate('/signin')
+            setNotificationMessage('New account has been created successfully!') //custom message
+            //timeout for custom message
+            setTimeout(() => {
+                    setNotificationMessage(null)
+            }, 3000)
         } catch (error) {
             alert(error)
         }
@@ -95,6 +126,7 @@ export default function Authentication({authenticationMode}) {
         <Navbar/>
         <div className='auth'>
             <ErrorNotification message={notificationMessage} type={type}/>
+            {loading && <div className="alert alert-info text-center">Please, wait a bit...</div>}
             <h3>{authenticationMode === AuthenticationMode.Login ? 'Sign in' : authenticationMode === AuthenticationMode.Confirm ? 'Confirm your email' : 'Sign up'}</h3>
             {authenticationMode === AuthenticationMode.Register || authenticationMode === AuthenticationMode.Login ? 
                 <form onSubmit={handleSubmit}>
@@ -129,6 +161,7 @@ export default function Authentication({authenticationMode}) {
                 </form>
                 :
                 <div>
+                    <p>To check is your email real, we have sent a confirmation code to your email address.</p>
                     <label>Enter code from email:</label>
                     <input 
                         id='code_field' 

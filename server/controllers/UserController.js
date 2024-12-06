@@ -107,6 +107,7 @@ async function deleteAccount(req, res, next) {
   try {
     if (!req.body.email || req.body.email.length === 0)
       return next(new ApiError("Invalid email for user", 400));
+    console.log(req.body.email)
     const result = await deleteUser(req.body.email);
     if (result.rowCount > 0) {
       return res

@@ -41,7 +41,7 @@ const selectUserByEmail = async(email) => {
 }
 
 const deleteUser = async(email) => {
-    return pool.query("delete from account where email=$1",
+    return pool.query("select delete_user_and_related_data($1)",
         [email])
 }
 
