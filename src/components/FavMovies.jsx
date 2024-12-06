@@ -13,6 +13,7 @@ const FavMovies = () => {
   const [movies, setMovies] = useState([]);
   //retrieve user ID from user context
   const tmdbKey = import.meta.env.VITE_TMDB_API_KEY
+  const backendLink = import.meta.env.VITE_API_URL
 
   useEffect(() => {
     fetchMovesById()
@@ -20,7 +21,7 @@ const FavMovies = () => {
 
   async function fetchMovesById(){
     try {
-      const result = await axios.get(`http://localhost:3001/user/favorites/${userId}`)
+      const result = await axios.get(backendLink + `/user/favorites/${userId}`)
       const userFavMovies = result.data
 
       const options = {

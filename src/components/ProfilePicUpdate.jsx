@@ -19,7 +19,7 @@ export default function UpdateProfilePic() {
                             'Authorization': user.token
                         }
                     });
-                    console.log(response.data); // Log the response to verify the data
+                    
                     setProfilePicUrl(response.data);
                 } catch (error) {
                     console.error("Error fetching profile picture:", error);

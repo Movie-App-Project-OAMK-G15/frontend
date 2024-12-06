@@ -9,6 +9,8 @@ import ReviewList from "./ReviewList";
 import { useUser } from "../context/useUser";
 import "../styles/MoviePage.css";
 //import BrowseReviewPage from "./BrowseReview";
+const backendLink = import.meta.env.VITE_API_URL
+
 
 // MoviePage component
 const MoviePage = () => {
@@ -56,7 +58,7 @@ const MoviePage = () => {
     const fetchReviews = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/reviews/${movieId}`
+          backendLink + `/reviews/${movieId}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -81,7 +83,7 @@ const MoviePage = () => {
   // Handle Delete Review
   const handleDelete = async (reviewId) => {
     try {
-      const response = await fetch(`http://localhost:3001/reviews/${reviewId}`, {
+      const response = await fetch(backendLink + `/reviews/${reviewId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +110,7 @@ const MoviePage = () => {
   // Function to handle review updates
   const handleUpdate = async (reviewId, newContent, newRating) => {
     try {
-      const response = await fetch(`http://localhost:3001/reviews/${reviewId}`, {
+      const response = await fetch(backendLink + `/reviews/${reviewId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +153,7 @@ const MoviePage = () => {
     try {
       const userId = user.id; //retrieve user id from user context
       const response = await axios.post(
-        "http://localhost:3001/user/addfavorite",
+        backendLink + "/user/addfavorite",
         {
           movie_id: movieId,
           user_id: userId,
