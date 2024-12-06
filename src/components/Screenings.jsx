@@ -120,7 +120,7 @@ const Screenings = () => {
     return (
         <div>
             <Navbar />
-            <div className="dropdown">
+            <div className="dropdown text-white">
                 <div>
                     <label htmlFor="area-dropdown">Select an Area:</label>
                     <select 

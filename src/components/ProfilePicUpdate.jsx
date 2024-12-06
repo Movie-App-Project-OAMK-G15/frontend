@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useUser } from '../context/useUser';
+import "../styles/ProfilePicUpdate.css"
 const url = import.meta.env.VITE_API_URL
 
 export default function UpdateProfilePic() {
@@ -69,13 +70,12 @@ export default function UpdateProfilePic() {
             {isEditing ? (
                 <>
                     <input type="file" accept="image/jpeg, image/png" onChange={handleFileChange} />
-                    <button className="btn btn-success me-2" onClick={handleSave}>Save</button>
-                    <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>Cancel</button>
+                    <button className="btn save" onClick={handleSave}>Save</button>
+                    <button className="btn cancel" onClick={() => setIsEditing(false)}>Cancel</button>
                 </>
             ) : (
-                <button className="btn btn-primary" onClick={() => setIsEditing(true)}>Edit</button>
+                <button className="btn edit" onClick={() => setIsEditing(true)}>Edit</button>
             )}
-        </div>
-            
+        </div>       
     );
 }

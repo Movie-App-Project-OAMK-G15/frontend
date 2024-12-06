@@ -1,16 +1,77 @@
-.profile-picture-container {
-    margin-bottom: 20px;
+
+body {
+    font-family: Arial, sans-serif; /* Change to your desired font family */
+    font-size: 16px; /* Change to your desired font size */
+    background-color: rgb(0, 0, 0); /* Default text color */
 }
 
-.card-title {
-    font-weight: bold;
-    color: #007bff; 
+/* Ensure all headings and paragraphs inherit the same font settings */
+h1, h2, h3, h4, h5, h6, p, span, button {
+    font-family: inherit; /* Inherit font family from body */
+    font-size: inherit; /* Inherit font size from body */
+    color: inherit; /* Inherit text color from body */
 }
 
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Button styles */
 .btn {
-    transition: background-color 0.3s;
+    background-color: orange; /* Background color */
+    color: black; /* Text color */
+    border: 1px solid black; /* Border color */
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    background-color: black; /* Background color on hover */
+    color: orange; /* Text color on hover */
+}
+
+/* Specific button styles for outline buttons */
+.btn-outline-secondary {
+    background-color: transparent; /* Transparent background */
+    color: black; /* Text color */
+    border: 1px solid black; /* Border color */
+}
+
+.btn-outline-secondary:hover {
+    background-color: black; /* Background color on hover */
+    color: orange; /* Text color on hover */
+}
+
+.btn-outline-primary {
+    background-color: transparent; /* Transparent background */
+    color: black; /* Text color */
+    border: 1px solid black; /* Border color */
+}
+
+.btn-outline-primary:hover {
+    background-color: black; /* Background color on hover */
+    color: orange; /* Text color on hover */
+}
+
+/* Danger button */
+.btn-danger {
+    background-color: orange; /* Background color */
+    color: black; /* Text color */
+    border: 1px solid black; /* Border color */
+}
+
+.btn-danger:hover {
+    background-color: black; /* Background color on hover */
+    color: orange; /* Text color on hover */
+}
+
+/* Secondary button */
+.btn-secondary {
+    background-color: transparent; /* Transparent background */
+    color: black; /* Text color */
+    border: 1px solid black; /* Border color */
+}
+
+.btn-secondary:hover {
+    background-color: black; /* Background color on hover */
+    color: orange; /* Text color on hover */
 }

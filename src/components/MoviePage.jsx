@@ -166,7 +166,7 @@ const MoviePage = () => {
 
   //render the movie details
   return (
-    <div>
+    <div className="movie-page">
       <Navbar />
       <div className="container mt-4">
         <div className="row">
@@ -190,7 +190,7 @@ const MoviePage = () => {
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
-                className="img-fluid rounded"
+                className="img-fluid rounded movie-poster"
               />
             )}
           </div>
@@ -235,6 +235,24 @@ const MoviePage = () => {
             )}
           </div>
         </div>
+        {/* Cast */}
+        <div className="mb-4">
+          <h4>Cast</h4>
+          <div className="cast-container">
+            {movie?.credits?.cast?.slice(0, 8).map((actor) => (
+              <div key={actor.id} className="cast-item">
+                <img
+                  src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                  alt={actor.name}
+                  className="rounded-circle"
+                 
+                />
+                <p className="mb-0">{actor.name}</p>
+                <small className="text-muted">as {actor.character}</small>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Reviews Section - Check if the user is logged in*/}
         {user.token ? (
@@ -267,7 +285,7 @@ const MoviePage = () => {
                 <img
                   src={`https://image.tmdb.org/t/p/w200${rec.poster_path}`}
                   alt={rec.title}
-                  className="rounded mb-2"
+                  className="rounded mb-2 recommended-poster"
                   style={{ width: "100%" }}
                 />
                 <p className="small">{rec.title}</p>

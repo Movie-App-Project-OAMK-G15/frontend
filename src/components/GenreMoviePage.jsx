@@ -79,7 +79,7 @@ const GenreMoviesPage = () => {
   return (
     <div>
       <Navbar />
-      <div className="container my-4">
+      <div className="container my-4 text-white">
         <h2 className="mb-4">{genreName} Movies</h2> {/*display genre name */}
         <div className="row">
           {movies.map((movie) => (

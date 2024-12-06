@@ -1,151 +1,202 @@
-/* General container styling */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
+/* Apply black background and white text only for MoviePage */
+.movie-page {
+  background-color: #000; /* Black background */
+  color: #fff; /* White text */
+  min-height: 100vh; /* Full viewport height */
+  padding: 20px; /* Add padding for better spacing */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Container for central content */
+.movie-page .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Headings in MoviePage */
+.movie-page h1,
+.movie-page h4 {
+  font-family: 'Arial', sans-serif;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Card styling for sections like About and Rating */
+.movie-page .card {
+  background-color: #1a1a1a; /* Slightly lighter black */
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+  color: #ccc; /* Light text color for better readability */
+}
+
+/* Button styling */
+.movie-page .btn-primary {
+  background-color: #f39200; /* Bright orange */
+  color: #fff;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.movie-page .btn-primary:hover {
+  background-color: #e65c00; /* Slightly darker orange */
+}
+
+.movie-page .btn {
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+/* Image styling for poster */
+.movie-page img.movie-poster {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+}
+
+/* Trailer section styling */
+.movie-page iframe {
+  border-radius: 10px;
+  border: none;
+  margin-top: 15px;
+  width: 100%;
+  height: 315px;
+}
+
+/* Reviews Section */
+.movie-page .review-card {
+  background-color: #222; /* Dark grey background */
+  color: #ddd; /* Light text */
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+  margin-bottom: 20px;
+}
+
+/* Recommended movies posters */
+.movie-page .recommended-poster {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+}
+
+.movie-page .recommended-poster:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(255, 255, 255, 0.1);
+}
+
+/* Small text for movie titles */
+.movie-page .small {
+  color: #bbb;
+  margin-top: 8px;
+}
+
+/* Add to Favorites button */
+.movie-page .btn-primary.w-100 {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .movie-page h1 {
+    font-size: 2rem;
   }
-  
-   /* Heading styles (for h1 and h4 elements) */
-  h1, h4 {
-    font-family: 'Arial', sans-serif;
-    font-weight: bold;
-    margin-bottom: 15px;
+
+  .movie-page iframe {
+    height: 200px;
   }
-  
-  /* Styling for the card component */
-  .card {
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+
+  .movie-page .btn-primary {
+    width: 100%;
   }
-  
-  /* Padding for card body */
-  .card-body {
-    padding: 20px;
+}
+
+@media (max-width: 576px) {
+  .movie-page h4 {
+    font-size: 1.2rem;
   }
-  
-  /* Button Styling */
-  .btn-primary {
-    background-color: #007bff;
-    border: none;
-    transition: background-color 0.3s ease;
-  }
-  
-   /* Hover effect for the primary button */
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
-  
-   /* General button styling */
-  .btn {
-    border-radius: 5px;
-    font-weight: 600;
-  }
-  
-  /* Styling for success button */
-  .btn-success {
-    background-color: #28a745;
-    border: none;
-  }
-  
-  /* Movie Title */
-  h1 {
-    font-size: 2.5rem;
-    color: #333;
-  }
-  
-  /* Image Styling */
-  img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Trailer iframe */
-  iframe {
-    border-radius: 10px;
-    border: none;
-    margin-top: 15px;
-  }
-  
-  /* Reviews Section - Styling for the review list section */
-  .review-list {
-    margin-top: 20px;
-  }
-  
-  /* Styling for the review list heading */
-  .review-list h4 {
-    margin-bottom: 20px;
-  }
-  
-   /* Styling for individual review cards */
-  .review-card {
-    margin-bottom: 15px;
-    padding: 15px;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* User Reviews and Button */
-  .user-review {
-    margin-top: 20px;
-  }
-  
-  /* Styling for error messages */
-  p.text-danger {
-    font-weight: bold;
-  }
-  
-  /* Recommended Movies Section -Styling for recommended movie images */
-  .recommended-movies img {
-    transition: transform 0.3s ease;
-  }
-  
-  /* Hover effect for recommended movie images */
-  .recommended-movies img:hover {
-    transform: scale(1.05);
-  }
-  
-   /* Styling for movie titles under recommended movies */
-  .recommended-movies .small {
+
+  .movie-page .btn-primary {
     font-size: 0.9rem;
-    color: #555;
-    text-align: center;
+    padding: 8px 12px;
   }
-  
-  /* Responsive Design */
-  /* For screens smaller than 768px (Tablets and below) */
-  @media (max-width: 768px) {
-    h1 {
-      font-size: 2rem;
-    }
-  
-    .col-lg-4, .col-md-5 {
-      margin-bottom: 20px;
-    }
-  
-    .btn {
-      width: 100%;
-    }
-  
-    iframe {
-      height: 200px;
-    }
+}
+
+/* Cast Section Styling */
+.cast-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px; /* Adds spacing between cast members */
+}
+
+.cast-item {
+  text-align: center;
+  flex: 1 1 calc(33.333% - 20px); /* Three items per row on medium and larger screens */
+  max-width: 120px; /* Prevents items from stretching too much */
+}
+
+.cast-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.cast-item p {
+  margin: 8px 0 4px;
+  font-size: 14px;
+}
+
+.cast-item small {
+  color: #6c757d; /* Muted text */
+  font-size: 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .cast-item {
+    flex: 1 1 calc(50% - 20px); /* Two items per row on tablets */
   }
-  
-  /* For screens smaller than 576px (Mobile Phones) */
-  @media (max-width: 576px) {
-    .recommended-movies img {
-      width: 100%;
-    }
-  
-    h4 {
-      font-size: 1.2rem;
-    }
-  
-    .btn-primary {
-      font-size: 0.9rem;
-      padding: 8px 12px;
-    }
+
+  .cast-item img {
+    width: 70px;
+    height: 70px;
   }
+
+  .cast-item p {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 576px) {
+  .cast-item {
+    flex: 1 1 calc(100% - 20px); /* One item per row on small screens */
+  }
+
+  .cast-item img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .cast-item p {
+    font-size: 12px;
+  }
+}
+/* Styling for the review textarea */
+.review-textarea {
+  background-color: #1c1c1c; /* Dark background */
+  color: #fff; /* White text */
+  border: 1px solid #f39200; /* Orange border */
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 1rem;
+  width: 100%;
+  resize: vertical; /* Allow vertical resizing only */
+}
+

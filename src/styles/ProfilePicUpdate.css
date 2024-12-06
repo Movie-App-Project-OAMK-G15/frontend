@@ -1,0 +1,19 @@
+.profile-picture-container {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center align children */
+}
+
+.profile-picture-container img {
+    margin-bottom: 10px; 
+}
+
+.profile-picture-container button {
+    width: 30%; 
+    margin-top: 5px; 
+    background-color: rgb(204, 204, 204);
+}
+
+.profile-picture-container button:hover {
+    background-color: black;
+}

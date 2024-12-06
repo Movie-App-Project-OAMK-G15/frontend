@@ -61,7 +61,7 @@ const ReviewForm = ({ movieId, onReviewSubmit }) => {
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <textarea
-            className="form-control"
+            className="form-control review-textarea"
             placeholder="Write your review here..."
             value={reviewForm.content}
             onChange={(e) => setReviewForm({ ...reviewForm, content: e.target.value })}

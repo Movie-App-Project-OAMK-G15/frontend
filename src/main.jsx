@@ -27,6 +27,8 @@ import UserGroups from './components/UserGroups.jsx';
 import BrowsingReviews from './screens/BrowsingReviews.jsx';
 import UserOwnGroups from './components/UserOwnGroups.jsx';
 import UserChoice from './components/User_Choice.jsx';
+import './styles/global.css';
+import MyReviews from './components/MyReviews.jsx'
 
 //creating router for navigation and authentication
 const router = createBrowserRouter([
@@ -80,6 +82,10 @@ const router = createBrowserRouter([
   {
     path: '/account/favmovies/:userId',
     element: <FavMovies />
+  },
+  {
+    path: '/reviews/user/:userEmail',
+    element: <MyReviews />
   },
   {
     path: '/userChoice',
