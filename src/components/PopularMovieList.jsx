@@ -6,7 +6,7 @@ const PopularMovieList = ({ movieList, setMovieList }) => {
     const sortedMovies = [...movieList].sort((a, b) => b.vote_average - a.vote_average);
 
     return (
-        <div className="container my-4">
+        <div className="container my-4 text-white">
             <h2 className="mb-4">Top Rated</h2>
             <div className="row">
                 {sortedMovies.map((movie) => (

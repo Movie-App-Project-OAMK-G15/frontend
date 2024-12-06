@@ -45,7 +45,7 @@ const FavMovies = () => {
   return (
     <div>
       <Navbar/>
-      <div className="container my-4">
+      <div className="container my-4 text-white">
         <h2 className="mb-4">My Favorite Movies</h2>
         <div className="row">
           {movies.map((movie, index) => (
