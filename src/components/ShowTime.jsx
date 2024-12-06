@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
-import { format } from 'date-fns';
 import '../styles/ShowTime.css';
 
 const Showtime = () => {
@@ -69,11 +68,9 @@ const Showtime = () => {
 
     const fetchShowtimes = async () => {
         if (!selectedArea || !selectedDate) return;
-        const newDate = new Date(selectedDate)
-        let changedDate = format(newDate, 'dd-MM-yyyy')
         setLoading(true);
         try {
-            const response = await fetch(`https://www.finnkino.fi/xml/Schedule/?area=${selectedArea}&dt=${changedDate}`);
+            const response = await fetch(`https://www.finnkino.fi/xml/Schedule/?area=${selectedArea}&dt=${selectedDate}`);
             const xml = await response.text();
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xml, 'application/xml');
