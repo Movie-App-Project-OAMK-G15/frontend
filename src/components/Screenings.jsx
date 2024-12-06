@@ -158,7 +158,7 @@ const Screenings = () => {
                             <div className="movie-items" key={movie.id}>
                                 <img className="img" src={movie.image} alt={movie.title} />
                                 <div className="movie-details">
-                                    <h2>{movie.title}</h2>
+                                    <h3><strong>{movie.title}</strong></h3>
                                     <p>Duration: {movie.duration} minutes</p>
                                     <p>Rating: {movie.rating}</p>
                                     <p>Release Date: {movie.releaseDate}</p>

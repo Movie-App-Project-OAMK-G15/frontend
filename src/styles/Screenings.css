@@ -1,7 +1,6 @@
 /* General Styles */
 h2 {
     text-align: center;
-    color: #333;
 }
 /*dropdown design*/
 .dropdown {
@@ -33,8 +32,7 @@ label {
 
 /* Movie Items */
 .movie-items {
-    background-color: #ffffff;
-    border-bottom: 1px solid #000000; 
+    background-color: #ffffff; 
     width: 100%; 
     max-height: 250px; 
     display: flex;
@@ -43,6 +41,7 @@ label {
     flex-direction: row; 
     align-items: stretch; 
     box-sizing: border-box;
+    border-radius: 10px;
 }
 
 /* Image Styling */
