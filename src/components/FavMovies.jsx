@@ -4,6 +4,8 @@ import Navbar from "./Navbar";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useUser } from "../context/useUser";
+const backendLink = import.meta.env.VITE_API_URL
+const tmdbKey = import.meta.env.VITE_TMDB_API_KEY
 
 const FavMovies = () => {
   //get user from UserContext
@@ -12,8 +14,6 @@ const FavMovies = () => {
   //store favorite movies
   const [movies, setMovies] = useState([]);
   //retrieve user ID from user context
-  const tmdbKey = import.meta.env.VITE_TMDB_API_KEY
-  const backendLink = import.meta.env.VITE_API_URL
 
   useEffect(() => {
     fetchMovesById()

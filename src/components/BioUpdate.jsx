@@ -3,7 +3,6 @@ import { useUser } from '../context/useUser';
 import axios from 'axios';
 const backendLink = import.meta.env.VITE_API_URL
 
-
 const BioUpdate = () => {
     const { user } = useUser (); 
     const [bio, setBio] = useState(''); 
