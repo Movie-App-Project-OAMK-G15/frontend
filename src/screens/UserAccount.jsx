@@ -1,6 +1,5 @@
 import { useUser } from "../context/useUser";
 import Navbar from "../components/Navbar";
-import FavMovies from "../components/FavMovies";
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useEffect} from "react";
