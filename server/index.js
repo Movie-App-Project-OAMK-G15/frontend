@@ -23,6 +23,6 @@ app.use((err, req, res, next) => {
     res.status(statusCode).json({ error: err.message });
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+app.listen(port,() => {
+  console.log(`Server is running on http://localhost:${port}`);
 });
