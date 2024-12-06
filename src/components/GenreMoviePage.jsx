@@ -4,6 +4,8 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { UserContext } from "../context/UserContext";
 import Navbar from "./Navbar.jsx";
+const backendLink = import.meta.env.VITE_API_URL
+
 
 const GenreMoviesPage = () => {
   //get user context
@@ -55,7 +57,7 @@ const GenreMoviesPage = () => {
     try {
       const userId = user.id; //retrieve user id from user context
       const response = await axios.post(
-        "http://localhost:3001/user/addfavorite",
+        backendLink + "/user/addfavorite",
         {
           movie_id: movieId,
           user_id: userId,

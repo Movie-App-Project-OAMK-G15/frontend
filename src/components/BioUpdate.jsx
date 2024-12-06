@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '../context/useUser'; 
 import axios from 'axios';
+const backendLink = import.meta.env.VITE_API_URL
+
 
 const BioUpdate = () => {
     const { user } = useUser (); 
@@ -13,7 +15,7 @@ const BioUpdate = () => {
     useEffect(() => {
         const fetchBio = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/user/bio/${user.id}`, {
+                const response = await axios.get( backendLink + `/user/bio/${user.id}`, {
                     headers: {
                         'Authorization': user.token
                     }
@@ -38,7 +40,7 @@ const BioUpdate = () => {
         setMessage(''); 
 
         try {
-            const response = await axios.put(`http://localhost:3001/user/bio/${user.id}`, { bio }, {
+            const response = await axios.put( backendLink + `/user/bio/${user.id}`, { bio }, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': user.token

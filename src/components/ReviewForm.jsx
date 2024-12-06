@@ -1,5 +1,6 @@
 import React, { useState } from 'react'; // Import the useState hook
 import { useUser } from '../context/useUser'; // Import the useUser hook
+const backendLink = import.meta.env.VITE_API_URL
 
 // Define the ReviewForm component
 const ReviewForm = ({ movieId, onReviewSubmit }) => {
@@ -24,7 +25,7 @@ const ReviewForm = ({ movieId, onReviewSubmit }) => {
       }
 
       // Send a POST request to the server
-      const response = await fetch(`http://localhost:3001/reviews/${movieId}`, {
+      const response = await fetch(backendLink + `/reviews/${movieId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

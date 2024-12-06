@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useUser  } from '../context/useUser.jsx'; 
 import Navbar from './Navbar.jsx';
+const backendLink = import.meta.env.VITE_API_URL
+
 
 
 const MyReviews = () => {
@@ -15,7 +17,7 @@ const MyReviews = () => {
         const fetchReviews = async () => {
             setLoading(true); 
             try {
-                const response = await axios.get(`http://localhost:3001/reviews/user/${userEmail}`);
+                const response = await axios.get(backendLink + `/reviews/user/${userEmail}`);
                 setReviews(response.data);
                 setError(null);
             } catch (err) {
