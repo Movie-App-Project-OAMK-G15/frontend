@@ -1,6 +1,5 @@
 import { useUser } from "../context/useUser";
 import Navbar from "../components/Navbar";
-import FavMovies from "../components/FavMovies";
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useEffect} from "react";
@@ -43,6 +42,7 @@ export default function UserAccount() {
                                         <div className="d-flex flex-column align-items-center">
                                             <button className="btn btn-primary mb-2" onClick={() => navigate('/account/creategroup')}>Create Group</button>
                                             <button className="btn btn-outline-secondary mb-2" onClick={() => navigate(`/account/mygroups/${user.id}`)}>My Groups</button>
+                                            <button className="btn btn-outline-secondary mb-2" onClick={() => navigate(`/account/myowngroups/${user.id}`)}>My Own Groups</button>
                                             <button className="btn btn-outline-primary" onClick={() => navigate(`/account/favmovies/${user.id}`)}>Favourite Movies</button>
                                             <button className="btn btn-outline-primary" onClick={() => navigate(`/reviews/user/${encodeURIComponent(user.email)}`)}>My Reviews</button>
                                         </div>

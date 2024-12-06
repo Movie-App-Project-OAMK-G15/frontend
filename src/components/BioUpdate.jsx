@@ -78,7 +78,7 @@ const BioUpdate = () => {
                 </form>
             ) : (
                 <div>
-                    <h4>Your Bio:</h4>
+                    <h4><strong>Your Bio:</strong></h4>
                     <p>{bio}</p> 
                     <button className="btn btn-secondary mt-2" onClick={handleEditClick}>Edit Bio</button>
                 </div>
