@@ -32,7 +32,7 @@ const handleUpdate = () => {
 
 // Render the ReviewList component
   return (
-    <div className="mb-4">
+    <div className="mb-4 ">
       {reviews.length > 0 ? (
         reviews.map((review) => (
           <div key={review.id} className="card mb-3">
