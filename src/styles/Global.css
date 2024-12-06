@@ -2,10 +2,8 @@ body {
     background-color: black !important;
 }
 
-.container, .row, .col-md-3, .card, .card-body, .card-title, .card-text {
-    color: black !important;
-    
-}
+
+
 
 h2{
     color: white !important;

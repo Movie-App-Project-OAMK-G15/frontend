@@ -13,7 +13,7 @@ const MoviesDisplay = ({ movies, loading, error }) => {
       {movies.length > 0 ? (
         <div>
           <h2 className="text-center mb-3">Movie Results</h2>
-          <div className="row">
+          <div className="row ">
             {movies.map((movie) => (
               <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-4" key={movie.id}>
                 <div className="card h-100">
