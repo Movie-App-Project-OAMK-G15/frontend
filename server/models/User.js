@@ -4,6 +4,32 @@ const getAllUsers = async() => {
     return pool.query('select * from account;')
 }
 
+const getUserById = async(userId) => {
+    return pool.query('select * from account where user_id = $1;',
+        [userId]
+    )
+}
+
+const getEncryptedToken = async(userId) => {
+    return pool.query('select email_verif from account where user_id = $1;',
+        [userId]
+    )
+}
+
+const setConfirmation = async(userId) => {
+    return pool.query(
+        'UPDATE account SET isConfirmed = true, email_verif = null WHERE user_id = $1 RETURNING *;',
+        [userId]
+    );
+};
+
+
+const setSignupToken = async(token, userId) => {
+    return pool.query('UPDATE account SET email_verif = $1 WHERE user_id = $2 RETURNING *', 
+        [token, userId]
+    )
+}
+
 const postUser = async(firstname, familyname, email, hashedPassword) => {
     return pool.query('insert into account (firstname, familyname, email, password) values ($1, $2, $3, $4) returning *;', 
             [firstname, familyname, email, hashedPassword])
@@ -56,4 +82,4 @@ const getProfilePic = async(userId) => {
 }
 
 
-export { postUser, selectUserByEmail, deleteUser, postFavMovie, getAllFavMovies, getAllUsers, addBio, getBio, updateProfilePic, getProfilePic };
+export { postUser, setConfirmation, getEncryptedToken, getUserById, selectUserByEmail, setSignupToken, deleteUser, postFavMovie, getAllFavMovies, getAllUsers, addBio, getBio, updateProfilePic, getProfilePic };

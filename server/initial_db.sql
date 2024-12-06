@@ -17,7 +17,9 @@ CREATE TABLE account (
     phone VARCHAR(20), -- Can be null
     password VARCHAR(255) NOT NULL,
     bio VARCHAR(255), -- Short bio about the user, optional
-    user_photo VARCHAR(255) -- Path to the user's photo file, optional
+    user_photo VARCHAR(255), -- Path to the user's photo file, optional
+    email_verif VARCHAR(255), -- Field for storing email verification token
+    isConfirmed BOOLEAN DEFAULT false -- Whether the email is confirmed
 );
 
 -- 2. Create 'review' table

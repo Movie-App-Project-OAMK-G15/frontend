@@ -1,12 +1,16 @@
 import dotenv from 'dotenv';
 import { Router } from "express"
-import { postRegistration, postLogin, deleteAccount, addFavorite, getFavorites, updateUserBio, getUserBio, changeProfilePic, getProfilePicture, getAllUsersController } from "../controllers/UserController.js";
+import { postRegistration, postLogin, verifyEmailByCode, creatTokenForSignUp, deleteAccount, addFavorite, getFavorites, updateUserBio, getUserBio, changeProfilePic, getProfilePicture, getAllUsersController } from "../controllers/UserController.js";
 import multer from 'multer';
 
 dotenv.config();
 const userRouter = Router()
 
 const upload = multer({ dest: 'uploads/' });
+
+userRouter.post('/verifyemail', verifyEmailByCode)
+
+userRouter.post('/createtoken', creatTokenForSignUp)
 
 userRouter.post('/register', postRegistration)
 

@@ -1,6 +1,7 @@
-import { selectUserByEmail, postUser, deleteUser, getAllFavMovies, postFavMovie, addBio, getBio, updateProfilePic, getProfilePic, getAllUsers } from "../models/User.js";
+import { selectUserByEmail, postUser, getUserById, setConfirmation, getEncryptedToken, setSignupToken, deleteUser, getAllFavMovies, postFavMovie, addBio, getBio, updateProfilePic, getProfilePic, getAllUsers } from "../models/User.js";
 import { ApiError } from "../helpers/errorClass.js";
 import { compare, hash } from "bcrypt";
+import crypto from 'node:crypto';
 import jwt from "jsonwebtoken";
 const { sign } = jwt;
 import { uploadToImgBB } from "../helpers/uploadPhoto.js";
@@ -12,8 +13,57 @@ const createUserObject = (id, firstname, familyname, email, token = undefined) =
     familyname: familyname,
     email: email,
     ...(token !== undefined && { token: token }),
+    // ...(signupToken !== undefined && { sToken: signupToken }),
   };
 };
+
+const createSignupToken = async(userId)=>{
+  const resetToken = Math.floor(100000 + Math.random() * 900000).toString();
+  const encryptedST = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+  try {
+    const response = await setSignupToken(encryptedST, userId)
+  if(response.rowCount > 0){
+      return resetToken
+  }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const verifyToken = (plainToken, encryptedToken) => {
+  const hashedInput = crypto.createHash('sha256').update(plainToken).digest('hex');
+  return hashedInput === encryptedToken;
+};
+
+async function verifyEmailByCode(req, res, next) {
+  try {
+    const userId = req.body.user_id
+    console.log(userId)
+    const token = req.body.token
+    console.log(token)
+    const response = await getUserById(userId)
+    const userInfo = response.rows[0]
+
+    if(userInfo.isconfirmed === true) return next(new ApiError("Your email has already been confirmed", 400));
+    
+    if(userInfo.email_verif !== null){
+      console.log(userInfo.email_verif)
+      if(verifyToken(token, userInfo.email_verif)){
+        const update = await setConfirmation(userId)
+        if(update.rowCount > 0){
+          console.log('sucass')
+          return res.status(200).json({successMessage: "Email has been verified successfully"}); 
+        }
+        return next(new ApiError("Invalid code", 400));
+      }
+    }else{
+      return next(new ApiError("The confirmation code does not exist for this user", 404));
+    }
+  } catch (error) {
+    return next(error);
+  }
+}
 
 async function postRegistration(req, res, next) {
   try {
@@ -37,11 +87,14 @@ async function postRegistration(req, res, next) {
 async function postLogin(req, res, next) {
   try {
     const userFromDb = await selectUserByEmail(req.body.email);
+    console.log(userFromDb.rows[0])
     if (userFromDb.rowCount === 0)
       return next(new ApiError("Invalid credentials", 401));
     const user = userFromDb.rows[0];
     if (!(await compare(req.body.password, user.password)))
       return next(new ApiError("Invalid credentials", 401));
+    if(!userFromDb.rows[0].isconfirmed)
+      return next(new ApiError("Email is not confirmed", 403));
 
     const token = sign({ email: req.body.email }, process.env.JWT_SECRET_KEY, {expiresIn: "1h"});
     return res.status(200).json(createUserObject(user.user_id, user.firstname, user.familyname, user.email, token));
@@ -164,6 +217,19 @@ const getProfilePicture = async (req, res, next) => {
       return next(error);
   }
 };
+
+const creatTokenForSignUp = async (req, res, next) => {
+  try {
+      const tokenForUser = await createSignupToken(req.body.user_id);
+      if (!tokenForUser) {
+          return next(new ApiError("Token has not been granted", 500));
+      }
+      return res.status(200).json(tokenForUser);
+  } catch (error) {
+      return next(error);
+  }
+};
+
 //getalluser
 const getAllUsersController = async (req, res, next) => {
   try {
@@ -183,5 +249,7 @@ export {
   getUserBio,
   changeProfilePic,
   getProfilePicture,
-  getAllUsersController
+  getAllUsersController,
+  creatTokenForSignUp,
+  verifyEmailByCode
 };

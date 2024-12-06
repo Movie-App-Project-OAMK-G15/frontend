@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { UserContext } from './UserContext'
 import axios from 'axios'
-
+import emailjs from 'emailjs-com'
+emailjs.init(import.meta.env.VITE_EMAILJS_KEY);
 const url = import.meta.env.VITE_API_URL
 
 export default function UserProvider({children}) {
@@ -18,11 +19,67 @@ export default function UserProvider({children}) {
         return null
     }
 
+    const getUserId = () => {
+        const uID = JSON.parse(sessionStorage.getItem('uID'))
+        if(uID){
+            return uID
+        }
+        return null
+    }
+
+    const setUserId = (data) => {
+        sessionStorage.setItem("uID", JSON.stringify(data))
+    }
+
+    async function confirmEmail(userToken) {
+        try {
+            const currentId = getUserId()
+            console.log(currentId)
+            const json = JSON.stringify({user_id: currentId, token: userToken})
+            const headers = {headers: {"Content-Type": 'application/json'}}
+            const response = await axios.post(url + '/user/verifyemail', json, headers)
+            if(response.data.successMessage){
+                sessionStorage.removeItem('uID');
+                alert('kongratulation')
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+    async function sendMail(mail, message) {
+        const params = {
+            sendername: "MovieZone",
+            to: mail,
+            subject: "Confirm your email",
+            replyto: "maxvanholl75@gmail.com",
+            message: message,
+        };
+
+        const serviceID = "service_uowz6vd";
+        const templateID = "template_j5m8wg8";
+
+        try {
+            const response = await emailjs.send(serviceID, templateID, params);
+            alert('Message has been sent successfully');
+            console.log('Email response:', response);
+        } catch (error) {
+            console.error('Failed to send email:', error);
+            alert('Failed to send email. Please try again.');
+        }
+    }
+
     const signUp = async () => {
         const json = JSON.stringify(user)
         const headers = {headers: {"Content-Type": 'application/json'}}
         try {
-            await axios.post(url + '/user/register', json, headers)
+            const response = await axios.post(url + '/user/register', json, headers)
+            console.log(response.data.id)
+            setUserId(response.data.id)
+            const dataForToken = JSON.stringify({user_id: response.data.id})
+            const userToken = await axios.post(url + '/user/createtoken', dataForToken, headers)
+            console.log(response.data)
+            await sendMail(response.data.email, userToken.data)
             setUser({id: "", firstname: "", familyname: "", email: '', password: ''})
         } catch(error) {
             throw error
@@ -101,7 +158,7 @@ export default function UserProvider({children}) {
     };
 
         return (
-            <UserContext.Provider value={{user, setUser, signUp, signIn, logOut, getToken, deleteAccount, getGroups, groups, setGroups, updateBio, getGroupById, currentGroup}}>
+            <UserContext.Provider value={{user, confirmEmail, setUser, signUp, signIn, logOut, getToken, deleteAccount, getGroups, groups, setGroups, updateBio, getGroupById, currentGroup}}>
                 { children }
             </UserContext.Provider>
         )

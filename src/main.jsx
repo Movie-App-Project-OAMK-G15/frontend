@@ -70,6 +70,10 @@ const router = createBrowserRouter([
     element: <Authentication authenticationMode={AuthenticationMode.Login}/>
   },
   {
+    path: 'confirm',
+    element: <Authentication authenticationMode={AuthenticationMode.Confirm}/>
+  },
+  {
     path: 'groups',
     element: <GroupList/>
   },
