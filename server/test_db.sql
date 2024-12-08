@@ -68,7 +68,7 @@ CREATE TABLE group_posts (
     FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE
 );
 
--- 7. Create 'favorite_movies' table
+-- 6. Create 'favorite_movies' table
 CREATE TABLE favorite_movies (
     movie_id INT NOT NULL,          
     user_id INT NOT NULL,           
@@ -76,7 +76,7 @@ CREATE TABLE favorite_movies (
     FOREIGN KEY (user_id) REFERENCES account(user_id) ON DELETE CASCADE
 );
 
--- 8. Create 'group_requests' table
+-- 7. Create 'group_requests' table
 CREATE TABLE group_requests (
     request_id SERIAL PRIMARY KEY,       -- Unique ID for each request
     user_email VARCHAR(100) NOT NULL,    -- Reference to the user's email
@@ -85,4 +85,3 @@ CREATE TABLE group_requests (
     FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE, -- Reference to groups
     FOREIGN KEY (user_email) REFERENCES account(email) ON DELETE CASCADE -- Reference to users
 );
-
