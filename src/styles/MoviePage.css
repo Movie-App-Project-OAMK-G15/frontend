@@ -1,6 +1,6 @@
 /* Apply black background and white text only for MoviePage */
 .movie-page {
-  background-color: #000; /* Black background */
+  background-color: rgb(27,27,27); /* Black background */
   color: #fff; /* White text */
   min-height: 100vh; /* Full viewport height */
   padding: 20px; /* Add padding for better spacing */
@@ -26,7 +26,7 @@
 
 /* Card styling for sections like About and Rating */
 .movie-page .card {
-  background-color: #1a1a1a; /* Slightly lighter black */
+  background-color: #2d2d2d; /* Slightly lighter black */
   border: none;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
@@ -86,12 +86,6 @@
 .movie-page .recommended-poster:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 12px rgba(255, 255, 255, 0.1);
-}
-
-/* Small text for movie titles */
-.movie-page .small {
-  color: #bbb;
-  margin-top: 8px;
 }
 
 /* Add to Favorites button */
