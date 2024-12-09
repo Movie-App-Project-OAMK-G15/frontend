@@ -1,6 +1,7 @@
 import { selectUserByEmail, postUser, getUserById, setConfirmation, getEncryptedToken, setSignupToken, deleteUser, getAllFavMovies, postFavMovie, addBio, getBio, updateProfilePic, getProfilePic, getAllUsers } from "../models/User.js";
 import { ApiError } from "../helpers/errorClass.js";
 import { compare, hash } from "bcrypt";
+import { validateSignupInput } from "../helpers/credentialsValidation.js";
 import crypto from 'node:crypto';
 import jwt from "jsonwebtoken";
 const { sign } = jwt;
@@ -75,10 +76,17 @@ async function postRegistration(req, res, next) {
       return next(new ApiError("Invalid email for user", 400));
     if (!req.body.password || req.body.password.length < 8)
       return next(new ApiError("Invalid password for user", 400));
-    const hashedPassword = await hash(req.body.password, 10);
-    const result = await postUser(req.body.firstname, req.body.familyname, req.body.email, hashedPassword);
-    const user = result.rows[0];
-    return res.status(200).json(createUserObject(user.user_id, user.firstname, user.familyname, user.email));
+
+    const isValidEmailPassword = validateSignupInput(req.body.email, req.body.password)
+
+    if(isValidEmailPassword.isValid){
+      const hashedPassword = await hash(req.body.password, 10);
+      const result = await postUser(req.body.firstname, req.body.familyname, req.body.email, hashedPassword);
+      const user = result.rows[0];
+      return res.status(200).json(createUserObject(user.user_id, user.firstname, user.familyname, user.email));
+    }else{
+        return next(new ApiError(isValidEmailPassword.message, 400));
+    }
   } catch (error) {
     return next(error);
   }
@@ -86,6 +94,11 @@ async function postRegistration(req, res, next) {
 
 async function postLogin(req, res, next) {
   try {
+    if (!req.body.firstname || req.body.email.firstname === 0)
+      return next(new ApiError("Invalid firstname for user", 400));
+    if (!req.body.password)
+      return next(new ApiError("Invalid password for user", 400));
+
     const userFromDb = await selectUserByEmail(req.body.email);
     console.log(userFromDb.rows[0])
     if (userFromDb.rowCount === 0)

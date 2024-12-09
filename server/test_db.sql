@@ -1,12 +1,12 @@
 -- just a draft version of our db
-DROP TABLE IF EXISTS comments CASCADE;
+DROP TABLE IF EXISTS account CASCADE;
 DROP TABLE IF EXISTS group_posts CASCADE;
 DROP TABLE IF EXISTS group_subscriptions CASCADE;
 DROP TABLE IF EXISTS group_requests CASCADE;
 DROP TABLE IF EXISTS groups CASCADE;
 DROP TABLE IF EXISTS review CASCADE;
 DROP TABLE IF EXISTS favorite_movies CASCADE;
-DROP TABLE IF EXISTS account CASCADE;
+
 
 -- 1. Create 'account' table
 CREATE TABLE account (
