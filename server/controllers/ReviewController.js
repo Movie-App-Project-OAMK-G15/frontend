@@ -75,6 +75,7 @@ export const updateReviewHandler = async (req, res) => {
 export async function getReviewsAll(req, res){
   try {
       const response = await getAllReviews()
+      console.log(response.rows)
       return res.status(200).json(response.rows);
   } catch (error) {
       console.error("Error in getReviewsAll: ", error);

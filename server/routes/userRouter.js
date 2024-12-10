@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { auth } from '../helpers/auth.js';
 import { Router } from "express"
 import { sendMail } from '../helpers/mailSender.js';
 import { postRegistration, postLogin, verifyEmailByCode, creatTokenForSignUp, deleteAccount, addFavorite, getFavorites, updateUserBio, getUserBio, changeProfilePic, getProfilePicture, getAllUsersController } from "../controllers/UserController.js";
@@ -15,7 +16,7 @@ userRouter.post('/register', postRegistration, creatTokenForSignUp, sendMail)
 
 userRouter.post('/login', postLogin)
 
-userRouter.post('/delete', deleteAccount)
+userRouter.post('/delete', auth, deleteAccount)
 
 //add favorite movie
 userRouter.post('/addfavorite', addFavorite)

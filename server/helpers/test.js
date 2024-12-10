@@ -20,13 +20,25 @@ const insertTestUser = async(firstname, familyname, email, password) => {
     })
 }
 
-const insertUserAndDataForDelete = async(userObject) => {
-    await insertTestUser(userObject.firstname, userObject.familyname, userObject.email, userObject.password)
-    await pool.query()
+const checkInfoLeftAfterDeleting = async(email) => {
+    const result = await pool.query('SELECT check_user_data_existence($1)', [email]);
+    return result.rows[0].check_user_data_existence;
+}
+
+const insertUserAndDataForDelete = async() => {
+    await pool.query('select populate_test_data();')
 }
 
 const getToken = (email) => {
     return sign(email, process.env.JWT_SECRET_KEY)
 }
 
-export { initializeTestDb, insertTestUser, getToken }
+const insertTestReview = async() => {
+    await pool.query("INSERT INTO review (user_email, review_content, likes, dislikes, movie_id, rating) VALUES ('jane@example.com', 'This movie was amazing! The plot twists kept me hooked.', 15, 2, 1, 5);")
+}
+
+const deleteTestData = async() => {
+    await pool.query("DELETE FROM review where user_email = 'jane@example.com';")
+}
+
+export { initializeTestDb, deleteTestData, insertTestReview, insertTestUser, checkInfoLeftAfterDeleting, getToken, insertUserAndDataForDelete }

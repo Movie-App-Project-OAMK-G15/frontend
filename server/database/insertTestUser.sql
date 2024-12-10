@@ -15,8 +15,8 @@ BEGIN
     -- Insert additional users
     INSERT INTO account (firstname, familyname, email, phone, password, bio, user_photo, email_verif, isConfirmed)
     VALUES 
-        ('Jane', 'Smith', 'jane@example.com', '9876543210', 'hashed_password', 'Test user bio', NULL, NULL, false),
-        ('Bob', 'Johnson', 'bob@example.com', '5556667777', 'hashed_password', 'Another test user bio', NULL, NULL, false);
+        ('Jane', 'Smith', 'jane@example.com', '9876543210', 'hashed_password', 'Test user bio', NULL, NULL, true),
+        ('Bob', 'Johnson', 'bob@example.com', '5556667777', 'hashed_password', 'Another test user bio', NULL, NULL, true);
 
     -- Insert groups
     INSERT INTO groups (admin_email, group_name, description, photo)

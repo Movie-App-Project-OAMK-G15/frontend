@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { initializeTestDb, insertTestUser, getToken } from "./helpers/test.js";
+import { initializeTestDb, insertTestUser, deleteTestData, checkInfoLeftAfterDeleting, getToken, insertTestReview, insertUserAndDataForDelete } from "./helpers/test.js";
 const base_url = 'http://localhost:3001/'
 let token;
 
@@ -382,190 +382,202 @@ describe('SIGNIN endpoint', () => {
 })
 
 describe('DELETE account endpoint', () => {
+    before(async() => {
+        await insertUserAndDataForDelete()
+    })
 
     it('should delete account, if the provided credentials are vaild', async() => {
-        const email = 'example@mymail.com'
-        const password = 'strongPassword228'
-        setTimeout(async() => {
-        const response = await fetch(base_url + 'user/login', {
+        const userToken = getToken("admin@example.com")
+        const response = await fetch(base_url + 'user/delete', {
             method: 'post',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": `${userToken}`
             },
-            body: JSON.stringify({ email: email, password: password })
+            body: JSON.stringify({ email: "admin@example.com"})
         })
         const data = await response.json()
 
         expect(response.status).to.be.equal(200)
         expect(data).to.be.an('object')
-        expect(data).to.include.all.keys('id', 'firstname', 'familyname', 'email', 'token')
-        }, 5000) 
+        expect(data).to.include.all.keys('state')
+    })
+
+    it('should NOT delete account, if the provided email is empty', async() => {
+        const userToken = getToken("admin@example.com")
+        const response = await fetch(base_url + 'user/delete', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `${userToken}`
+            },
+            body: JSON.stringify({ email: ""})
+        })
+        const data = await response.json()
+        
+        expect(response.status).to.be.equal(400, data.error)
+        expect(data).to.be.an('object')
+        expect(data).to.include.all.keys('error')
+    })
+
+    it('should NOT delete any account, if there were no records found by provided email', async() => {
+        const userToken = getToken("admin@example.com")
+        const response = await fetch(base_url + 'user/delete', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `${userToken}`
+            },
+            body: JSON.stringify({ email: "some@mail.random"})
+        })
+        const data = await response.json()
+        
+        expect(response.status).to.be.equal(400, data.error)
+        expect(data).to.be.an('object')
+        expect(data).to.include.all.keys('error')
+    })
+
+    it('no information about the deleted user should stay in the database', async() => {
+        //the checker function is provided in the test_db.sql
+        const result = await checkInfoLeftAfterDeleting("admin@example.com")
+
+        expect(result).to.be.an('boolean')
+        expect(result).to.be.equal(false)
     })
 })
 
-// describe('GET tasks', () => {
-//     before(() => {
-//         initializeTestDb()
-//     })
+describe('REVIEW endpoint', () => {
+    before(async() => {
+        await insertTestReview()
+    })
 
-// it('should login with valid credentials', async() => {
-    //     const email = 'example@mymail.com'
-    //     const password = 'strongPassword'
-    //     insertTestUser(email, password)
-    //     const response = await fetch(base_url + 'user/login', {
-    //         method: 'post',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({ email: email, password: password })
-    //     })
-    //     const data = await response.json()
+    describe('GET all reviews', () => {
 
-    //     expect(response.status).to.be.equal(200)
-    //     expect(data).to.be.an('object')
-    //     expect(data).to.include.all.keys('id', 'email', 'token')
-    // })
+    it('should get all reviews', async() => {
+        const response = await fetch(base_url + 'reviews/getallreviews', {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const data = await response.json()
 
-//     const token = getToken("example1@mymail.com")
-//     it('should get all tasks', async() => {
-//         const response = await fetch(base_url + 'get', {
-//             method: 'post',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: token
-//             },
-//             body: JSON.stringify({ email: "example1@mymail.com" })
-//         })
-//         const data = await response.json()
+        expect(response.status).to.be.equal(200)
+        expect(data[0]).to.be.an('object')
+        expect(data[0]).to.include.all.keys('review_id', 'user_email', 'likes', 'dislikes', 'movie_id', 'rating', 'created_at')
+    })
 
-//         expect(response.status).to.equal(200)
-//         expect(data).to.be.an('array').that.is.not.empty
-//         expect(data[0]).to.include.all.keys('id', 'description', 'isdone')
-//     })
-// })
+    it('should return an empty array if no reviews exist', async () => {
+        await deleteTestData(); // Remove all test data
+        const response = await fetch(base_url + 'reviews/getallreviews', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
 
-// describe('DELETE a task', () => {
-//     const token = getToken("example1@mymail.com")
-//     it('should delete a task', async() => {
-//         const response = await fetch(base_url + 'deletetask/1', {
-//             method: 'delete',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: token
-//             },
-//             body: JSON.stringify({email: "example1@mymail.com"})
-//         })
-//         const data = await response.json()
+        expect(response.status).to.be.equal(200);
+        expect(data).to.be.an('array').that.is.empty;
+    });
+    })
 
-//         expect(response.status).to.be.equal(200)
-//         expect(data).to.be.an('object')
-//         expect(data).to.include.all.keys('id')
-//     })
+    describe('POST review', () => {
+        it('should create a review', async () => {
+            const newReview = {
+                userEmail: 'jane@example.com',
+                reviewContent: 'Amazing movie!',
+                movieId: 14,
+                rating: 5,
+            };
+            const response = await fetch(base_url + `reviews/${1}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newReview),
+            });
+            const data = await response.json();
 
-//     it('should not delete a task with SQL injection', async() => {
-//         const token = getToken("delete@mymail.com")
-//         const response = await fetch(base_url + 'deletetask/id=0 or id > 0', {
-//             method: 'delete',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: token
-//             },
-//         })
-//         const data = await response.json()
-//         expect(response.status).to.equal(500)
-//         expect(data).to.be.an('object')
-//         expect(data).to.include.all.keys('error')
-//     })
-// })
-
-// describe('POST task', () => { 
-//     insertTestUser("post@mymail.com", "veryStrongPassword")
-//     const token = getToken("post@mymail.com")
-//     const token2 = getToken('example1@mymail.com')
-//     it('should add new task', async() => {
-//         const response = await fetch(base_url + 'addnewtask', {
-//             method: 'post',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: token
-//             },
-//             body: JSON.stringify({ description: "task from test", email: "example1@mymail.com" })
-//         })
-//         const data = await response.json()
-
-//         expect(response.status).to.equal(200)
-//         expect(data).to.be.an('object').to.include.all.keys('id')
-//     })
-
-//     it('should not post a task without description', async() => {
-//         const token = getToken("post@mymail.com")
-//         const response = await fetch(base_url + 'addnewtask', {
-//             method: 'post',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: token
-//             },
-//             body: JSON.stringify({ description: null })
-//         })
-//         const data = await response.json()
-
-//         expect(response.status).to.equal(400, data.error)
-//         expect(data).to.be.an('object')
-//         expect(data).to.include.all.keys('error')
-//     })
-
-//     it('should not post a task with zero length description', async() => {
-//         const token = getToken("post@mymail.com")
-//         const response = await fetch(base_url + 'addnewtask', {
-//             method: 'post',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: token
-//             },
-//             body: JSON.stringify({ description: '' })
-//         })
-//         const data = await response.json()
-
-//         expect(response.status).to.equal(400, data.error)
-//         expect(data).to.be.an('object')
-//         expect(data).to.include.all.keys('error')
-//     })
-// })
-
-// describe('PUT task', () => {
-//     const token = getToken("example2@mymail.com")
-//     it('should change isdone status', async() => {
-//         const response = await fetch(base_url + 'setdone', {
-//             method: 'put',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: token
-//             },
-//             body: JSON.stringify({ newStatus: true, id: 5})
-//         });
+            expect(response.status).to.be.equal(201);
+            expect(data).to.include.all.keys('id', 'user_email', 'movie_id', 'rating', 'review_content', 'created_at');
+        });
         
-//         const data = await response.json();
-    
-//         expect(response.status).to.equal(200);
-//         expect(data).to.be.an('object');
-//         expect(data).to.include.all.keys('id', 'description', 'user_email', 'isdone');
-//     });
+        it('should fail to create a review with missing fields', async () => {
+            const incompleteReview = {
+                userEmail: 'testuser@example.com',
+                rating: 5,
+            };
+            const response = await fetch(base_url + `reviews/${1}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(incompleteReview),
+            });
+            const data = await response.json();
 
-//     it('should not change isdone status if parameters in request are invalid', async() => {
-//         const response = await fetch(base_url + 'setdone', {
-//             method: 'put',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: token
-//             },
-//             body: JSON.stringify({ newStatus: undefined})
-//         });
-        
-//         const data = await response.json();
-    
-//         expect(response.status).to.equal(400);
-//         expect(data).to.be.an('object');
-//         expect(data).to.include.all.keys('error');
-//     });
-// })
+            expect(response.status).to.be.equal(400);
+            expect(data.error).to.equal('All fields are required.');
+        });
+    });
+    describe('PUT review', () => {
+        it('should update a review', async () => {
+            const reviewIdToUpdate = 3; 
+            const updatedReview = {
+                reviewContent: 'Updated review content.',
+                rating: 4,
+                userEmail: 'jane@example.com',
+            };
+            const response = await fetch(base_url + `reviews/${reviewIdToUpdate}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedReview),
+            });
+            const data = await response.json();
 
+            expect(response.status).to.be.equal(200);
+            expect(data).to.include.all.keys('id', 'user_email', 'movie_id', 'rating', 'review_content', 'created_at');
+        });
+
+        it('should fail to update a review, if the authors email is different from the email in the request', async () => {
+            const invalidReviewId = 3; 
+            const updatedReview = {
+                reviewContent: 'Updated review content.',
+                rating: 4,
+                userEmail: 'janee@example.com',
+            };
+            const response = await fetch(base_url + `reviews/${invalidReviewId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedReview),
+            });
+            const data = await response.json();
+
+            expect(response.status).to.be.equal(403);
+            expect(data.error).to.equal('Unauthorized to update this review');
+        });
+    });
+
+    describe('DELETE review', () => {
+
+        it('should delete a review', async () => {
+            const reviewIdToDelete = 3;
+            const response = await fetch(base_url + `reviews/${reviewIdToDelete}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userEmail: 'jane@example.com' }),
+            });
+            const data = await response.json();
+
+            expect(response.status).to.be.equal(200);
+            expect(data.message).to.equal('Review deleted successfully');
+        });
+    });
+})

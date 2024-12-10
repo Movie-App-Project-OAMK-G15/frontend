@@ -59,7 +59,7 @@ export default function UserProvider({children}) {
 
     const deleteAccount = async() => {
         const json = JSON.stringify(user)
-        const headers = {headers: {"Content-Type": 'application/json'}}
+        const headers = {headers: {"Content-Type": 'application/json', "Authorization": `${user.token}`}}
         try{
             const response = await axios.post(url + '/user/delete', json, headers)
             console.log(response.data)
