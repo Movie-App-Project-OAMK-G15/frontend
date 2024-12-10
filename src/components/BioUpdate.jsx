@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '../context/useUser'; 
 import axios from 'axios';
+import '../styles/BioUpdate.css'
 const backendLink = import.meta.env.VITE_API_URL
 
 const BioUpdate = () => {
@@ -62,7 +63,7 @@ const BioUpdate = () => {
         <div className="bio-update">
             {isEditing ? (
                 <form onSubmit={handleSubmit}>
-                    <h3>Update Your Bio</h3>
+                    <h3 className='bio-text'>Update Your Bio</h3>
                     <textarea
                         value={bio}
                         onChange={handleBioChange}
@@ -70,15 +71,15 @@ const BioUpdate = () => {
                         rows="4"
                         className="form-control"
                     />
-                    <button type="submit" className="btn-saveBio mt-2">Save Bio</button>
+                    <button type="submit" className=" buttn btn-saveBio mt-2">Save Bio</button>
                     {message && <p className="text-success">{message}</p>}
                     {error && <p className="text-danger">{error}</p>}
                 </form>
             ) : (
                 <div>
-                    <h4><strong>Your Bio:</strong></h4>
-                    <p>{bio}</p> 
-                    <button className="btn-editBio mt-2" onClick={handleEditClick}>Edit Bio</button>
+                    <h4 className='bio-text'><strong>Your Bio:</strong></h4>
+                    <p className='bio-box'>{bio}</p> 
+                    <button className="buttn btn-editBio mt-2" onClick={handleEditClick}>Edit Bio</button>
                 </div>
             )}
         </div>

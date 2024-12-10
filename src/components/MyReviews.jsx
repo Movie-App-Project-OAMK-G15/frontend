@@ -42,7 +42,7 @@ const MyReviews = () => {
                     reviews.map((review) => (
                         <div key={review.id} className="card mb-3">
                             <div className="card-body">
-                                <p className="card-text">{review.review_content}</p>
+                                <p className="review-text">{review.review_content}</p>
                                 <p><strong>Rating:</strong> {review.rating} Stars</p>
                                 <p><strong>Created at:</strong> {new Date(review.created_at).toLocaleString()}</p>
                             </div>

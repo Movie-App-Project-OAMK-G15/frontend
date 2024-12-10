@@ -15,6 +15,7 @@ h1, h2, h3, h4, h5, h6, p, span, button {
 .card-body {
     display: flex;
     flex-direction: column;
+    max-height: 80%;
 }
 
 /* Button styles */
@@ -23,9 +24,10 @@ h1, h2, h3, h4, h5, h6, p, span, button {
     color: black; /* Text color */
     border: 1px solid black; /* Border color */
     border-radius: 8px;
-    width: 40%; /* Full width on small devices */
+    width: 70%; /* Full width on small devices */
     max-width: 200px; /* Limit width on larger screens */
     height: 50px;
+   
 }
 
 .btn:hover {
@@ -83,3 +85,34 @@ h1, h2, h3, h4, h5, h6, p, span, button {
     background-color: black; /* Background color on hover */
     color: orange; /* Text color on hover */
 }
+
+.cardle {
+    height: 400px;
+    width: 70%;
+    background-color: white;
+    border-radius: 12px;
+}
+
+.card-text {
+    color: rgb(210, 135, 54);
+}
+
+.user-page .btn-primary {
+    border-radius: 8px;
+    
+}
+
+.user-page .collapse .card {
+    margin-bottom: 1rem;
+}
+
+.bttun {
+    max-width: 10%;
+    background-color: orange;
+}
+
+.card-title {
+    margin-top: 10px;
+}
+
+
