@@ -291,8 +291,7 @@ const MoviePage = () => {
                   className="rounded mb-2 recommended-poster"
                   style={{ width: "100%" }}
                 />
-                <p className="small">{rec.title}</p>
-              </Link>
+                </Link>
             </div>
           ))}
         </div>
@@ -301,5 +300,6 @@ const MoviePage = () => {
     </>
   );
 };
+              
 
 export default MoviePage;

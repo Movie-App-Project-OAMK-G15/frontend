@@ -1,6 +1,6 @@
 /* BrowseMovies Page Specific Styling */
 .browse-movies-page {
-  background-color: #000; /* Black background */
+  background-color: rgb(27, 27, 27); /* Black background */
   color: #fff; /* White text */
   min-height: 100vh;
   padding-bottom: 20px;
@@ -22,11 +22,18 @@
 /* Scoped Form and Select Input Styling */
 .browse-movies-page .form-select,
 .browse-movies-page .form-control {
-  background-color: #1c1c1c;
+  background-color: rgb(35, 35, 35);
   color: #fff;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
+}
+
+/* Placeholder Text Styling */
+.browse-movies-page .form-control::placeholder,
+.browse-movies-page .form-select::placeholder {
+  color: #bbb; /* Light gray for better contrast */
+  opacity: 1; /* Ensure the placeholder is fully visible */
 }
 
 /* Button Styling Scoped */
