@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import '../styles/movieZigaZiga.css'
+
 
 const GenrePage = () => {
   //to store genre
@@ -59,8 +61,8 @@ const GenrePage = () => {
 
   return (
     <div className="container my-4">
-      <h2 className="mb-4">Browse by Genre</h2>
-      <div className="row">
+      <h2 className="mb-4 text-white">Browse by Genre</h2>
+      <div className="row ">
         {genres
           .filter((genre) =>
             movies.some((movie) => movie.genre_ids.includes(genre.id))
@@ -76,7 +78,7 @@ const GenrePage = () => {
               : `https://via.placeholder.com/150?text=${genre.name}`;
 
             return (
-              <div key={genre.id} className="col-md-3 mb-4">
+              <div key={genre.id} className="col-md-3 mb-4 zoom-on-hover">
                 <div
                   className="card h-100 text-center p-3"
                   style={{ cursor: "pointer" }}

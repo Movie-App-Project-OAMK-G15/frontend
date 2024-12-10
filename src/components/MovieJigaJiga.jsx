@@ -1,13 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
+import '../styles/movieZigaZiga.css'
 
 const NextArrow = (props) => {
   const { className, style, onClick } = props;
   return (
     <div
       className={className}
-      style={{ ...style, display: 'block', fontSize: '24px', right: '10px', color: 'white' }}
+      style={{ ...style, display: 'block', fontSize: '36px', right: '10px', color: 'orange' }}
       onClick={onClick}
     >
       &#9654; {/*unicode character for right arrow */}
@@ -20,7 +21,7 @@ const PrevArrow = (props) => {
   return (
     <div
       className={className}
-      style={{ ...style, display: 'block', fontSize: '24px', left: '10px', color: 'white' }}
+      style={{ ...style, display: 'block', fontSize: '36px', left: '10px', color: 'orange' }}
       onClick={onClick}
     >
       &#9664; {/*unicode character for left arrow */}
@@ -42,24 +43,27 @@ function DynamicSlides({ movies }) {
 
   return (
     <div className="slider-container">
-      <Slider {...settings}>
-        {movies.map(movie => (
-          <div key={movie.id} className="card mx-2">
-            <Link to={`/movie/${movie.id}`}>
-              <img
-                src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-                className="card-img-top"
-                alt={movie.title}
-              />
-            </Link>
-            <div className="card-body">
-              <h5 className="card-title">{movie.title}</h5>
-              <p className="card-text">Rating: {movie.vote_average}</p>
-            </div>
-          </div>
-        ))}
-      </Slider>
-    </div>
+    <Slider {...settings}>
+      {movies.map(movie => (
+       <div key={movie.id} className="col-md-3 mb-4 zoom-on-hover">
+       <Link to={`/movie/${movie.id}`} className="text-decoration-none">
+         <div className="card h-100 text-center p-3 mx-2" style={{ cursor: "pointer" }}>
+           <img
+             src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+             className="card-img-top "
+             style={{ objectFit: 'cover', height: '300px' }}
+             alt={movie.title}
+           />
+           <div className="card-body">
+             <h5 className="card-title">{movie.title}</h5>
+             <p className="card-text">Rating: {movie.vote_average}</p>
+           </div>
+         </div>
+       </Link>
+     </div>
+      ))}
+    </Slider>
+  </div>
   );
 }
 
