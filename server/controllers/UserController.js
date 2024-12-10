@@ -14,7 +14,7 @@ const createUserObject = (id, firstname, familyname, email, token = undefined) =
     familyname: familyname,
     email: email,
     ...(token !== undefined && { token: token }),
-    // ...(signupToken !== undefined && { sToken: signupToken }),
+    //...(message !== undefined && {message: message })
   };
 };
 
@@ -39,29 +39,35 @@ const verifyToken = (plainToken, encryptedToken) => {
 
 async function verifyEmailByCode(req, res, next) {
   try {
-    const userId = req.body.user_id
-    console.log(userId)
+    console.log('sasfa')
+    console.log(req.body.token)
+    if(!req.body.token)
+      return next(new ApiError("No code provided", 400));
+
     const token = req.body.token
-    console.log(token)
-    const response = await getUserById(userId)
+    const userID = parseInt(token.slice(6));
+    const code = token.slice(0, 6);
+    console.log('token: ' + code)
+    console.log('id: ' + userID)
+    const response = await getUserById(userID)
     const userInfo = response.rows[0]
 
     if(userInfo.isconfirmed === true) return next(new ApiError("Your email has already been confirmed", 400));
     
     if(userInfo.email_verif !== null){
-      console.log(userInfo.email_verif)
-      if(verifyToken(token, userInfo.email_verif)){
-        const update = await setConfirmation(userId)
+      if(verifyToken(code, userInfo.email_verif)){
+        const update = await setConfirmation(userID)
         if(update.rowCount > 0){
-          console.log('sucass')
           return res.status(200).json({successMessage: "Email has been verified successfully"}); 
         }
+      }else{
         return next(new ApiError("Invalid code", 400));
       }
     }else{
       return next(new ApiError("The confirmation code does not exist for this user", 404));
     }
   } catch (error) {
+    console.log(error)
     return next(error);
   }
 }
@@ -83,7 +89,8 @@ async function postRegistration(req, res, next) {
       const hashedPassword = await hash(req.body.password, 10);
       const result = await postUser(req.body.firstname, req.body.familyname, req.body.email, hashedPassword);
       const user = result.rows[0];
-      return res.status(200).json(createUserObject(user.user_id, user.firstname, user.familyname, user.email));
+      req.userData = createUserObject(user.user_id, user.firstname, user.familyname, user.email);
+      return next();      
     }else{
         return next(new ApiError(isValidEmailPassword.message, 400));
     }
@@ -94,9 +101,9 @@ async function postRegistration(req, res, next) {
 
 async function postLogin(req, res, next) {
   try {
-    if (!req.body.firstname || req.body.email.firstname === 0)
-      return next(new ApiError("Invalid firstname for user", 400));
-    if (!req.body.password)
+    if (!req.body.email || req.body.email.length === 0)
+      return next(new ApiError("Invalid email for user", 400));
+    if (!req.body.password || req.body.password.length === 0)
       return next(new ApiError("Invalid password for user", 400));
 
     const userFromDb = await selectUserByEmail(req.body.email);
@@ -234,13 +241,27 @@ const getProfilePicture = async (req, res, next) => {
 
 const creatTokenForSignUp = async (req, res, next) => {
   try {
-      const tokenForUser = await createSignupToken(req.body.user_id);
-      if (!tokenForUser) {
-          return next(new ApiError("Token has not been granted", 500));
-      }
-      return res.status(200).json(tokenForUser);
+    if (!req.userData || !req.userData.id) {
+      return next(new ApiError("User data is missing", 400));
+    }
+
+    // Generate the token
+    const tokenForUser = await createSignupToken(req.userData.id);
+    if (!tokenForUser) {
+      return next(new ApiError("Token has not been granted", 500));
+    }
+
+    // Attach the token to req.userData
+    req.userData = createUserObject(
+      req.userData.id,
+      req.userData.firstname,
+      req.userData.familyname,
+      req.userData.email,
+      tokenForUser
+    );
+    return next();
   } catch (error) {
-      return next(error);
+    return next(error);
   }
 };
 
@@ -265,5 +286,6 @@ export {
   getProfilePicture,
   getAllUsersController,
   creatTokenForSignUp,
-  verifyEmailByCode
+  verifyEmailByCode,
+  createUserObject
 };

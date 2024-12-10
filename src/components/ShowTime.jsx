@@ -144,7 +144,7 @@ const Showtime = () => {
                 ) : movieDetails ? (
                     <div className="movie-items" key={movieDetails.id}>
                         <img className="img1" src={movieDetails.poster} alt={movieDetails.title} />
-                        <h2 className='movietitle'>{movieDetails.title}</h2>
+                        <p className='movietitle'>{movieDetails.title}</p>
                         <p className='description'>{movieDetails.overview}</p>
                     </div>
                 ) : (

@@ -168,8 +168,9 @@ const MoviePage = () => {
 
   //render the movie details
   return (
+    <>
+    <Navbar />
     <div className="movie-page">
-      <Navbar />
       <div className="container mt-4">
         <div className="row">
           {/*left Column: Poster and Title */}
@@ -297,6 +298,7 @@ const MoviePage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
