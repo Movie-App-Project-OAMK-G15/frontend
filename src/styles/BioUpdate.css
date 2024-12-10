@@ -1,0 +1,19 @@
+.buttn {
+    border-radius: 8px;
+    background-color: transparent;
+    color: orange;
+    border: 1px solid;
+}
+
+.buttn:hover {
+color: black;
+background-color: orange;
+}
+
+.bio-text {
+    color: rgb(218, 142, 0);
+}
+
+.bio-box {
+    color: rgb(213, 213, 213);
+}
