@@ -70,7 +70,7 @@ const BioUpdate = () => {
                         rows="4"
                         className="form-control"
                     />
-                    <button type="submit" className="btn btn-primary mt-2">Save Bio</button>
+                    <button type="submit" className="btn-saveBio mt-2">Save Bio</button>
                     {message && <p className="text-success">{message}</p>}
                     {error && <p className="text-danger">{error}</p>}
                 </form>
@@ -78,7 +78,7 @@ const BioUpdate = () => {
                 <div>
                     <h4><strong>Your Bio:</strong></h4>
                     <p>{bio}</p> 
-                    <button className="btn btn-secondary mt-2" onClick={handleEditClick}>Edit Bio</button>
+                    <button className="btn-editBio mt-2" onClick={handleEditClick}>Edit Bio</button>
                 </div>
             )}
         </div>

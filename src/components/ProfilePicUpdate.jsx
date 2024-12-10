@@ -70,11 +70,11 @@ export default function UpdateProfilePic() {
             {isEditing ? (
                 <>
                     <input type="file" accept="image/jpeg, image/png" onChange={handleFileChange} />
-                    <button className="btn save" onClick={handleSave}>Save</button>
-                    <button className="btn cancel" onClick={() => setIsEditing(false)}>Cancel</button>
+                    <button className="bttn btn-save" onClick={handleSave}>Save</button>
+                    <button className="bttn btn-cancel" onClick={() => setIsEditing(false)}>Cancel</button>
                 </>
             ) : (
-                <button className="btn edit" onClick={() => setIsEditing(true)}>Edit</button>
+                <button className="bttn btn-edit" onClick={() => setIsEditing(true)}>Edit</button>
             )}
         </div>       
     );

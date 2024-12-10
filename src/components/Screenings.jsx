@@ -149,7 +149,7 @@ const Screenings = () => {
                 </div>
             </div>
             <div>
-                <h2>Available movies:</h2>
+                <h2 className="available-text">Available movies:</h2>
                 {loading ? (
                     <p className="loading">Loading movies...</p>
                 ) : movies.length > 0 ? (
