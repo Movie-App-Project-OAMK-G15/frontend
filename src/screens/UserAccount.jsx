@@ -47,7 +47,7 @@ export default function UserAccount() {
 
     return (
         <>
-            <div className="d-flex flex-column min-vh-100 user-page">
+            <div className="user-page">
                 <Navbar />
                 <div className="container mt-4 flex-grow-1">
                     <div className="row">
@@ -108,6 +108,7 @@ export default function UserAccount() {
                         </div>
 
                         {/* Main Content */}
+                        
                         <div className="col-md-8">
                                 <UpdateProfilePic />
                                 <div className="card-body">

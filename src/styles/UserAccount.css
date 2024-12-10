@@ -27,7 +27,7 @@ h1, h2, h3, h4, h5, h6, p, span, button {
     width: 70%; /* Full width on small devices */
     max-width: 200px; /* Limit width on larger screens */
     height: 50px;
-   
+    margin-bottom: 10px;
 }
 
 .btn:hover {
@@ -75,15 +75,16 @@ h1, h2, h3, h4, h5, h6, p, span, button {
 /* Secondary button */
 .btn-secondary {
     background-color: transparent; /* Transparent background */
-    color: black; /* Text color */
-    border: 1px solid black; /* Border color */
+    color: rgb(185, 21, 21); /* Text color */
+    border: 2px solid rgb(96, 3, 3); /* Border color */
     border-radius: 8px;
     height: 35px;
 }
 
 .btn-secondary:hover {
-    background-color: black; /* Background color on hover */
+    background-color: rgb(190, 0, 0); /* Background color on hover */
     color: orange; /* Text color on hover */
+    border:rgb(96, 3, 3)
 }
 
 .cardle {
@@ -114,5 +115,4 @@ h1, h2, h3, h4, h5, h6, p, span, button {
 .card-title {
     margin-top: 10px;
 }
-
 
