@@ -381,6 +381,28 @@ describe('SIGNIN endpoint', () => {
     })
 })
 
+describe('DELETE account endpoint', () => {
+
+    it('should delete account, if the provided credentials are vaild', async() => {
+        const email = 'example@mymail.com'
+        const password = 'strongPassword228'
+        setTimeout(async() => {
+        const response = await fetch(base_url + 'user/login', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: email, password: password })
+        })
+        const data = await response.json()
+
+        expect(response.status).to.be.equal(200)
+        expect(data).to.be.an('object')
+        expect(data).to.include.all.keys('id', 'firstname', 'familyname', 'email', 'token')
+        }, 5000) 
+    })
+})
+
 // describe('GET tasks', () => {
 //     before(() => {
 //         initializeTestDb()

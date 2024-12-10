@@ -20,6 +20,11 @@ const insertTestUser = async(firstname, familyname, email, password) => {
     })
 }
 
+const insertUserAndDataForDelete = async(userObject) => {
+    await insertTestUser(userObject.firstname, userObject.familyname, userObject.email, userObject.password)
+    await pool.query()
+}
+
 const getToken = (email) => {
     return sign(email, process.env.JWT_SECRET_KEY)
 }

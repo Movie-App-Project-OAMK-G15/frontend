@@ -1,9 +1,7 @@
-import emailjs from 'emailjs-com'
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer'
 import { createUserObject } from '../controllers/UserController.js';
 dotenv.config();
-emailjs.init(process.env.EMAILJS_KEY);
 
 async function sendMail(req, res, next) {
     const { id, email, token } = req.userData;
