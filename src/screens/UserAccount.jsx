@@ -27,7 +27,7 @@ export default function UserAccount() {
 
 
     return (
-        <body>
+        <>
             <div className="d-flex flex-column min-vh-100">
                 <Navbar />
                 <div className="container mt-4 flex-grow-1">
@@ -36,7 +36,6 @@ export default function UserAccount() {
                             <div className="card mb-4">
                                 <div className="card-body text-center">
                                     <h5 className="card-title">My Account</h5>
-                                    <UpdateProfilePic />
                                     <h2>___________________________</h2>
                                     <div className="mt-3">
                                         <div className="d-flex flex-column align-items-center">
@@ -52,14 +51,15 @@ export default function UserAccount() {
                         </div>
                         <div className="col-md-8">
                             <div className="card mb-4">
+                                <UpdateProfilePic />
                                 <div className="card-body">
                                     <p className="card-text"><strong>First Name:</strong> {user.firstname}</p>
                                     <p className="card-text"><strong>Family Name:</strong> {user.familyname}</p>
                                     <p className="card-text"><strong>Email:</strong> {user.email}</p>
                                     <BioUpdate />
                                     <div className="d-flex justify-content-between mt-3">
-                                        <button className="btn btn-danger me-2" onClick={handleDelete}>Delete Account</button>
-                                        <button className="btn btn-secondary me-2" onClick={logOut}>Log Out</button>
+                                        <button className="btn-danger me-2" onClick={handleDelete}>Delete Account</button>
+                                        <button className="btn-secondary me-2" onClick={logOut}>Log Out</button>
                                     </div>
                                 </div>
                             </div>
@@ -67,7 +67,6 @@ export default function UserAccount() {
                     </div>
                 </div>
             </div>
-        </body>
-        
+        </>
     );
 }

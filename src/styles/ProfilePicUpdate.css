@@ -9,11 +9,27 @@
 }
 
 .profile-picture-container button {
-    width: 30%; 
+    width: 15%; 
     margin-top: 5px; 
-    background-color: rgb(204, 204, 204);
+    background-color: rgb(225, 225, 225);
 }
 
-.profile-picture-container button:hover {
+.btn-edit:hover {
     background-color: black;
+    color: orange;
 }
+
+.btn-save:hover {
+    background-color: black;
+    color: orange;
+}
+
+.btn-cancel:hover {
+    background-color: orange;
+    color: black;
+}
+
+.bttn {
+    border-radius: 8px;
+}
+

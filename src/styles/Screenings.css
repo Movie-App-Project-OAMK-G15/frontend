@@ -19,8 +19,10 @@ label {
 #date-dropdown {
     padding: 10px;
     font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    background-color: rgb(15, 15, 15);
+    color: rgb(82, 82, 82)
 }
 
 /* Movies List */
@@ -80,4 +82,8 @@ label {
     margin-bottom: 0; 
     margin-left: auto; 
     display: block; 
+}
+
+.available-text {
+    color: #ff8800;
 }

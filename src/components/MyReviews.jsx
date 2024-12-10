@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useUser  } from '../context/useUser.jsx'; 
 import Navbar from './Navbar.jsx';
+import '../styles/MyReviews.css'
 const backendLink = import.meta.env.VITE_API_URL
 
 
@@ -35,9 +36,8 @@ const MyReviews = () => {
         <div>
             <Navbar />
             <div key="review" className="container mt-4">
-                <h1>My Reviews</h1>
+                <h1 className='title-myreview'><strong>My Reviews</strong></h1>
                 {loading && <p>Loading reviews...</p>} 
-                {error && <p className="text-danger">{error}</p>}
                 {reviews.length > 0 ? (
                     reviews.map((review) => (
                         <div key={review.id} className="card mb-3">
@@ -49,7 +49,7 @@ const MyReviews = () => {
                         </div>
                     ))
                 ) : (
-                    <p>No reviews found.</p>
+                    <p className='text-nofound'>No reviews found.</p>
                 )}
             </div>
         </div>
