@@ -1,14 +1,15 @@
-import '../styles/Error.css'
+import 'bootstrap';
+
 const ErrorNotification = ({ message, type }) => {
-    if (message === null) {
-      return null
-    }
-  
-    return (
-      <div className={type === 'error' ? 'error' : 'notify'}>
-        {message}
-      </div>
-    )
+  if (!message) {
+    return null;
   }
 
-export default ErrorNotification
+  return (
+    <div className={`alert ${type === 'error' ? 'alert-danger' : 'alert-success'} text-center`} role="alert">
+      {message}
+    </div>
+  );
+};
+
+export default ErrorNotification;

@@ -1,5 +1,11 @@
 .navbar {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 999;  /* Make sure it's above other content */
+  backdrop-filter: blur(10px); /* Blurs the content behind the navbar */
+  background-color: rgba(0, 0, 0, 0.7); /* Transparent dark background */
+  transition: background-color 0.3s ease; /
 }
 
 .nav-link {
@@ -21,6 +27,27 @@
   transform: scale(1.2); /* Make the text larger */
   text-shadow: 2px 2px 5px rgba(196, 190, 190, 0.3); /* Add shadow effect */
 }
+
+/* Sticky Navbar */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;  /* Make sure it's above other content */
+  backdrop-filter: blur(10px); /* Blurs the content behind the navbar */
+  background-color: rgba(0, 0, 0, 0.7); /* Transparent dark background */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Optional: Change navbar background on scroll */
+.navbar.scrolled {
+  background-color: rgba(0, 0, 0, 0.9); /* Darker background when scrolled */
+}
+
 
 
 

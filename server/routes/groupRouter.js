@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import multer from 'multer';
 const upload = multer({ dest: 'uploads/' });
 import { Router } from "express"
-import { auth } from '../helpers/auth.js';
+import { auth, checkIsAdmin } from '../helpers/auth.js';
 import { postNewGroup, editGroup, deleteGroupById, getUsersGroupsByEmail, getUsersOwnGroupsByEmail, unfollowGroupByEmail, removeRequestById, getPostsGyGroup, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail } from "../controllers/GroupController.js";
 
 dotenv.config();

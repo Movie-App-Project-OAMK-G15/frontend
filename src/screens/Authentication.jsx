@@ -24,6 +24,11 @@ export default function Authentication({authenticationMode}) {
     const navigate = useNavigate()
     //email code
     const [code, setCode] = useState('')
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
 
     const validateSignupInput = (email, password) => {
         // Email validation: More than 3 chars before @, 3 or more chars after @, and a domain name
@@ -81,99 +86,187 @@ export default function Authentication({authenticationMode}) {
                 }   
             } catch (error) {
                 const message = error.response && error.response.data ? error.response.data.error : error
+                setLoading(false)
                 setNotificationMessage(message)//custom error notification
                 setType('error')//notification type
                 setTimeout(() => {
                     setNotificationMessage(null)
                     setType('')
                   }, 3000)
+                  
             }
         }else if(res.message == "Invalid email format."){
+            setLoading(false)
             setNotificationMessage(res.message)//custom error notification
                 setType('error')//notification type
                 setTimeout(() => {
                     setNotificationMessage(null)
                     setType('')
                   }, 3000)
+                  
         }else{
+            setLoading(false)
             setNotificationMessage(res.message)//custom error notification
                 setType('error')//notification type
                 setTimeout(() => {
                     setNotificationMessage(null)
                     setType('')
                   }, 5000)
+                  
         }
     }
 
     const handleEmailCode = async() => {
         try {
-            setLoading(true)
-            await confirmEmail(code)
-            setLoading(false)
-            navigate('/signin')
-            setNotificationMessage('New account has been created successfully!') //custom message
-            //timeout for custom message
-            setTimeout(() => {
+            if(code.length > 6){
+                setLoading(true)
+                await confirmEmail(code)
+                setLoading(false)
+                navigate('/signin')
+                setNotificationMessage('New account has been created successfully!') //custom message
+                //timeout for custom message
+                setTimeout(() => {
+                        setNotificationMessage(null)
+                }, 3000)
+            }else{
+                setNotificationMessage('Provided code is too short!')//custom error notification
+                setType('error')//notification type
+                setTimeout(() => {
                     setNotificationMessage(null)
-            }, 3000)
+                    setType('')
+                  }, 5000)
+            }
+            
         } catch (error) {
-            alert(error)
+            setLoading(false)
+            setNotificationMessage(error)//custom error notification
+                setType('error')//notification type
+                setTimeout(() => {
+                    setNotificationMessage(null)
+                    setType('')
+                  }, 5000)
+                  
         }
     }
 
     return (
         <>
-        <Navbar/>
-        <div className='auth'>
-            <ErrorNotification message={notificationMessage} type={type}/>
-            {loading && <div className="alert alert-info text-center">Please, wait a bit...</div>}
-            <h3>{authenticationMode === AuthenticationMode.Login ? 'Sign in' : authenticationMode === AuthenticationMode.Confirm ? 'Confirm your email' : 'Sign up'}</h3>
-            {authenticationMode === AuthenticationMode.Register || authenticationMode === AuthenticationMode.Login ? 
-                <form onSubmit={handleSubmit}>
-                        {authenticationMode === AuthenticationMode.Register ? 
-                            <div>
-                            <label>Firstname</label>
-                            <input id='fname_field' type='text' value={user.firstname} onChange={event => setUser({...user, firstname: event.target.value})}/>
-                            </div>
-                        : ""}
-                        {authenticationMode === AuthenticationMode.Register ? 
-                            <div>
-                            <label>Surname</label>
-                                <input id='sname_field' type='text' value={user.familyname} onChange={event => setUser({...user, familyname: event.target.value})}/>
-                            </div>
-                        : ""}
-                    <div>
-                        <label>Email</label>
-                        <input id='email_field' type='email' value={user.email} onChange={event => setUser({...user, email: event.target.value})}/>
-                    </div>
-                    <div>
-                        <label>Password</label>
-                        <input id='password_field' type='password' value={user.password} onChange={event => setUser({...user, password: event.target.value})}/>
-                    </div>
-                    <div>
-                        <button id={authenticationMode === AuthenticationMode.Login ? 'Login' : 'Submit'}>{authenticationMode === AuthenticationMode.Login ? 'Login' : 'Submit'}</button>
-                    </div>
-                    <div id='switch'>
-                        <Link to={authenticationMode === AuthenticationMode.Login ? '/signup' : '/signin'}>
-                            {authenticationMode === AuthenticationMode.Login ? 'No account? Sign up' : 'Already signed up? Sign in'}
-                        </Link>
-                    </div>
-                </form>
-                :
-                <div>
-                    <p>To check is your email real, we have sent a confirmation code to your email address.</p>
-                    <label>Enter code from email:</label>
-                    <input 
-                        id='code_field' 
-                        type='text' 
-                        value={code} 
-                        onChange={event => setCode(event.target.value)} 
-                    />
-                    <button onClick={handleEmailCode}>Send code</button>
+        <Navbar />
+        <div className="auth container d-flex justify-content-center align-items-center vh-100">
+      <div className="custom-card-auth p-4">
+        <ErrorNotification message={notificationMessage} type={type} />
+        {loading && <div className="alert alert-info text-center">Please, wait a bit...</div>}
+        <h2 className="text-center mb-4">
+          {authenticationMode === AuthenticationMode.Login
+            ? 'Sign in'
+            : authenticationMode === AuthenticationMode.Confirm
+            ? 'Confirm your email'
+            : 'Sign up'}
+        </h2>
+        {authenticationMode === AuthenticationMode.Register || authenticationMode === AuthenticationMode.Login ? (
+          <form onSubmit={handleSubmit} className="row g-3">
+            {authenticationMode === AuthenticationMode.Register && (
+              <>
+                <div className="col-md-6">
+                  <label htmlFor="fname_field" className="form-label">
+                    Firstname
+                  </label>
+                  <input
+                    id="fname_field"
+                    type="text"
+                    className="form-control"
+                    value={user.firstname}
+                    onChange={(event) => setUser({ ...user, firstname: event.target.value })}
+                  />
                 </div>
-            }
-            
-        </div>
+                <div className="col-md-6">
+                  <label htmlFor="sname_field" className="form-label">
+                    Surname
+                  </label>
+                  <input
+                    id="sname_field"
+                    type="text"
+                    className="form-control"
+                    value={user.familyname}
+                    onChange={(event) => setUser({ ...user, familyname: event.target.value })}
+                  />
+                </div>
+              </>
+            )}
+            <div className="col-12">
+              <label htmlFor="email_field" className="form-label">
+                Email
+              </label>
+              <input
+                id="email_field"
+                type="email"
+                className="form-control"
+                value={user.email}
+                onChange={(event) => setUser({ ...user, email: event.target.value })}
+              />
+            </div>
+            <div className="col-12 position-relative password-container">
+              <label htmlFor="password_field" className="form-label">
+                Password
+              </label>
+              <input
+                id="password_field"
+                type={passwordVisible ? 'text' : 'password'}
+                className="form-control"
+                value={user.password}
+                onChange={(event) => setUser({ ...user, password: event.target.value })}
+              />
+              <button
+                type="button"
+                className="btn btn-outline-secondary position-absolute end-0 top-0 mt-2 me-2"
+                onClick={togglePasswordVisibility}
+                style={{
+                    border: 'none',
+                    background: 'transparent',       // Remove padding to make the button smaller
+                    width: 'auto',          // Adjust the width to fit the icon
+                    height: 'auto',         // Adjust the height to fit the icon
+                    minWidth: '24px',       // Set a minimum width for the button to fit the icon comfortably
+                    minHeight: '24px',      // Set a minimum height for the button
+                    display: 'flex',        // Flex to center the icon
+                }}
+                >
+                <i
+                    className={`bi ${passwordVisible ? 'bi-eye' : 'bi-eye-slash'}`}
+                    style={{ fontSize: '15px' }}  // Icon size can still be adjusted as needed
+                />
+                </button>
+            </div>
+            <div className="col-12 text-center">
+              <button id={authenticationMode === AuthenticationMode.Login ? 'Login' : 'Submit'} className="btn btn-primary w-100">
+                {authenticationMode === AuthenticationMode.Login ? 'Login' : 'Submit'}
+              </button>
+            </div>
+            <div id="switch" className="col-12 text-center">
+              <Link to={authenticationMode === AuthenticationMode.Login ? '/signup' : '/signin'} className="link">
+                {authenticationMode === AuthenticationMode.Login ? 'No account? Sign up' : 'Already signed up? Sign in'}
+              </Link>
+            </div>
+          </form>
+        ) : (
+          <div className="text-center">
+            <p>To check if your email is real, we have sent a confirmation code to your email address.</p>
+            <label htmlFor="code_field" className="form-label">
+              Enter code from email:
+            </label>
+            <input
+              id="code_field"
+              type="text"
+              className="form-control mb-3"
+              value={code}
+              onChange={(event) => setCode(event.target.value)}
+            />
+            <button onClick={handleEmailCode} className="btn btn-primary w-100">
+              Send code
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
         </>
     )
 }

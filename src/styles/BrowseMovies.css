@@ -96,7 +96,7 @@
 /* SearchForm Button */
 .browse-movies-page .browse-search-form .btn {
   background-color: #F39200;
-  color: white;
+  color: rgb(0, 0, 0);
   border: none;
   transition: background-color 0.3s ease-in-out, transform 0.3s ease;
 }
