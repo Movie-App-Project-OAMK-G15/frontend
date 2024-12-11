@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useNavigate } from "react-router-dom"
 import {format} from "date-fns"
 const backendLink = import.meta.env.VITE_API_URL
+import '../styles/BrowsingReviews.css'
 
 export default function BrowsingReviews(){
     const [reviews, setReviews] = useState([])
