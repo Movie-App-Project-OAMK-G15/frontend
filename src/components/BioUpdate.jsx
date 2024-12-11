@@ -79,7 +79,10 @@ const BioUpdate = () => {
                 <div>
                     <h4 className='bio-text'><strong>Your Bio:</strong></h4>
                     <p className='bio-box'>{bio}</p> 
-                    <button className="buttn btn-editBio mt-2" onClick={handleEditClick}>Edit Bio</button>
+                    <button className="buttn btn-editBio mt-2" onClick={handleEditClick}>
+                        Edit
+                        <i class="bi bi-pencil-square"></i>    
+                    </button>
                 </div>
             )}
         </div>
