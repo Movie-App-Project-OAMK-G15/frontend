@@ -45,112 +45,121 @@ export default function UserAccount() {
     }
   };
 
+  useEffect(() => {
+    const hamburger = document.querySelector("#toggle-btn-sidebar");
+    const sidebar = document.querySelector("#sidebar")
+    const optionBtn = document.querySelector("#option-btn");
+    const subOption = document.querySelector("#sidebar-footer")
+
+    const toggleSidebar = () => {
+      sidebar.classList.toggle("expand");
+    };
+
+    const toggleSidebarFooter = () => {
+      subOption.classList.toggle("expand")
+    };
+
+    hamburger.addEventListener("click", toggleSidebar)
+    optionBtn.addEventListener("click", toggleSidebarFooter)
+
+    return () => {
+      hamburger.removeEventListener('click', toggleSidebar)
+      optionBtn.removeEventListener('click', toggleSidebarFooter)
+    }
+
+  }, [])
+
   return (
     <>
-      <div className="user-page">
         <Navbar />
-        <div className="container mt-4 flex-grow-1">
-          <div className="row">
-            {/* Sidebar */}
-            <div className="col-md-4">
-              <button
-                className="bttun btn-primary w-100 mb-3 d-md-none"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#sidebar"
-                aria-expanded="false"
-                aria-controls="sidebar"
-              >
-                +
+        <div className="wrapper">
+          <aside id="sidebar" className="sidebar">
+            <div className="d-flex">
+              <button id="toggle-btn-sidebar" type="button">
+                <i class="bi bi-grid"></i>
               </button>
-              <div className="collapse d-md-block" id="sidebar">
-                <div className="cardle shadow-sm mb-4">
-                  <div className="card-body text-center">
-                    <h5 className="card-title">My Account</h5>
-                    <hr />
-                    <div className="mt-3">
-                      <div className="d-flex flex-column align-items-center">
-                        <button
-                          className="btn btn-primary mb-2 w-100"
-                          onClick={() => navigate("/account/creategroup")}
-                        >
-                          Create Group
-                        </button>
-                        <button
-                          className="btn btn-outline-secondary mb-2 w-100"
-                          onClick={() =>
-                            navigate(`/account/mygroups/${user.id}`)
-                          }
-                        >
-                          My Groups
-                        </button>
-                        <button
-                          className="btn btn-outline-secondary mb-2 w-100"
-                          onClick={() =>
-                            navigate(`/account/myowngroups/${user.id}`)
-                          }
-                        >
-                          My Own Groups
-                        </button>
-                        <button
-                          className="btn btn-outline-secondary mb-2 w-100"
-                          onClick={() =>
-                            navigate(`/account/favmovies/${user.id}`)
-                          }
-                        >
-                          Favourite Movies
-                        </button>
-                        <button
-                          className="btn btn-outline-primary w-100"
-                          onClick={() =>
-                            navigate(
-                              `/reviews/user/${encodeURIComponent(user.email)}`
-                            )
-                          }
-                        >
-                          My Reviews
-                        </button>
-                        <button
-                          className="btn btn-outline-primary mb-2 w-100"
-                          onClick={handleShare}
-                        >
-                          Share
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div className="sidebar-logo"><strong>Menu</strong></div>
             </div>
-
-            {/* Main Content */}
-
-            <div className="col-md-8">
-              <UpdateProfilePic />
-              <div className="card-body">
-                <p className="card-text">
-                  <strong>First Name:</strong> {user.firstname}
-                </p>
-                <p className="card-text">
-                  <strong>Family Name:</strong> {user.familyname}
-                </p>
-                <p className="card-text">
-                  <strong>Email:</strong> {user.email}
-                </p>
-                <BioUpdate />
-                <div className="d-flex justify-content-between mt-3">
-                  <button className="btn btn-danger" onClick={handleDelete}>
-                    Delete Account
-                  </button>
-                  <button className="btn btn-secondary" onClick={logOut}>
-                    Log Out
-                  </button>
-                </div>
+            <ul className="sidebar-nav">
+              <li className="sidebar-item">
+                <a href="/account/creategroup" className="sidebar-link">
+                <i class="bi bi-building-add"></i>
+                <span>Create group</span>
+                </a>
+              </li>
+              <li className="sidebar-item">
+                <a href={`/account/mygroups/${user.id}`} className="sidebar-link">
+                <i class="bi bi-building"></i>
+                <span>My groups</span>
+                </a>
+              </li>
+              <li className="sidebar-item">
+                <a href={`/account/myowngroups/${user.id}`} className="sidebar-link">
+                <i class="bi bi-building-down"></i>
+                <span>My own groups</span>
+                </a>
+              </li>
+              <li className="sidebar-item">
+                <a href={`/account/favmovies/${user.id}`} className="sidebar-link">
+                <i class="bi bi-star-fill"></i>
+                <span>My favorites</span>
+                </a>
+              </li>
+              <li className="sidebar-item">
+                <a href={`/reviews/user/${encodeURIComponent(user.email)}`} className="sidebar-link">
+                <i class="bi bi-chat-square-dots"></i>
+                <span>My Reviews</span>
+                </a>
+              </li>
+              
+            </ul>
+            <li className="sidebar-item">
+                <a href="#" id="option-btn" className="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" 
+                data-bs-target="#options" aria-expanded="false" aria-controls="option">
+                  <i class="bi bi-gear-wide"></i>
+                  <span>options</span>
+                </a>
+                <ul id="options" className="sidebar-dropdown list-unstyled collapse" 
+                data-bs-parent="#sidebar">
+                  <li className="sidebar-item">
+                    <a onClick={logOut} className="sidebar-link">
+                      <i class="bi bi-box-arrow-left"></i>
+                      Log Out
+                    </a>
+                  </li>
+                  <li className="sidebar-item">
+                    <a onClick={handleDelete} className="sidebar-link">
+                      <i class="bi bi-trash3"></i>
+                      Delete Account
+                    </a>
+                  </li>
+                </ul>
+              </li>
+          </aside>
+          <div className="col-md-8">
+            <UpdateProfilePic />
+            <div className="card-body">
+              <p className="card-text">
+                <strong>First Name:</strong> {user.firstname}
+              </p>
+              <p className="card-text">
+                <strong>Family Name:</strong> {user.familyname}
+              </p>
+              <p className="card-text">
+                <strong>Email:</strong> {user.email}
+              </p>
+              <BioUpdate />
+              <div className="d-flex justify-content-between mt-3">
+                <button
+                  className="btn btn-outline-primary mb-2 w-100"
+                  onClick={handleShare}
+                >
+                  Share
+                </button>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div>  
     </>
   );
 }
