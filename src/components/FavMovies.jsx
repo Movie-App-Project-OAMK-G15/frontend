@@ -125,7 +125,8 @@ const FavMovies = () => {
           Share Favorite Movies List
         </button>
         <div className="row">
-          {movies.map((movie, index) => (
+          {movies.length > 0 ? 
+          movies.map((movie, index) => (
             <div key={index} className="col-md-3 mb-4 zoom-on-hover ">
               <div className="card bg-black text-white">
                 <img
@@ -145,7 +146,10 @@ const FavMovies = () => {
                 </div>
               </div>
             </div>
-          ))}
+          ))
+          :
+          <p>User's list is empty!</p>
+          }
         </div>
       </div>
     </div>

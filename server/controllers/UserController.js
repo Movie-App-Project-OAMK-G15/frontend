@@ -116,7 +116,7 @@ async function postLogin(req, res, next) {
     if(!userFromDb.rows[0].isconfirmed)
       return next(new ApiError("Email is not confirmed", 403));
 
-    const token = sign({ email: req.body.email }, process.env.JWT_SECRET_KEY, {expiresIn: "1h"});
+    const token = sign({ email: req.body.email }, process.env.JWT_SECRET_KEY);
     return res.status(200).json(createUserObject(user.user_id, user.firstname, user.familyname, user.email, token));
   } catch (error) {
     return next(error);

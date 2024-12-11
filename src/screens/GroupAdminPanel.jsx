@@ -2,7 +2,6 @@ import Navbar from "../components/Navbar"
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useUser } from "../context/useUser"
-import '../styles/GroupAdminPanel.css'
 import axios from "axios"
 const backendLink = import.meta.env.VITE_API_URL
 

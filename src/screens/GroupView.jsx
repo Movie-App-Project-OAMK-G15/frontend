@@ -4,7 +4,6 @@ import { useParams, useNavigate } from "react-router-dom"
 import "bootstrap"
 import axios from "axios"
 import Navbar from "../components/Navbar"
-import '../styles/GroupView.css'
 import {format} from "date-fns"
 const url = import.meta.env.VITE_API_URL
 
@@ -110,23 +109,33 @@ export default function GroupView(){
             <div className="row justify-content-center">
             {/* Group Header */}
             <div className="col-12 col-md-9">
-                <div className="p-3 shadow-sm bg-white rounded">
+                <div className="p-3 shadow-sm" style={{ backgroundColor: '#343a40', color: '#ffffff', borderRadius: '5px' }}>
                 <div className="d-flex align-items-center">
                     <img
-                    src={`${item.photo}` || "https://via.placeholder.com/100x100"}
+                    src={item.photo || "https://via.placeholder.com/100x100"}
                     alt={`${item.group_name} logo`}
-                    className="img-fluid rounded me-4"
+                    className="img-fluid rounded-circle me-4"
                     style={{ width: '100px', height: '100px', objectFit: 'cover' }}
                     />
                     <div>
-                    <p className="group-name mb-1 e-5">{item.group_name}</p>
+                    <p className="group-name mb-1 text-warning">{item.group_name}</p>
                     <p className="group-description text-muted mb-0">{item.description}</p>
                     </div>
                     <div className="ms-auto">
-                    {user.email == item.admin_email ? 
-                    <button className="btn btn-danger" onClick={() => navigate(`/groups/admin/${groupId}`)}>Admin panel</button>
-                    :
-                    <button className="btn btn-danger" onClick={unfollowGroup}>Unfollow</button>
+                    {user.email === item.admin_email ? 
+                        <button 
+                        className="btn btn-danger" 
+                        onClick={() => navigate(`/groups/admin/${item.group_id}`)}
+                        >
+                        Admin panel
+                        </button>
+                        :
+                        <button 
+                        className="btn btn-danger" 
+                        onClick={unfollowGroup}
+                        >
+                        Unfollow
+                        </button>
                     }
                     </div>
                 </div>
@@ -135,7 +144,7 @@ export default function GroupView(){
 
             {/* Subscribers Section */}
             <div className="col-12 col-md-9 mt-3">
-                <div className="p-3 shadow-sm bg-white rounded">
+                <div className="p-3 shadow-sm" style={{ backgroundColor: '#343a40', color: '#ffffff', borderRadius: '5px' }}>
                 <p className="fw-bold mb-3">
                     Subscribers <span className="text-muted">({subs.length})</span>
                 </p>
@@ -157,33 +166,37 @@ export default function GroupView(){
 
             {/* Group Posts Section */}
             <div className="col-12 col-md-9 mt-4">
-            <h2 className="mb-3">Posts</h2>
-            {/* Add New Post Button */}
-            <div className="d-flex justify-content-center mb-4">
-                <button className="btn btn-primary" onClick={() => navigate(`/groups/newpost/${groupId}`)}>+ Add New Post</button>
-            </div>
+                <h2 className="mb-3" style={{ color: '#ffffff' }}>Posts</h2>
+                {/* Add New Post Button */}
+                <div className="d-flex justify-content-center mb-4">
+                <button 
+                    className="btn btn-primary" 
+                    onClick={() => navigate(`/groups/newpost/${item.group_id}`)}
+                >
+                    + Add New Post
+                </button>
+                </div>
                 <div className="row">
                 {[...posts].reverse().map((post, index) => (
-                    <div className="col-12 mb-4" key={index}>
-                    <div className="border rounded p-3 bg-light">
+                    <div key={index} className="col-12 mb-4">
+                    <div className="border rounded p-3" style={{ backgroundColor: '#495057', color: '#ffffff' }}>
                         {/* User Info */}
                         <div className="d-flex align-items-center mb-2">
-                            {post.email == item.admin_email ? 
+                        {post.email === item.admin_email ? 
                             <div>
-                                <strong>{post.firstname} {post.familyname} (ADMIN)</strong>
+                            <strong>{post.firstname} {post.familyname} (ADMIN)</strong>
                             </div>
                             :
                             <div>
-                                <strong>{post.firstname} {post.familyname}</strong>
+                            <strong>{post.firstname} {post.familyname}</strong>
                             </div>
                         }
-                        
                         <div className="ms-auto text-muted small">
-                            posted: {format(new Date(new Date(post.created_at).setHours(new Date(post.created_at).getHours() + 2)), 'dd.MM.yyyy HH:mm')}
+                            posted: {format(new Date(post.created_at), 'dd.MM.yyyy HH:mm')}
                         </div>
                         </div>
                         {/* Post Title */}
-                        <h5 className="fw-bold mb-2">{post.title}</h5>
+                        <h5 className="fw-bold mb-2" style={{ color: '#FFD700' }}>{post.title}</h5>
                         {/* Post Content */}
                         <p className="mb-3">{post.content}</p>
                         {/* Post Image */}
@@ -201,12 +214,12 @@ export default function GroupView(){
                         </div>
                         )}
                         {user.email === item.admin_email || user.email === post.email ? (
-                            <button
-                                onClick={() => deletePost(post.post_id)}
-                                className="btn btn-danger btn-sm" 
-                            >
-                                Delete
-                            </button>
+                        <button
+                            onClick={() => deletePost(post.post_id)}
+                            className="btn btn-danger btn-sm"
+                        >
+                            Delete
+                        </button>
                         ) : null}
                     </div>
                     </div>
@@ -216,6 +229,8 @@ export default function GroupView(){
             </div>
         </div>
         ))}
+
+
     </>
     )
 }
