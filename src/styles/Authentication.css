@@ -1,116 +1,67 @@
-/* Base styling */
-.auth {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 2rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #f9f9f9;
-}
-
-.auth h3 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: #333;
-}
-
-.auth form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-/* Label styling */
-.auth label {
-    font-size: 0.9rem;
-    color: #555;
-}
-
-/* Set the input fields and button to have the same width */
-.auth input, .auth button {
-    width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
-    box-sizing: border-box; /* ensures padding doesn’t add extra width */
-}
-
-/* Specific input styling */
-.auth input {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-/* Button styling */
-.auth button {
-    background-color: #007BFF;
-    color: white;
+.custom-card-auth {
+    background-color: #272727; /* Slightly brighter dark gray */
+    color: #f0f0f0; /* Light gray for text */
+    border: 2px solid #ff8c00; /* Neon orange border */
+    border-radius: 10px;
+    box-shadow: 0 0 15px #ff8c00; /* Neon glow */
+    max-width: 700px;
+  }
+  
+  .custom-card-auth h2 {
+    font-size: 2.5rem; /* Bigger font size for h2 */
+    font-weight: bold;
+    color: #ffffff; /* Ensure h2 is explicitly white */
+  }
+  
+  .custom-card-auth input {
+    background-color: #333333; /* Dark gray background for inputs */
+    color: #f0f0f0; /* Light gray text inside input */
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+    border-radius: 5px;
+    padding: 10px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .custom-card-auth input:focus {
+    background-color: #1e1e1e; /* Slightly darker background on focus */
+    color: #f0f0f0; /* Ensure text remains visible */
+    box-shadow: 0 0 5px #ff8c00; /* Neon glow effect */
+  }
+  
+  .custom-card-auth .link {
+    color: #00bcd4; /* Teal color for links */
+    text-decoration: none;
+  }
+  
+  .custom-card-auth .link:hover {
+    color: #008394; /* Darker teal on hover */
+    text-decoration: underline;
+  }
+  
+  .password-container {
+    position: relative;
+  }
+  
+  .bi {
+    position: absolute;
+    top: 190%;
+    right: 15px;  /* Adjust to add space between the icon and the input field */
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+  }
 
-.auth button:hover {
-    background-color: #0056b3;
-}
-
-/* Link styling */
-.auth a {
-    text-align: center;
-    color: #007BFF;
-    font-size: 0.9rem;
-}
-
-/* Media queries for adaptive design */
-
-/* Small screens (smartphones) */
-@media (max-width: 576px) {
-    .auth {
-        padding: 1.5rem;
-        max-width: 90%;
-    }
-
-    .auth h3 {
-        font-size: 1.5rem;
-    }
-
-    .auth input, .auth button {
-        font-size: 0.9rem;
-    }
-
-    .auth a {
-        font-size: 0.8rem;
-    }
-}
-
-/* Medium screens (tablets) */
-@media (min-width: 576px) and (max-width: 768px) {
-    .auth {
-        max-width: 75%;
-        padding: 2rem;
-    }
-
-    .auth h3 {
-        font-size: 1.8rem;
-    }
-
-    .auth input, .auth button {
-        font-size: 1rem;
-    }
-
-    .auth a {
-        font-size: 0.9rem;
-    }
-}
-
-/* Large screens (desktops) */
-@media (min-width: 768px) {
-    .auth {
-        max-width: 500px;
-        padding: 3rem;
-    }
-
-    .auth h3 {
-        font-size: 2rem;
-    }
-}
+  .custom-card-auth button {
+    background-color: #ff8c00; /* Orange button color */
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .custom-card-auth button:hover {
+    background-color: #ffab40; /* Lighter orange on hover */
+    color: black;
+  }

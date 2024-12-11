@@ -261,3 +261,9 @@ a.sidebar-link:hover {
 .sharebtn {
     margin-left: 10px;
 }
+
+.myaccount {
+    color: orange;
+    font-size: 25px;
+    margin-top: 20px;
+}

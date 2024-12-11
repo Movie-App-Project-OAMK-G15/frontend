@@ -137,6 +137,7 @@ export default function UserAccount() {
               </li>
           </aside>
           <div className="col-md-8">
+            <h2 className="myaccount"><strong>My Account</strong></h2>
             <UpdateProfilePic />
             <div className="card-body">
               <p className="card-text">
