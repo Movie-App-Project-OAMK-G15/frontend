@@ -89,6 +89,7 @@ h1, h2, h3, h4, h5, h6, p, span, button {
 
 .card-text {
     color: rgb(210, 135, 54);
+    margin-bottom: 30px;
 }
 
 .btn-primary {
@@ -204,7 +205,7 @@ a.sidebar-link {
 
 a.sidebar-link:hover {
     background-color: rgba(255, 255, 255, .075);
-    border-left: 4px solid #816300;
+    border-left: 4px solid #584400;
 }
 
 .sidebar-item {
@@ -244,4 +245,19 @@ a.sidebar-link:hover {
 #sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
     transform: rotate(45deg);
     transition: all .2s ease-out;
+}
+
+.col-md-8 {
+    margin-left: auto;
+}
+
+.share-btn {
+    color: rgb(62, 119, 209);
+    border: 2px solid rgb(62, 119, 209);
+    position: center;
+    max-width: max-content;
+}
+
+.sharebtn {
+    margin-left: 10px;
 }

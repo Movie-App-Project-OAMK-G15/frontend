@@ -149,12 +149,13 @@ export default function UserAccount() {
                 <strong>Email:</strong> {user.email}
               </p>
               <BioUpdate />
-              <div className="d-flex justify-content-between mt-3">
+              <div className="d-flex share justify-content-between mt-3">
                 <button
-                  className="btn btn-outline-primary mb-2 w-100"
+                  className="btn share-btn btn-outline-primary mb-2 w-100"
                   onClick={handleShare}
                 >
-                  Share
+                  <i class="bi bi-share"></i>
+                  <span className="sharebtn">Share</span>
                 </button>
               </div>
             </div>
