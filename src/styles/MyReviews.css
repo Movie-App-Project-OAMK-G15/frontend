@@ -1,7 +1,150 @@
-.text-nofound {
-    color: rgb(255, 166, 0);
+/* Overall Browsing Reviews Container */
+.browsing-reviews {
+    font-family: Arial, sans-serif; /* Scoped to browsing-reviews container */
+    padding: 0; /* Remove padding for full screen width */
+    margin: 0 10%; /* Set 10% margin on both sides for equal margins */
+    width: 80%; /* Reduce width to account for margin */
+    max-width: 1200px; /* Keeps the layout manageable on wide screens */
+    display: flex; /* Make sure it's flexible */
+    flex-direction: column; /* Stack the cards vertically */
+    align-items: center; /* Align items center */
+    box-sizing: border-box; /* Include padding and border in width/height calculation */
 }
 
-.title-myreview {
-    color: white;
+/* Row Background for each review card */
+.browsing-reviews .card {
+    margin: 10px 0; /* Space between cards */
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Include padding and border in the width calculation */
+    border-radius: 8px;
+    overflow: hidden; /* Prevent content overflow */
+    background-color: #f8f9fa; /* Light grey background */
+    border: 1px solid #ffcc80; /* Subtle border for card separation */
+    color: #212529; /* Dark grey text for contrast */
+}
+
+/* Card Title */
+.browsing-reviews .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    word-wrap: break-word; /* Prevent text overflow */
+    margin-bottom: 10px;
+}
+
+/* Review Header Layout */
+.browsing-reviews .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+}
+
+.browsing-reviews .review-header .email-text {
+    max-width: 80%; /* Limits width of the email */
+    white-space: nowrap; /* Prevents wrapping */
+    overflow: hidden; /* Hides overflowing content */
+    text-overflow: ellipsis; /* Adds ellipsis for overflowing text */
+    margin-bottom: 0; /* Matches mb-0 */
+    color: #d3d3d3; /* Light grey text */
+}
+
+/* Review Content Styling */
+.browsing-reviews .card-text {
+    font-size: 1rem;
+    line-height: 1.5; /* Improve readability */
+    color: #ff8800; /* Dark grey for review content */
+    word-wrap: break-word;
+}
+
+/* Badge for Rating */
+.badge.custom-orange {
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    white-space: nowrap;
+    background-color: #ff8800; /* Bright orange background */
+    color: #000000; /* Black text */
+    border: 2px solid #ff6d00; /* Slightly darker orange border */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    text-align: center;
+    display: inline-block;
+}
+
+/* Button Style */
+.browsing-reviews .btn {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    margin-top: 10px;
+    width: 100%; /* Full width for smaller devices */
+    background-color: #ff8800; /* Orange background */
+    border: none; /* Remove border */
+    color: #000000; /* Black text */
+    transition: background-color 0.3s ease;
+}
+
+/* Button Hover Effect */
+.browsing-reviews .btn:hover {
+    background-color: #000000; /* Darker orange for hover effect */
+    color: #ff8800; /* Ensure text remains orange */
+}
+
+/* Optional: Hover Effect for the Card */
+.browsing-reviews .card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slight shadow on hover */
+}
+
+/* Styling for the card body that contains the review header, content, and timestamp */
+.browsing-reviews .card-body {
+    background-color: #333; /* Dark grey background for the inside of the card */
+    color: #fff; /* White text color for better contrast */
+    padding: 15px; /* Padding inside the card */
+    border-radius: 8px; /* Rounded corners for the card body */
+}
+
+/* Responsive Design */
+
+/* For tablets and small desktops */
+@media (max-width: 768px) {
+    .browsing-reviews .card {
+        margin: 10px 0;
+    }
+
+    .browsing-reviews .card-title {
+        font-size: 1.1rem;
+    }
+
+    .browsing-reviews .card-text {
+        font-size: 0.9rem;
+    }
+
+    .browsing-reviews .btn {
+        font-size: 0.85rem;
+    }
+}
+
+/* For mobile devices */
+@media (max-width: 576px) {
+    .browsing-reviews {
+        margin: 0 2%; /* Less margin for more usable space */
+        width: 96%;
+    }
+
+    .browsing-reviews .card {
+        margin: 5px 0;
+        width: 100%; /* Full width */
+    }
+
+    .browsing-reviews .card-title {
+        font-size: 1rem;
+    }
+
+    .browsing-reviews .card-text {
+        font-size: 0.85rem;
+    }
+
+    .browsing-reviews .btn {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
 }
