@@ -60,8 +60,8 @@ const GenrePage = () => {
   }, [tmdbKey]); //restart when the tmdbKey changes
 
   return (
-    <div className="container my-4">
-      <h2 className="mb-4 text-white">Browse by Genre</h2>
+    <div className="container my-5">
+      <h2 className="mb-5 text-white fs-5">Browse by Genre</h2>
       <div className="row ">
         {genres
           .filter((genre) =>
@@ -80,7 +80,7 @@ const GenrePage = () => {
             return (
               <div key={genre.id} className="col-md-3 mb-4 zoom-on-hover">
                 <div
-                  className="card h-100 text-center p-3"
+                  className="card h-100 text-center bg-black text-white p-3"
                   style={{ cursor: "pointer" }}
                   onClick={() => navigate(`/genre/${genre.id}`)} //redirect to the genre page on click
                 >
