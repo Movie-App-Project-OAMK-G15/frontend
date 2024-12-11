@@ -83,11 +83,11 @@ const GenreMoviesPage = () => {
     <div>
       <Navbar />
       <div className="container my-4 text-white">
-        <h2 className="mb-4">{genreName} Movies</h2> {/*display genre name */}
+        <h2 className="mb-4 fs-5">{genreName} Movies</h2> {/*display genre name */}
         <div className="row">
           {movies.map((movie) => (
             <div key={movie.id} className="col-md-3 mb-4 zoom-on-hover">
-              <div className="card" onClick={() => handleMovieClick(movie.id)}>
+              <div className="card bg-black text-white" onClick={() => handleMovieClick(movie.id)}>
                 <img
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} //movie poster image
                   className="card-img-top"

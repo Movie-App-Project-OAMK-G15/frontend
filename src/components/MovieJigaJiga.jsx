@@ -47,7 +47,7 @@ function DynamicSlides({ movies }) {
       {movies.map(movie => (
        <div key={movie.id} className="col-md-3 mb-4 zoom-on-hover">
        <Link to={`/movie/${movie.id}`} className="text-decoration-none">
-         <div className="card h-100 text-center p-3 mx-2" style={{ cursor: "pointer" }}>
+         <div className="card h-100 bg-black text-center p-3 mx-2 text-white" style={{ cursor: "pointer" }}>
            <img
              src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
              className="card-img-top "

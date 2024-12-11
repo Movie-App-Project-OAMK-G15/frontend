@@ -47,7 +47,7 @@ const Home = () => {
                 <IndividualIntervalsExample movies={movieList}/>
             </div>
             <div>
-                <h2  className="mt-4 mb-4 text-white">Popular now</h2>
+                <h2  className="mt-5 mb-5 text-white fs-5">Popular now</h2>
                 <DynamicSlides movies = {movieList}/>
             </div> 
             <div>

@@ -8,12 +8,12 @@ const PopularMovieList = ({ movieList, setMovieList }) => {
 
     return (
         <div className="container my-4">
-            <h2 className="mb-4 text-white">Top Rated</h2>
+            <h2 className="mb-5 text-white fs-5">Top Rated</h2>
             <div className="row">
                 {sortedMovies.map((movie) => (
-                    <div key={movie.id} className="col-md-3 mb-4 zoom-on-hover">
+                    <div key={movie.id} className="col-md-3 mb-4 zoom-on-hover ">
                         <Link to={`/movie/${movie.id}`} className="text-decoration-none">
-                            <div className="card h-100 text-center p-3" style={{ cursor: "pointer" }}>
+                            <div className="card h-100 text-center p-3 bg-black text-white" style={{ cursor: "pointer" }}>
                                 <img
                                     src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                                     className="card-img-top"
