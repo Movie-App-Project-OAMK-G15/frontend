@@ -76,7 +76,7 @@ const handleUpdate = () => {
               {user.email === review.user_email && (
                   <div className="d-flex flex-column flex-md-row gap-2">
                     <button
-                      className="btn btn-warning me-md-2 mb-2 mb-md-0"
+                      className="btn btn-danger me-md-2 mb-2 mb-md-0"
                       onClick={() => startEditing(review)}
                     >
                       Edit Review
