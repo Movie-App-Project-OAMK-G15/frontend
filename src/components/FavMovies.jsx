@@ -80,11 +80,49 @@ const FavMovies = () => {
     }
   };
 
+  const handleShareList = (movie) => {
+    //construct the URL to be shared using the user''s ID
+    const shareUrl = `${window.location.origin}/account/favmovies/${userId}`;
+
+    //check if the Web Share API is available in the browser
+    if (navigator.share) {
+      //use the Web Share API to share the movie details
+      navigator
+        .share({
+          //title of the share
+          title: movie.title,
+          //text to accompany the share
+          text: `Check out this movie: ${movie.title}`,
+          //URL to be shared
+          url: shareUrl,
+        })
+        .catch((err) => {
+          console.error("Error sharing:", err);
+        });
+    } else {
+      //fallback for browsers that do not support the Web Share API
+      //copy the share URL to the clipboard
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => {
+          alert("URL copied to clipboard!");
+        })
+        .catch((err) => {
+          alert("Failed to copy URL: " + err);
+        });
+    }
+  };
+
+
+
   return (
     <div>
       <Navbar />
       <div className="container my-4 text-white">
         <h2 className="mb-4">My Favorite Movies</h2>
+        <button className="btn btn-primary" onClick={handleShareList}>
+          Share Favorite Movies List
+        </button>
         <div className="row">
           {movies.map((movie, index) => (
             <div key={index} className="col-md-3 mb-4">
