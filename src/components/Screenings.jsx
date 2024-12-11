@@ -122,11 +122,12 @@ const Screenings = () => {
             <Navbar />
             <div className="dropdown text-white">
                 <div>
-                    <label htmlFor="area-dropdown">Select an Area:</label>
+                    <label htmlFor="area-dropdown" className="area-dropdown">Select an Area:</label>
                     <select 
                         id="area-dropdown" 
                         value={selectedArea} 
                         onChange={(e) => setSelectedArea(e.target.value)}
+                        className="form-control-text"
                     >
                         <option value="">--Choose area or cinema--</option>
                         {areas.map(area => (
@@ -135,11 +136,12 @@ const Screenings = () => {
                     </select>
                 </div>
                 <div>
-                    <label htmlFor="date-dropdown">Select a Date:</label>
+                    <label htmlFor="date-dropdown" className="date-dropdown">Select a Date:</label>
                     <select 
                         id="date-dropdown" 
                         value={selectedDate} 
                         onChange={(e) => setSelectedDate(e.target.value)}
+                        className="form-control-text"
                     >
                         <option value="">--Select a Date--</option>
                         {dates.map((date, index) => (
@@ -153,17 +155,18 @@ const Screenings = () => {
                 {loading ? (
                     <p className="loading">Loading movies...</p>
                 ) : movies.length > 0 ? (
-                    <div className="movies-lists">
+                <div className="container">
+                    <div className="row">
                         {movies.map(movie => (
-                            <div className="movie-items" key={movie.id}>
-                                <img className="img" src={movie.image} alt={movie.title} />
-                                <div className="movie-details">
-                                    <h3><strong>{movie.title}</strong></h3>
-                                    <p>Duration: {movie.duration} minutes</p>
-                                    <p>Rating: {movie.rating}</p>
-                                    <p>Release Date: {movie.releaseDate}</p>
-                                    <div className="button-showtime">
-                                        <button className='bttn-showtime' onClick={() => handleShowtimeNavigation(movie.id)}>
+                            <div className="col-lg-3 col-md-3 col-sm-6" key={movie.id}>
+                                <div className="card mb-3">
+                                <img className="card-img-top" src={movie.image} alt={movie.title} />
+                                <div className="card-body">
+                                    <h3 className="card-title"><strong>{movie.title}</strong></h3>
+                                    <p className="card-text">Duration: {movie.duration} minutes</p>
+                                    <p className="card-text">Rating: {movie.rating}</p>
+                                    <p className="card-text">Release Date: {movie.releaseDate}</p>
+                                        <button className="btn btn-primary" onClick={() => handleShowtimeNavigation(movie.id)}>
                                             Showtime
                                         </button>
                                     </div>
@@ -171,8 +174,9 @@ const Screenings = () => {
                             </div>
                         ))}
                     </div>
+                </div>
                 ) : (
-                    <p>No movies available for the selected date and area.</p>
+                    <p className="text_for_no_movie">No movies available for the selected date and area.</p>
                 )}
             </div>
         </div>

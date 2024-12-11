@@ -22,7 +22,7 @@ label {
     border: 1px solid rgb(0, 0, 0);
     border-radius: 10px;
     background-color: rgb(15, 15, 15);
-    color: rgb(82, 82, 82)
+    color: rgb(82, 82, 82);
 }
 
 /* Movies List */
@@ -86,4 +86,19 @@ label {
 
 .available-text {
     color: #ff8800;
+}
+
+.text_for_no_movie{
+    color: white;
+    text-align: center;
+}
+
+.form-control-text{
+    margin-left: 20px;
+    color: white !important;
+}
+
+.date-dropdown, .area-dropdown{
+    margin-left: 20px;
+    color: white;
 }

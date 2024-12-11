@@ -134,26 +134,33 @@ const Showtime = () => {
     }, {});
 
     return (
-        <div>
-            <Navbar />
-            <div className="container1">
-                {loading ? (
-                    <p>Loading movie details...</p>
-                ) : error ? (
-                    <p>{error}</p>
-                ) : movieDetails ? (
-                    <div className="movie-items" key={movieDetails.id}>
-                        <img className="img1" src={movieDetails.poster} alt={movieDetails.title} />
-                        <p className='movietitle'>{movieDetails.title}</p>
-                        <p className='description'>{movieDetails.overview}</p>
+    <div>
+        <Navbar />
+        <div className="container text-center">
+            {loading ? (
+                <p>Loading movie details...</p>
+            ) : error ? (
+                <p>{error}</p>
+            ) : movieDetails ? (
+                <div className="movie-items p-3 bg-white shadow-sm rounded" key={movieDetails.id}>
+                    <div className="row align-items-center">
+                        <div className="col-12 col-md-5 mb-3 mb-md-0">
+                            <img className="img-fluid img1" src={movieDetails.poster} alt={movieDetails.title} />
+                        </div>
+                        <div className="col-12 col-md-7 text-left">
+                            <h2 className="movietitle">{movieDetails.title}</h2>
+                            <p className="description">{movieDetails.overview}</p>
+                        </div>
                     </div>
-                ) : (
-                    <p>No movie details available.</p>
-                )}
-            </div>
-            <div className="dropdown1">
-                <div>
-                    <label htmlFor="area-dropdown">Select Area:</label>
+                </div>
+            ) : (
+                <p>No movie details available.</p>
+            )}
+        </div>
+        <div className="dropdown1 container text-center mt-3">
+            <div className="row">
+                <div className="col-md-6">
+                    <label htmlFor="area-dropdown" className="form-label">Select Area:</label>
                     <select 
                         id="area-dropdown" 
                         value={selectedArea} 
@@ -162,6 +169,7 @@ const Showtime = () => {
                             setShowtimes([]);
                             setMovieDetails(null);
                         }}
+                        className="form-control-text form-select"
                     >
                         <option value="">Select Area</option>
                         {areas.map(area => (
@@ -169,17 +177,17 @@ const Showtime = () => {
                         ))}
                     </select>
                 </div>
-                <div>
-                    <label htmlFor="date-dropdown">Select Date:</label>
+                <div className="col-md-6">
+                    <label htmlFor="date-dropdown" className="form-label">Select Date:</label>
                     <select 
                         id="date-dropdown" 
                         value={selectedDate} 
                         onChange={(e) => {
-                            console.log(e.target.value)
                             setSelectedDate(e.target.value);
                             setShowtimes([]);
                             setMovieDetails(null);
                         }}
+                        className="form-control-text form-select"
                     >
                         <option value="">Select Date</option>
                         {dates.map(date => (
@@ -188,26 +196,27 @@ const Showtime = () => {
                     </select>
                 </div>
             </div>
-
-            {loading && <p>Loading showtimes...</p>}
-            {error && <p>{error}</p>}
-
-            <div className="showtimes">
-                {Object.keys(groupedShowtimes).map(area => (
-                    <div key={area}>
-                        <h2 className='place'>{area}</h2>
-                        <ul className="time-list">
-                            {groupedShowtimes[area].map(showtime => {
-                                const time = new Date(showtime.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                                return (
-                                    <li className='time' key={showtime.date}>Movie start at: {time}</li>
-                                );
-                            })}
-                        </ul>
-                    </div>
-                ))}
-            </div>
         </div>
+
+        {loading && <p>Loading showtimes...</p>}
+        {error && <p>{error}</p>}
+
+        <div className="showtimes container">
+            {Object.keys(groupedShowtimes).map(area => (
+                <div key={area}>
+                    <h2 className='place'>{area}</h2>
+                    <ul className="time-list">
+                        {groupedShowtimes[area].map(showtime => {
+                            const time = new Date(showtime.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            return (
+                              <li className='time' key={showtime.date}>Movie start at: {time}</li>
+                            );
+                        })}
+                    </ul>
+                </div>
+            ))}
+        </div>
+    </div>
     );
 }
 
