@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useUser } from "../context/useUser";
 const backendLink = import.meta.env.VITE_API_URL;
 const tmdbKey = import.meta.env.VITE_TMDB_API_KEY;
+import '../styles/movieZigaZiga.css'
 
 const FavMovies = () => {
   //get user from UserContext
@@ -118,18 +119,18 @@ const FavMovies = () => {
   return (
     <div>
       <Navbar />
-      <div className="container my-4 text-white">
+      <div className="container my-4 text-white ">
         <h2 className="mb-4">My Favorite Movies</h2>
-        <button className="btn btn-primary" onClick={handleShareList}>
+        <button className="btn btn-primary zoom-on-hover" onClick={handleShareList}>
           Share Favorite Movies List
         </button>
         <div className="row">
           {movies.map((movie, index) => (
-            <div key={index} className="col-md-3 mb-4">
+            <div key={index} className="col-md-3 mb-4 zoom-on-hover">
               <div className="card">
                 <img
                   src={`https://image.tmdb.org/t/p/w500${movie.data.poster_path}`} // Movie poster image
-                  className="card-img-top"
+                  className="card-img-top "
                   alt={movie.title}
                 />
                 <div className="card-body">

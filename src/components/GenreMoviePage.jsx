@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { UserContext } from "../context/UserContext";
 import Navbar from "./Navbar.jsx";
 const backendLink = import.meta.env.VITE_API_URL
+import '../styles/movieZigaZiga.css'
 
 
 const GenreMoviesPage = () => {
@@ -85,7 +86,7 @@ const GenreMoviesPage = () => {
         <h2 className="mb-4">{genreName} Movies</h2> {/*display genre name */}
         <div className="row">
           {movies.map((movie) => (
-            <div key={movie.id} className="col-md-3 mb-4">
+            <div key={movie.id} className="col-md-3 mb-4 zoom-on-hover">
               <div className="card" onClick={() => handleMovieClick(movie.id)}>
                 <img
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} //movie poster image
