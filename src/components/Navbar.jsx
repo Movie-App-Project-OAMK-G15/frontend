@@ -1,12 +1,27 @@
 import { Link } from 'react-router-dom';
 import { useUser } from '../context/useUser';
+import { useEffect, useState } from 'react';
 import '../styles/Navbar.css';
 
 const Navbar = () => {
   const { user } = useUser();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className={`navbar navbar-expand-lg navbar-dark bg-dark ${isScrolled ? 'scrolled' : ''}`}>
       <div className="container-fluid">
         {/* Brand Name */}
         <Link className="navbar-brand" to="/">

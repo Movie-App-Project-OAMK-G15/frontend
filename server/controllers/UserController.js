@@ -176,7 +176,7 @@ const updateUserBio = async (req, res, next) => {
     const { userId } = req.params; 
     const { bio } = req.body;
     if (!userId) {
-      return next(new ApiError("User  ID is required", 400));
+      return next(new ApiError("User ID is required", 400));
     }
 
     const result = await addBio(userId, bio);
