@@ -27,7 +27,6 @@ const MoviesDisplay = ({ movies, loading, error }) => {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title text-truncate">{movie.title}</h5>
-                    {/* Movie rating removed as requested */}
                   </div>
                 </div>
               </div>
