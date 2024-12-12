@@ -42,7 +42,7 @@
     position: relative;
   }
   
-  .bi {
+  .biss {
     position: absolute;
     top: 190%;
     right: 15px;  /* Adjust to add space between the icon and the input field */

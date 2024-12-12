@@ -231,7 +231,7 @@ export default function Authentication({authenticationMode}) {
                 }}
                 >
                 <i
-                    className={`bi ${passwordVisible ? 'bi-eye' : 'bi-eye-slash'}`}
+                    className={`biss ${passwordVisible ? 'bi-eye' : 'bi-eye-slash'}`}
                     style={{ fontSize: '15px' }}  // Icon size can still be adjusted as needed
                 />
                 </button>
