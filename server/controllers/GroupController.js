@@ -2,24 +2,27 @@ import { postGroup, getAllGroups, getUsersGroups, getUsersOwnGroups, editGroupIn
 import { ApiError } from "../helpers/errorClass.js";
 import { uploadToImgBB } from "../helpers/uploadPhoto.js";
 
-// Ensure the uploads folder exists and handle the file path
+// Handles the creation of a new group, including file upload and validation.
 async function postNewGroup(req, res, next) {
     try {
-        if(!req.body.adm_mail || req.body.adm_mail.length === 0) return next(new ApiError('Invalid admin email for group', 400));
-        if(!req.body.g_name || req.body.g_name.length === 0) return next(new ApiError('Invalid group name for group', 400));
-        if(!req.body.description || req.body.description.length === 0) return next(new ApiError('Invalid description for group', 400));
+        if (!req.body.adm_mail || req.body.adm_mail.length === 0) 
+            return next(new ApiError('Invalid admin email for group', 400));
+        if (!req.body.g_name || req.body.g_name.length === 0) 
+            return next(new ApiError('Invalid group name for group', 400));
+        if (!req.body.description || req.body.description.length === 0) 
+            return next(new ApiError('Invalid description for group', 400));
 
-        const { file } = req; // Access the uploaded file
+        const { file } = req; // Access the uploaded file.
         if (!file) {
-            console.log(req.file)
+            console.log(req.file);
             return res.status(400).json({ error: 'No file uploaded.' });
         }
-        // Use the reusable function to upload the photo to ImgBB
+        // Upload the image and get its URL.
         const imageUrl = await uploadToImgBB(file.path);
 
         const response = await postGroup(req.body.adm_mail, req.body.g_name, req.body.description, imageUrl);  
         if (response.rowCount > 0) {
-            return res.status(200).json({state: `group: ${req.body.g_name} has been created`});
+            return res.status(200).json({ state: `group: ${req.body.g_name} has been created` });
         } else {
             return next(new ApiError('Group creation failed', 400));
         }
@@ -29,9 +32,10 @@ async function postNewGroup(req, res, next) {
     }
 }   
 
-async function getGroups(req, res, next){
+// Fetches all existing groups.
+async function getGroups(req, res, next) {
     try {
-        const response = await getAllGroups()
+        const response = await getAllGroups();
         return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getGroups: ", error);
@@ -39,9 +43,10 @@ async function getGroups(req, res, next){
     }
 }
 
-async function getUsersGroupsByEmail(req, res, next){
+// Fetches groups a user is a part of by their email.
+async function getUsersGroupsByEmail(req, res, next) {
     try {
-        const response = await getUsersGroups(req.body.user_email)
+        const response = await getUsersGroups(req.body.user_email);
         return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getUsersGroupsByEmail: ", error);
@@ -49,9 +54,10 @@ async function getUsersGroupsByEmail(req, res, next){
     }
 }
 
-async function getUsersOwnGroupsByEmail(req, res, next){
+// Fetches groups created by a user based on their email.
+async function getUsersOwnGroupsByEmail(req, res, next) {
     try {
-        const response = await getUsersOwnGroups(req.body.user_email)
+        const response = await getUsersOwnGroups(req.body.user_email);
         return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getUsersOwnGroupsByEmail: ", error);
@@ -59,32 +65,36 @@ async function getUsersOwnGroupsByEmail(req, res, next){
     }
 }
 
-async function editGroup(req, res, next){
+// Edits group information, including the option to update its photo.
+async function editGroup(req, res, next) {
     try {
-        if(!req.body.group_name || req.body.group_name.length === 0) return next(new ApiError('Invalid group name for group', 400));
-        if(!req.body.description || req.body.description.length === 0) return next(new ApiError('Invalid description for group', 400));
-        if(!req.body.group_id) return next(new ApiError('Invalid photo for group', 400));
+        if (!req.body.group_name || req.body.group_name.length === 0) 
+            return next(new ApiError('Invalid group name for group', 400));
+        if (!req.body.description || req.body.description.length === 0) 
+            return next(new ApiError('Invalid description for group', 400));
+        if (!req.body.group_id) 
+            return next(new ApiError('Invalid photo for group', 400));
 
-        const { file } = req; // Access the uploaded file
+        const { file } = req; // Access the uploaded file.
         if (!file) {
-            const response = await editGroupInfo(req.body.group_name, req.body.description, req.body.photo, req.body.group_id)
-            return res.status(200).json({status: 'Group info edited', resp: response.rowCount});
-            // return res.status(400).json({ error: 'No file uploaded.' });
+            const response = await editGroupInfo(req.body.group_name, req.body.description, req.body.photo, req.body.group_id);
+            return res.status(200).json({ status: 'Group info edited', resp: response.rowCount });
         }
         const imageUrl = await uploadToImgBB(file.path);
-        const response = await editGroupInfo(req.body.group_name, req.body.description, imageUrl, req.body.group_id)
-        return res.status(200).json({status: 'Group info edited', resp: response.rowCount});
+        const response = await editGroupInfo(req.body.group_name, req.body.description, imageUrl, req.body.group_id);
+        return res.status(200).json({ status: 'Group info edited', resp: response.rowCount });
     } catch (error) {
         console.error("Error in editGroup: ", error);
         return next(error);
     }
 }
 
-
+// Fetches all subscribers for a specific group.
 async function getSubs(req, res, next) {
     try {
-        if(!req.body.group_id || req.body.group_id.length === 0) return next(new ApiError('Invalid groupId for group', 400));
-        const response = await getAllSubsForGroup(req.body.group_id)
+        if (!req.body.group_id || req.body.group_id.length === 0) 
+            return next(new ApiError('Invalid groupId for group', 400));
+        const response = await getAllSubsForGroup(req.body.group_id);
         return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getSubs: ", error);
@@ -92,14 +102,17 @@ async function getSubs(req, res, next) {
     }
 }
 
+// Submits a request to join a group.
 async function postRequest(req, res, next) {
     try {
-        if(!req.body.group_id || req.body.group_id.length === 0) return next(new ApiError('Invalid groupId for group', 400));
-        if(!req.body.user_email || req.body.user_email.length === 0) return next(new ApiError('Invalid user_eamil for group', 400));
+        if (!req.body.group_id || req.body.group_id.length === 0) 
+            return next(new ApiError('Invalid groupId for group', 400));
+        if (!req.body.user_email || req.body.user_email.length === 0) 
+            return next(new ApiError('Invalid user_email for group', 400));
 
-        const response = await postNewRequest(req.body.group_id, req.body.user_email)
-        if(response.rowCount > 0){
-            return res.status(200).json({state: `request: ${req.body.user_email} sent a request to join a group`});
+        const response = await postNewRequest(req.body.group_id, req.body.user_email);
+        if (response.rowCount > 0) {
+            return res.status(200).json({ state: `request: ${req.body.user_email} sent a request to join a group` });
         }
     } catch (error) {
         console.error("Error in postRequest: ", error);
@@ -107,9 +120,10 @@ async function postRequest(req, res, next) {
     }
 }
 
+// Retrieves all join requests for all groups.
 async function getRequests(req, res, next) {
     try {
-        const response = await getAllRequests()
+        const response = await getAllRequests();
         return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getRequests: ", error);
@@ -117,9 +131,10 @@ async function getRequests(req, res, next) {
     }
 }
 
+// Retrieves all followers for all groups.
 async function getFollowersAll(req, res, next) {
     try {
-        const response = await getAllFollowers()
+        const response = await getAllFollowers();
         return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getRequests: ", error);
@@ -127,9 +142,10 @@ async function getFollowersAll(req, res, next) {
     }
 }
 
+// Fetches a specific group by its ID.
 async function getGroupUsingId(req, res, next) {
     try {
-        const response = await getGroupById(req.body.group_id)
+        const response = await getGroupById(req.body.group_id);
         return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getGroupUsingId: ", error);
@@ -137,10 +153,12 @@ async function getGroupUsingId(req, res, next) {
     }
 }
 
+// Fetches all requests for a specific group by its ID.
 async function getRequestsByGId(req, res, next) {
     try {
-        if(!req.body.group_id || req.body.group_id.length === 0) return next(new ApiError('Invalid groupId for group', 400));
-        const response = await getRequestsByGroupId(req.body.group_id)
+        if (!req.body.group_id || req.body.group_id.length === 0) 
+            return next(new ApiError('Invalid groupId for group', 400));
+        const response = await getRequestsByGroupId(req.body.group_id);
         return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in getRequestsByGId: ", error);
@@ -148,9 +166,10 @@ async function getRequestsByGId(req, res, next) {
     }
 }
 
+// Approves a specific join request by its ID.
 async function approveRequestById(req, res, next) {
     try {
-        const response = await approveRequest(req.body.req_id)
+        const response = await approveRequest(req.body.req_id);
         return res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error in approveRequestById: ", error);
@@ -158,11 +177,12 @@ async function approveRequestById(req, res, next) {
     }
 }
 
+// Removes a subscriber from a group by their email.
 async function removeSubscriberByMail(req, res, next) {
     try {
-        const response = await removeSubscriber(req.body.email)
-        if(response.rowCount > 0){
-            return res.status(200).json({status: `user ${req.body.email} was deleted from the group`});
+        const response = await removeSubscriber(req.body.email);
+        if (response.rowCount > 0) {
+            return res.status(200).json({ status: `user ${req.body.email} was deleted from the group` });
         }
     } catch (error) {
         console.error("Error in approveRequestById: ", error);
@@ -170,11 +190,12 @@ async function removeSubscriberByMail(req, res, next) {
     }
 }
 
+// Removes a specific join request by its ID.
 async function removeRequestById(req, res, next) {
     try {
-        const response = await removeRequest(req.body.req_id)
-        if(response.rowCount > 0){
-            return res.status(200).json({status: `req number ${req.body.req_id} was deleted from the requests`});
+        const response = await removeRequest(req.body.req_id);
+        if (response.rowCount > 0) {
+            return res.status(200).json({ status: `req number ${req.body.req_id} was deleted from the requests` });
         }
     } catch (error) {
         console.error("Error in removeRequestById: ", error);
@@ -182,6 +203,7 @@ async function removeRequestById(req, res, next) {
     }
 }
 
+// Allows a user to unfollow a group by their email and group ID.
 async function unfollowGroupByEmail(req, res, next) {
     try {
         const { group_id, user_email } = req.body;
@@ -203,24 +225,25 @@ async function unfollowGroupByEmail(req, res, next) {
         console.error("Error in unfollowGroupByEmail: ", error);
         return next(error);
     }
-
 }
 
-async function getPostsGyGroup(req, res, next) {
+// Retrieves all posts for a specific group by its ID.
+async function getPostsByGId(req, res, next) {
     try {
-        const response = await getPostsGyGroupId(req.body.group_id)
+        const response = await getPostsGyGroupId(req.body.group_id);
         return res.status(200).json(response.rows);
     } catch (error) {
-        console.error("Error in removeRequestById: ", error);
+        console.error("Error in getPostsByGId: ", error);
         return next(error);
     }
 }
 
+// Deletes a group based on its ID.
 async function deleteGroupById(req, res, next) {
     try {
-        const response = await deleteGroup(req.body.group_id)
-        if(response.rowCount > 0){
-            return res.status(200).json({status: `group with id ${req.body.group_id} has been deleted`});
+        const response = await deleteGroup(req.body.group_id);
+        if (response.rowCount > 0) {
+            return res.status(200).json({ status: `Group ${req.body.group_id} was deleted` });
         }
     } catch (error) {
         console.error("Error in deleteGroupById: ", error);
@@ -228,4 +251,22 @@ async function deleteGroupById(req, res, next) {
     }
 }
 
-export { postNewGroup, editGroup, unfollowGroupByEmail, getUsersGroupsByEmail, getUsersOwnGroupsByEmail, deleteGroupById, getPostsGyGroup, removeRequestById, getGroups, getSubs, postRequest, getRequests, getRequestsByGId, getGroupUsingId, approveRequestById, getFollowersAll, removeSubscriberByMail };
+export {
+    postNewGroup,
+    getGroups,
+    getUsersGroupsByEmail,
+    getUsersOwnGroupsByEmail,
+    editGroup,
+    getSubs,
+    postRequest,
+    getRequests,
+    getGroupUsingId,
+    getRequestsByGId,
+    approveRequestById,
+    removeSubscriberByMail,
+    unfollowGroupByEmail,
+    getPostsByGId,
+    deleteGroupById,
+    getFollowersAll,
+    removeRequestById
+};

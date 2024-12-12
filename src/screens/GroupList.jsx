@@ -208,12 +208,6 @@ export default function GroupList(){
     ))}
   </div>
 </div>
-
-
-
-
-
-
         </>
     )
 }

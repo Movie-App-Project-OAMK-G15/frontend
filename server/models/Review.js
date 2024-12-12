@@ -8,9 +8,6 @@ const getReviewsByMovieId = async (movieId) => {
 
 // Add a new review
 const addReview = async (userEmail, reviewContent, movieId, rating) => {
- // if (!userEmail) {
-  //  throw new Error("User email is required.");
-  //}
   const result = await pool.query(
     `INSERT INTO review (user_email, review_content, movie_id, rating, created_at) VALUES ($1, $2, $3, $4,  NOW()) 
     RETURNING review_id AS id, user_email, review_content, movie_id, rating, created_at`,
@@ -26,11 +23,6 @@ const deleteReview = async (reviewId, userEmail) => {
     'DELETE FROM review WHERE review_id = $1 AND user_email = $2 RETURNING *',
     [reviewId, userEmail]
   );
-
-  //if (result.rowCount === 0) {
- //   throw new Error("Review not found or you're not authorized to delete it.");
- // }
-  
   return result.rows[0];
 };
 
@@ -51,18 +43,14 @@ const updateReview = async (reviewId, reviewContent, rating) => {
     [reviewContent, rating, reviewId]
   );
   return result.rows[0]; // Return the updated review
-  
-  //} catch (err) {
-   // console.error('Database update error:', err);
-   // throw new Error('Database update failed');
-  //}
-
 };
 
+//gets all reviews
 const getAllReviews = async () => {
     return pool.query('select * from review;');
  };
 
+ //gets all reviews based on provied user's email
  const getReviewsByUserEmail = async (userEmail) => {
   const result = await pool.query(
     'SELECT * FROM review WHERE user_email = $1 ORDER BY created_at DESC',
