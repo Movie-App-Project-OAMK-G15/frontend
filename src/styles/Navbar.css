@@ -48,6 +48,11 @@
   background-color: rgba(0, 0, 0, 0.9); /* Darker background when scrolled */
 }
 
+.bi-person-circle {
+  font-size: 150%;
+}
+
+
 
 
 
