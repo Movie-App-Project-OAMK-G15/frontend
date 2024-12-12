@@ -95,7 +95,7 @@ const Navbar = () => {
             ) : (
               <li className="nav-item">
                 <Link className="nav-link" to="/account">
-                  My Account
+                  <i class="bi bi-person-circle"></i>
                 </Link>
               </li>
             )}
