@@ -78,7 +78,7 @@ const Screenings = () => {
                 if (eventIDs.has(id)) { 
                     tempMovies.push({
                         title: movie.getElementsByTagName('Title')[0].textContent,
-                        image: movie.getElementsByTagName('EventSmallImagePortrait')[0].textContent,
+                        image: movie.getElementsByTagName('EventLargeImagePortrait')[0].textContent,
                         duration: movie.getElementsByTagName('LengthInMinutes')[0].textContent,
                         rating: movie.getElementsByTagName('Rating')[0].textContent, 
                         releaseDate: movie.getElementsByTagName('dtLocalRelease')[0].textContent.split('T')[0], 

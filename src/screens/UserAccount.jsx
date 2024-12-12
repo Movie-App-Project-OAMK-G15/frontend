@@ -104,7 +104,7 @@ export default function UserAccount() {
                 
               </ul>
               <li className="sidebar-item">
-                  <a href="#" id="option-btn" className="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" 
+                  <a href="#" id="option-btn" className="sidebar-link has-dropdown collapsed" data-bs-toggle="collapses" 
                   data-bs-target="#options" aria-expanded="false" aria-controls="option">
                     <i class="bi bi-gear-wide"></i>
                     <span>options</span>
@@ -126,10 +126,10 @@ export default function UserAccount() {
                   </ul>
                 </li>
             </aside>
-            <div className="col-md-8">
+            <div className="col-md-8 main-content">
               <h2 className="myaccount"><strong>My Account</strong></h2>
               <UpdateProfilePic />
-              <div className="card-body">
+              <div className="card-body-main-userpage">
                 <p className="card-text">
                   <strong>First Name:</strong> {user.firstname}
                 </p>

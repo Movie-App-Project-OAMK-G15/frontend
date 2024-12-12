@@ -228,7 +228,7 @@ a.sidebar-link:hover {
     opacity: 1;
 }
 
-#sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after {
+#sidebar.expand .sidebar-link[data-bs-toggle="collapses"]::after {
     border: solid;
     border-width: 0 .075rem .075rem 0;
     content: "";
@@ -241,13 +241,14 @@ a.sidebar-link:hover {
     transition: all .2s ease-out;
 }
 
-#sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+#sidebar.expand .sidebar-link[data-bs-toggle="collapses"].collapsed::after {
     transform: rotate(45deg);
     transition: all .2s ease-out;
 }
 
-.col-md-8 {
+.main-content {
     margin-left: 15%;
+    background-color: transparent !important;
 }
 
 .share-btn {
