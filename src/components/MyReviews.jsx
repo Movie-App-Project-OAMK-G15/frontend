@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useUser  } from '../context/useUser.jsx'; 
 import Navbar from './Navbar.jsx';
 import '../styles/MyReviews.css'
+import 'bootstrap'
 const backendLink = import.meta.env.VITE_API_URL
 
 
@@ -40,11 +41,11 @@ const MyReviews = () => {
                 {loading && <p>Loading reviews...</p>} 
                 {reviews.length > 0 ? (
                     reviews.map((review) => (
-                        <div key={review.id} className="card mb-3">
-                            <div className="card-body">
-                                <p className="myreview-text"><strong>Content:</strong> {review.review_content}</p>
-                                <p className="myreview-text"><strong>Rating:</strong> {review.rating} Stars</p>
-                                <p className="myreview-text"><strong>Created at:</strong> {new Date(review.created_at).toLocaleString()}</p>
+                        <div key={review.id} className="text-white card mb-3">
+                            <div className=" text-white card-body">
+                                <p className="text-white review-text"><strong>Content:</strong> {review.review_content}</p>
+                                <p><strong>Rating:</strong> {review.rating} Stars</p>
+                                <p><strong>Created at:</strong> {new Date(review.created_at).toLocaleString()}</p>
                             </div>
                         </div>
                     ))
