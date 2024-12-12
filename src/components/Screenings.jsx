@@ -45,7 +45,7 @@ const Screenings = () => {
             .filter(date => {
                 const dateObj = new Date(date.dateTime);
                 const diffDays = (dateObj - today) / (1000 * 60 * 60 * 24);
-                return diffDays >= 0 && diffDays < 14;
+                return diffDays >= 0 && diffDays < 7;
             });
             setDates(tempDates);
         } catch (error) {

@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 import '../styles/ShowTime.css';
 
 const Showtime = () => {
-    const { id } = useParams();
+    const { id } = useParams(); // Movie/Event ID
     const location = useLocation();
     const { area, date } = location.state || {};
 
@@ -17,93 +17,114 @@ const Showtime = () => {
     const [selectedDate, setSelectedDate] = useState(date || '');
     const [movieDetails, setMovieDetails] = useState(null);
 
-    const fetchData = async () => {
-        try {
-            const areaResponse = await fetch('https://www.finnkino.fi/xml/TheatreAreas/');
-            const areaXml = await areaResponse.text();
-            showAreaList(areaXml);
-
-            const dateResponse = await fetch('https://www.finnkino.fi/xml/ScheduleDates/');
-            const dateXml = await dateResponse.text();
-            showDateList(dateXml);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
+    // Fetch Areas and Dates on Component Mount
     useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                // Fetch available areas
+                const areaResponse = await fetch('https://www.finnkino.fi/xml/TheatreAreas/');
+                const areaXml = await areaResponse.text();
+                parseAreas(areaXml);
+
+                // Fetch available dates
+                const dateResponse = await fetch('https://www.finnkino.fi/xml/ScheduleDates/');
+                const dateXml = await dateResponse.text();
+                parseDates(dateXml);
+
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setError('Failed to load areas and dates.');
+                setLoading(false);
+            }
+        };
+
         fetchData();
     }, []);
 
-    useEffect(() => {
-        fetchShowtimes();
-    }, [selectedArea, selectedDate]);
-
-    const showAreaList = (xml) => {
+    // Parse Areas from XML and Set State
+    const parseAreas = (xml) => {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xml, 'application/xml');
-        const areas = Array.from(xmlDoc.getElementsByTagName('TheatreArea'));
-        const tempAreas = areas.map(area => ({
+        const areaNodes = Array.from(xmlDoc.getElementsByTagName('TheatreArea'));
+        const tempAreas = areaNodes.map((area) => ({
             id: area.getElementsByTagName('ID')[0].textContent,
-            name: area.getElementsByTagName('Name')[0].textContent
+            name: area.getElementsByTagName('Name')[0].textContent,
         }));
         setAreas(tempAreas);
     };
 
-    const showDateList = (xml) => {
+    // Parse Dates from XML and Set State
+    const parseDates = (xml) => {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xml, 'application/xml');
-        const dates = Array.from(xmlDoc.getElementsByTagName('dateTime'));
+        const dateNodes = Array.from(xmlDoc.getElementsByTagName('dateTime'));
+
         const today = new Date();
-        const tempDates = dates.map(date => ({
-            dateTime: date.textContent.split('T')[0]
-        }))
-        .filter(date => {
-            const dateObj = new Date(date.dateTime);
-            const diffDays = (dateObj - today) / (1000 * 60 * 60 * 24);
-            return diffDays >= 0 && diffDays < 14;
-        });
+        const tempDates = dateNodes
+            .map((date) => ({
+                dateTime: date.textContent.split('T')[0],
+            }))
+            .filter((date) => {
+                // Display dates within the next 7 days
+                const dateObj = new Date(date.dateTime);
+                const diffDays = (dateObj - today) / (1000 * 60 * 60 * 24);
+                return diffDays >= 0 && diffDays < 7;
+            });
         setDates(tempDates);
     };
 
+    // Fetch Showtimes Based on Selected Area and Date
     const fetchShowtimes = async () => {
-        if (!selectedArea || !selectedDate) return;
+        setShowtimes([]); // Reset showtimes on area/date change
         setLoading(true);
+        setError(null); // Reset error state
+    
         try {
             const response = await fetch(`https://www.finnkino.fi/xml/Schedule/?area=${selectedArea}&dt=${selectedDate}`);
             const xml = await response.text();
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xml, 'application/xml');
-            const showtimeElements = Array.from(xmlDoc.getElementsByTagName('Show')).filter(show =>
-                show.getElementsByTagName('EventID')[0].textContent === id);
-
-            const tempShowtimes = showtimeElements.map(showtime => ({
+            const showtimeElements = Array.from(xmlDoc.getElementsByTagName('Show')).filter((show) =>
+                show.getElementsByTagName('EventID')[0].textContent === id
+            );    
+            const tempShowtimes = showtimeElements.map((showtime) => ({
                 date: showtime.getElementsByTagName('dttmShowStart')[0].textContent,
                 area: showtime.getElementsByTagName('Theatre')[0].textContent,
-                eventID: showtime.getElementsByTagName('EventID')[0].textContent 
+                eventID: showtime.getElementsByTagName('EventID')[0].textContent,
             }));
-
             setShowtimes(tempShowtimes);
-
             if (tempShowtimes.length > 0) {
                 fetchMovieDetails(id);
             } else {
-                setLoading(false);
+                setMovieDetails(null); // No movie details if no showtimes
             }
+            setLoading(false);
         } catch (error) {
+            console.error('Error fetching showtimes:', error);
             setError('Failed to fetch showtimes.');
             setLoading(false);
         }
     };
+    
+    // Fetch Showtimes every time selectedArea or selectedDate changes
+    useEffect(() => {
+        if (selectedArea && selectedDate) {
+            fetchShowtimes();
+        }
+    }, [selectedArea, selectedDate]);
 
+    // Fetch Movie Details Based on Event ID
     const fetchMovieDetails = async (eventID) => {
         try {
             const eventsResponse = await fetch('https://www.finnkino.fi/xml/Events/');
             const eventsXml = await eventsResponse.text();
             const parser = new DOMParser();
             const eventsDoc = parser.parseFromString(eventsXml, 'application/xml');
-            const eventElement = Array.from(eventsDoc.getElementsByTagName('Event')).find(event =>
-                event.getElementsByTagName('ID')[0].textContent === eventID);
+            const eventElement = Array.from(eventsDoc.getElementsByTagName('Event')).find(
+                (event) => event.getElementsByTagName('ID')[0].textContent === eventID
+            );
 
             if (eventElement) {
                 const movie = {
@@ -117,13 +138,14 @@ const Showtime = () => {
                 setMovieDetails(null);
             }
         } catch (error) {
-            console.error(error);
+            console.error('Error fetching movie details:', error);
             setError('Failed to fetch movie details.');
         } finally {
             setLoading(false);
         }
     };
 
+    // Group Showtimes by Area for Display
     const groupedShowtimes = showtimes.reduce((acc, showtime) => {
         const area = showtime.area;
         if (!acc[area]) {
@@ -150,7 +172,7 @@ const Showtime = () => {
                     </div>
                 </div>
             ) : (
-                <p>No movie details available.</p>
+                <p className='no-movie-details'>No movie details available.</p>
             )}
         </div>
         <div className="dropdown1 container text-center mt-3">
