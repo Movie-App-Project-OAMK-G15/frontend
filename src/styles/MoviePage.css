@@ -148,7 +148,7 @@
 }
 
 .cast-item small {
-  color: #6c757d; /* Muted text */
+  color: #ffffff; 
   font-size: 12px;
 }
 
@@ -194,3 +194,14 @@
   resize: vertical; /* Allow vertical resizing only */
 }
 
+/* Ensure all muted text on MoviePage is white */
+.movie-page .text-muted {
+  color: #ffffff !important; /* Force muted text to white */
+}
+
+/* Styling for the placeholder text */
+.review-textarea::placeholder {
+  color: #ffffff; /* White placeholder text */
+  opacity: 1; /* Make it fully visible */
+  font-weight: 400; /* Optional: Regular font weight */
+}

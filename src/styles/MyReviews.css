@@ -1,12 +1,21 @@
-.text-nofound {
-    color: rgb(255, 166, 0);
-}
-
-.title-myreview {
+/* Change muted text to white */
+.text-muted {
+    color: #ffffff !important; /* White color */
+    opacity: 1; /* Ensure full opacity */
+  }
+  
+  /* Optional: Adjust the .text-nofound for consistency */
+  .text-nofound {
+    color: #ffffff; /* White text */
+  }
+  
+  /* Keep the existing styles */
+  .title-myreview {
     color: orange;
     font-size: 31px;
-}
-
-.myreview-text {
+  }
+  
+  .myreview-text {
     color: white;
-}
+  }
+  

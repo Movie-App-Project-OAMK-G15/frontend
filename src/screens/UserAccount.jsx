@@ -109,7 +109,7 @@ export default function UserAccount() {
                     <i class="bi bi-gear-wide"></i>
                     <span>options</span>
                   </a>
-                  <ul id="options" className="sidebar-dropdown list-unstyled collapse" 
+                  <ul id="options" className="sidebar-dropdown list-unstyled collapses" 
                   data-bs-parent="#sidebar">
                     <li className="sidebar-item">
                       <a onClick={logOut} className="sidebar-link">
