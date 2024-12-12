@@ -121,9 +121,14 @@ const FavMovies = () => {
       <Navbar />
       <div className="container my-5 text-white ">
         <h2 className="mb-4 fs-5">My Favorite Movies</h2>
+        {user.token ? 
         <button className="btn btn-primary zoom-on-hover mb-4 btn-padding" onClick={handleShareList}>
-          Share Favorite Movies List
+        Share Favorite Movies List
         </button>
+          :
+          <p>Create an account or login to share and explore movies</p>
+        }
+        
         <div className="row">
           {movies.length > 0 ? 
           movies.map((movie, index) => (
@@ -134,16 +139,20 @@ const FavMovies = () => {
                   className="card-img-top "
                   alt={movie.title}
                 />
+                {user.token ? 
                 <div className="card-body">
-                  <h5 className="card-title">{movie.data.title}</h5>
-                  <p className="card-text">Rating: {movie.data.vote_average}</p>
-                  <button
-                    onClick={() => handleShare(movie.data)}
-                    className="btn btn-primary"
-                  >
-                    Share
-                  </button>
+                <h5 className="card-title">{movie.data.title}</h5>
+                <p className="card-text">Rating: {movie.data.vote_average}</p>
+                <button
+                  onClick={() => handleShare(movie.data)}
+                  className="btn btn-primary"
+                >
+                  Share
+                </button>
                 </div>
+                :
+                null
+                }
               </div>
             </div>
           ))

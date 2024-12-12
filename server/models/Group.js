@@ -116,11 +116,6 @@ const unfollowGroup = async(group_id, user_email) => {
             DELETE FROM group_posts
             WHERE group_id = $1 AND user_email = $2
             RETURNING post_id
-        ),
-        deleted_comments AS (
-            DELETE FROM comments
-            WHERE user_email = $2 OR post_id IN (SELECT post_id FROM deleted_posts)
-            RETURNING comment_id
         )
         SELECT 
             (SELECT COUNT(*) FROM deleted_subscriptions) AS subscriptions_deleted;

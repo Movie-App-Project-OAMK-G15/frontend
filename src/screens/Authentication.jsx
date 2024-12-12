@@ -225,8 +225,8 @@ export default function Authentication({authenticationMode}) {
                     background: 'transparent',       // Remove padding to make the button smaller
                     width: 'auto',          // Adjust the width to fit the icon
                     height: 'auto',         // Adjust the height to fit the icon
-                    minWidth: '24px',       // Set a minimum width for the button to fit the icon comfortably
-                    minHeight: '24px',      // Set a minimum height for the button
+                    minWidth: '28px',       // Set a minimum width for the button to fit the icon comfortably
+                    minHeight: '28px',      // Set a minimum height for the button
                     display: 'flex',        // Flex to center the icon
                 }}
                 >

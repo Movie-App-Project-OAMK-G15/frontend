@@ -1,9 +1,7 @@
-import Slider from "./Slider.jsx";
-import PopularMovieList from "./PopularMovieList.jsx";
+import Footer from "./Footer.jsx";
 import GenresPage from "./GenrePage.jsx";
 import Navbar from "./Navbar.jsx";
 import IndividualIntervalsExample from "./BigCarousel.jsx";
-import "../styles/Home.css";
 import { useEffect, useState } from "react";
 import "bootstrap";
 import DynamicSlides from "./MovieJigaJiga.jsx";
@@ -76,37 +74,37 @@ const Home = () => {
         <IndividualIntervalsExample movies={popMovieList} />
       </div>
 
-<div>
-  <h2 className="mt-5 mb-5 text-white fs-5">Top rated</h2>
-  <div className="d-md-none">
-    <IndividualIntervalsExample movies={movieList} />
-  </div>
-  <div className="d-none d-md-block">
-    <DynamicSlides movies={movieList} />
-  </div>
-</div>
+        <div>
+        <h2 className="mt-5 mb-5 text-white fs-5">Top rated</h2>
+        <div className="d-md-none">
+            <IndividualIntervalsExample movies={movieList} />
+        </div>
+        <div className="d-none d-md-block">
+            <DynamicSlides movies={movieList} />
+        </div>
+        </div>
 
-<div>
-  <h2 className="mt-5 mb-5 text-white fs-5">Popular now</h2>
-  <div className="d-md-none">
-    <IndividualIntervalsExample movies={popMovieList} />
-  </div>
-  <div className="d-none d-md-block">
-    <DynamicSlides movies={popMovieList} />
-  </div>
-</div>
+        <div>
+        <h2 className="mt-5 mb-5 text-white fs-5">Popular now</h2>
+        <div className="d-md-none">
+            <IndividualIntervalsExample movies={popMovieList} />
+        </div>
+        <div className="d-none d-md-block">
+            <DynamicSlides movies={popMovieList} />
+        </div>
+        </div>
 
-<div>
-  <h2 className="mt-5 mb-5 text-white fs-5">Upcoming</h2>
-  <div className="d-md-none">
-    <IndividualIntervalsExample movies={upMovieList} />
-  </div>
-  <div className="d-none d-md-block">
-    <DynamicSlides movies={upMovieList} />
-  </div>
-</div>
-
+        <div>
+        <h2 className="mt-5 mb-5 text-white fs-5">Upcoming</h2>
+        <div className="d-md-none">
+            <IndividualIntervalsExample movies={upMovieList} />
+        </div>
+        <div className="d-none d-md-block">
+            <DynamicSlides movies={upMovieList} />
+        </div>
+        </div>
       <GenresPage />
+      <Footer/>
     </>
   );
 };

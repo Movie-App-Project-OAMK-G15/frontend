@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import Footer from "./Footer";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -60,6 +61,7 @@ const GenrePage = () => {
   }, [tmdbKey]); //restart when the tmdbKey changes
 
   return (
+    <>
     <div className="container my-5">
       <h2 className="mb-5 text-white fs-5">Browse by Genre</h2>
       <div className="row ">
@@ -98,6 +100,7 @@ const GenrePage = () => {
           })}
       </div>
     </div>
+    </>
   );
 };
 
