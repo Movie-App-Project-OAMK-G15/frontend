@@ -136,21 +136,17 @@ const Showtime = () => {
     return (
     <div>
         <Navbar />
-        <div className="container text-center">
+        <div className="container-text-center">
             {loading ? (
                 <p>Loading movie details...</p>
             ) : error ? (
                 <p>{error}</p>
             ) : movieDetails ? (
-                <div className="movie-items p-3 bg-white shadow-sm rounded" key={movieDetails.id}>
-                    <div className="row align-items-center">
-                        <div className="col-12 col-md-5 mb-3 mb-md-0">
-                            <img className="img-fluid img1" src={movieDetails.poster} alt={movieDetails.title} />
-                        </div>
-                        <div className="col-12 col-md-7 text-left">
-                            <h2 className="movietitle">{movieDetails.title}</h2>
-                            <p className="description">{movieDetails.overview}</p>
-                        </div>
+                <div class="container p-3 shadow-sm rounded" className='container1'>
+                    <img className='img1' class="img-fluid img1" src={movieDetails.poster} alt={movieDetails.title} />
+                    <div className='text-container'>
+                        <h2 className='movietitle' class="movietitle col-md-7">{movieDetails.title}</h2>
+                        <p className='description' class="description col-md-8">{movieDetails.overview}</p>
                     </div>
                 </div>
             ) : (

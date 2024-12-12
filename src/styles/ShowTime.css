@@ -19,7 +19,6 @@ body {
 
 .dropdown button {
     padding: 10px 20px;
-    background-color: #007BFF;
     color: white;
     border: none;
     border-radius: 5px;
@@ -27,14 +26,10 @@ body {
     font-size: 16px;
 }
 
-.dropdown button:hover {
-    background-color: #0056b3;
-}
-
 .time-list {
     list-style-type: none;
     padding: 0;
-    margin: 20px;
+    margin: 0px;
 }
 
 .time {
@@ -60,7 +55,7 @@ body {
 .loading-message {
     text-align: center;
     font-size: 18px;
-    color: #555;
+    color: #777777;
 }
 
 .place {
@@ -69,14 +64,20 @@ body {
 }
 
 .container1 {
-    margin: 20px;
+    margin-left: 80px;
+    margin-right: 80px;
+    background-color: #0e0e0e;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 .img1 {
-    width: 150px;
+    width: 200px;
     height: auto;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 10px auto;
 }
 
 .movie-items {
@@ -85,14 +86,17 @@ body {
 }
 
 .movietitle {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
     margin-top: 10px;
+    color: rgb(255, 255, 255);
 }
 
 .description {
     font-size: 1rem;
-    margin-top: 10px;
+    margin-top: 20px;
+    color: orange;
+    margin-left: 20px;
 }
 
 .dropdown1 select {
@@ -105,8 +109,40 @@ body {
     color: #f4f4f4;
 }
 
+.text-container{
+    margin-top: 5px;
+}
+
 .place{
     margin-top: 15px;
-    font-size: 1.2rem;
-    color: #f4f4f4;
+    font-size: 1.5rem;
+    color: orange;
+    font-style: italic;
+}
+
+.time{
+    background-color: rgb(12, 12, 12);
+    color: rgb(255, 255, 255);
+
+}
+
+.row{
+    margin-right: 20px;
+}
+
+@media (min-width: 576px) {
+    .container1 {
+        flex-direction: row; /* Change to row layout on small screens and up */
+        margin-left: 120px;
+        margin-right: 120px;
+    }
+    .img1 {
+        margin: 10px; /* Remove auto margin on larger screens */
+    }
+    .text-container {
+        margin-left: 0px; /* Add some space between image and text */
+    }
+    .text-container{
+        margin-top: 70px;
+    }
 }

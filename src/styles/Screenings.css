@@ -102,3 +102,11 @@ label {
     margin-left: 20px;
     color: white;
 }
+
+.card-body{
+    background-color: #1a1d23;
+}
+
+.card-title{
+    color: rgb(245, 245, 245);
+}
