@@ -97,11 +97,10 @@ Frontend and Backend: Deployed on a VPS hosted by DigitalOcean.
    ```bash
    cd movie_app
    ```
-  3. **Install dependencies for the front and backends**:
-   
-    ```bash
-     npm install
-    ```
+3. **Install dependencies for the front and backends**:
+   ```bash
+   npm install
+   ```
 
 4. **Set up the PostgreSQL database and configure two environment variable files (.env files) for database connection and API keys.**:
 
