@@ -92,40 +92,45 @@ Frontend and Backend: Deployed on a VPS hosted by DigitalOcean.
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/Movie-App-Project-OAMK-G15/movie_app.git
+   ```
 2. **Navigate to the directory**:
    ```bash
    cd movie_app
-  3. **Install dependencies for the front and backends**:
-   
-      ```bash
-     npm install
+   ```
+3. **Install dependencies for the front and backends**:
+   ```bash
+   npm install
+   ```
 
 4. **Set up the PostgreSQL database and configure two environment variable files (.env files) for database connection and API keys.**:
-   #### Server `.env` File:
-    ```plaintext
-    PORT=10000
-    DB_PORT=YOURDATABASE
-    DB_USER=DATABASEUSERNAME
-    DB_HOST=DATABASEHOSTNAME
-    TEST_DB_NAME=TESTDATABASENAME
-    DB_NAME=MAINDATABASENAME
-    DB_PASSWORD=DATABASEPASSWORD!
-    SSL=true
-    JWT_SECRET_KEY='YOURJWTKEY'
-    IMGBB_API_KEY=IMGBBAPIKEY
 
-  ####  `.env` file for App:
-      ```plaintext
-      VITE_TMDB_API_KEY=TMDBAPIKEY
-      VITE_API_URL=http://localhost:3001
-      VITE_EMAILJS_KEY=EMAILJSAPIKEY
+#### Server `.env` File:
+```plaintext
+PORT=10000
+DB_PORT=YOURDATABASE
+DB_USER=DATABASEUSERNAME
+DB_HOST=DATABASEHOSTNAME
+TEST_DB_NAME=TESTDATABASENAME
+DB_NAME=MAINDATABASENAME
+DB_PASSWORD=DATABASEPASSWORD!
+SSL=true
+JWT_SECRET_KEY='YOURJWTKEY'
+IMGBB_API_KEY=IMGBBAPIKEY
+```
+
+#### `.env` file for App:
+```plaintext
+VITE_TMDB_API_KEY=TMDBAPIKEY
+VITE_API_URL=http://localhost:3001
+VITE_EMAILJS_KEY=EMAILJSAPIKEY
+```
 
 ## Start the Applications
 
 ### Start the frontend React application and the backend server with the following command:
-    ```bash
-    npm run dev
-    
+```bash
+npm run dev
+``` 
     
 
 ### Access the Application
