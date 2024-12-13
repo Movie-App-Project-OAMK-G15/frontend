@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import ErrorNotification from "../components/ErrorNotification"
 import { useUser } from "../context/useUser"
 import Navbar from "../components/Navbar"
+import 'bootstrap'
 const url = import.meta.env.VITE_API_URL
 
 export default function CreateGroup(){
@@ -81,7 +82,7 @@ export default function CreateGroup(){
             )}
             <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm bg-light">
             <div className="mb-3">
-                <label htmlFor="group_name" className="form-label">
+                <label htmlFor="group_name" className="form-label text-black">
                     Group Name: <span className="text-danger">*</span>
                 </label>
                 <input
@@ -94,7 +95,7 @@ export default function CreateGroup(){
                 />
             </div>
             <div className="mb-3">
-                <label htmlFor="group_description" className="form-label">
+                <label htmlFor="group_description" className="form-label text-black">
                     Group Description: <span className="text-danger">*</span>
                 </label>
                 <textarea
@@ -107,7 +108,7 @@ export default function CreateGroup(){
                 ></textarea>
             </div>
             <div className="mb-3">
-                <label htmlFor="group_photo" className="form-label">
+                <label htmlFor="group_photo" className="form-label text-black">
                     Group Photo: <span className="text-danger">*</span>
                 </label>
                 <input

@@ -76,7 +76,7 @@ export default function AddGroupPosts(){
             )}
             <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm bg-light">
                 <div className="mb-3">
-                    <label htmlFor="post_title" className="form-label">
+                    <label htmlFor="post_title" className="form-label text-black">
                         Post Title: <span className="text-danger">*</span>
                     </label>
                     <input
@@ -89,7 +89,7 @@ export default function AddGroupPosts(){
                     />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="post_content" className="form-label">
+                    <label htmlFor="post_content" className="form-label text-black">
                         Post Content: <span className="text-danger">*</span>
                     </label>
                     <textarea
@@ -102,7 +102,7 @@ export default function AddGroupPosts(){
                     ></textarea>
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="post_image" className="form-label">
+                    <label htmlFor="post_image" className="form-label text-black">
                         Post Image:
                     </label>
                     <input
