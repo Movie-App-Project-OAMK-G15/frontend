@@ -133,3 +133,5 @@ Frontend and Backend: Deployed on a VPS hosted by DigitalOcean.
 - **Access the Application at**: [http://localhost:5173](http://localhost:5173)
 - **Live Version**: [http://167.71.38.0:43937](http://167.71.38.0:43937)
 - **GitHub Repository**: [MovieZone GitHub Repository](https://github.com/Movie-App-Project-OAMK-G15/movie_app.git)
+- **Figma Link**: [MovieZone UI wireframes](https://www.figma.com/design/kQ5mvX6iqV27uTgY2RN8Mu/Movie-app-wireframes?node-id=0-1)
+- **Database Diagram**: [MovieZone Database Diagram](https://lucid.app/lucidchart/e2b72376-f028-42f3-a019-0d7ed4db38ee/edit?invitationId=inv_d0e75d2c-6003-4af3-bf5d-3cf0f76de553&page=0_0#)
