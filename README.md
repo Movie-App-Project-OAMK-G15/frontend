@@ -97,8 +97,9 @@ Frontend and Backend: Deployed on a VPS hosted by DigitalOcean.
    cd movie_app
   3. **Install dependencies for the front and backends**:
    
-      ```bash
+    ```bash
      npm install
+
 
 4. **Set up the PostgreSQL database and configure two environment variable files (.env files) for database connection and API keys.**:
 
@@ -128,7 +129,7 @@ VITE_EMAILJS_KEY=EMAILJSAPIKEY
 ### Start the frontend React application and the backend server with the following command:
 ```bash
 npm run dev
-    
+``` 
     
 
 ### Access the Application
