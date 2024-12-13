@@ -139,7 +139,7 @@ npm run dev
 - **Access the Application at**: [http://localhost:5173](http://localhost:5173)
 - **Live Version**: [http://167.71.38.0:43937](http://167.71.38.0:43937)
 - **GitHub Repository**: [MovieZone GitHub Repository](https://github.com/Movie-App-Project-OAMK-G15/movie_app.git)
--**Link for backend server**: [http://167.71.38.0:3001/](http://167.71.38.0:3001/)
+- **Link for backend server**: [http://167.71.38.0:3001/](http://167.71.38.0:3001/)
 
 ### Other documentation
 - **Figma Link**: [MovieZone UI wireframes](https://www.figma.com/design/kQ5mvX6iqV27uTgY2RN8Mu/Movie-app-wireframes?node-id=0-1)
