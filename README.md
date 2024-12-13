@@ -92,9 +92,11 @@ Frontend and Backend: Deployed on a VPS hosted by DigitalOcean.
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/Movie-App-Project-OAMK-G15/movie_app.git
+   ```
 2. **Navigate to the directory**:
    ```bash
    cd movie_app
+   ```
   3. **Install dependencies for the front and backends**:
    
     ```bash
