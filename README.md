@@ -61,6 +61,7 @@ This project is a user-friendly web application designed for movie enthusiasts, 
 Our relational database was implemented in PostgreSQL in Azure. Below is the Entity-Relationship Diagram:
 
 ![Database Structure](ERD_movie_zone.png)
+Link access to the diagram is at the end of the file
 
 #### Tables Overview:
 - **Account**: Stores user data (names, contact, bio, photo, credentials).
