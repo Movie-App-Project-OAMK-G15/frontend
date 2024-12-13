@@ -23,7 +23,7 @@ export default function UserProvider({children}) {
             const headers = {headers: {"Content-Type": 'application/json'}}
             const response = await axios.post(url + '/user/verifyemail', json, headers)
             if(response.data.successMessage){
-                alert('kongratulation')
+                alert('The account has been created')
             }
         } catch (error) {
             alert(error)
