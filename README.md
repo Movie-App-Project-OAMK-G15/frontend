@@ -114,11 +114,11 @@ Frontend and Backend: Deployed on a VPS hosted by DigitalOcean.
     JWT_SECRET_KEY='YOURJWTKEY'
     IMGBB_API_KEY=IMGBBAPIKEY
 
-  #### `.env` file for App:
-```plaintext
-VITE_TMDB_API_KEY=TMDBAPIKEY
-VITE_API_URL=http://localhost:3001
-VITE_EMAILJS_KEY=EMAILJSAPIKEY
+  ####  `.env` file for App:
+      ```plaintext
+      VITE_TMDB_API_KEY=TMDBAPIKEY
+      VITE_API_URL=http://localhost:3001
+      VITE_EMAILJS_KEY=EMAILJSAPIKEY
 
 ## Start the Applications
 
